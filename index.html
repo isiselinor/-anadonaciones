@@ -26,9 +26,22 @@
   .egresos-card .tu-monto{color:#f0a6b4;font-size:26px}
   .egresos-sec:empty{display:none}
   .egresos-sec{margin:26px 0 8px}
-  .sec-tit{font-size:16px;margin:0 0 8px;color:var(--text)}
+  .sec-tit{font-size:16px;margin:22px 0 10px;color:var(--text)}
   .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:22px}
-  .ayuda{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;margin:0 0 20px}
+  .resumen{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin:0 0 6px}
+  .resumen-card{padding:14px 16px}
+  .resumen-card.acc{border-color:var(--accent)}
+  .resumen-card.egr{border-color:#c97a8a}
+  .resumen-card.sal{border-color:#9bd4a0}
+  .rc-label{color:var(--muted);font-size:12px;letter-spacing:.4px;text-transform:uppercase}
+  .rc-monto{font-size:26px;font-weight:800;margin-top:4px}
+  .resumen-card.acc .rc-monto{color:var(--accent)}
+  .resumen-card.egr .rc-monto{color:#f0a6b4}
+  .resumen-card.sal .rc-monto{color:#9bd4a0}
+  .nota-tasas{color:var(--muted);font-size:12px;margin:0 0 20px}
+  .ayuda-cta{text-align:center;color:var(--muted);font-size:13px;margin:-12px 0 26px;line-height:1.5}
+  .ayuda-cta b{color:var(--accent)}
+  .ayuda{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;margin:0 0 16px}
   .ayuda-item{display:flex;gap:10px;background:var(--card);border:1px solid var(--line);
     border-radius:12px;padding:14px;font-size:14px;line-height:1.45;color:var(--text)}
   .ayuda-item b{color:var(--accent)}
@@ -103,29 +116,29 @@
     <button class="head-donar" onclick="abrirDonar()">💚 Donar</button>
   </div>
 
-  <div id="cardDonaciones" class="total-usd donaciones-card"></div>
-  <div id="totalUsd" class="total-usd"></div>
-  <div id="totalEgresos" class="total-usd egresos-card"></div>
+  <!-- 1) Resumen / impacto -->
+  <div class="resumen">
+    <div id="cardDonaciones" class="card resumen-card"></div>
+    <div id="totalUsd" class="card resumen-card acc"></div>
+    <div id="totalEgresos" class="card resumen-card egr"></div>
+    <div id="cardSaldo" class="card resumen-card sal"></div>
+  </div>
+  <div class="nota-tasas" id="notaTasas"></div>
 
-  <div class="cards" id="cards"></div>
-
-  <div class="ayuda">
-    <div class="ayuda-item">
-      <span class="ayuda-ico">💚</span>
-      <div><b>¿Cómo donar?</b> Toca el botón <b>Donar</b> (arriba a la derecha o abajo).
-      Elige el método que prefieras, copia los datos con el botón <b>Copiar</b> y realiza tu aporte. ¡Gracias!</div>
-    </div>
-    <div class="ayuda-item">
-      <span class="ayuda-ico">🔎</span>
-      <div><b>¿Cómo ver tu donación?</b> Escribe tu nombre en la barra de búsqueda de abajo
-      y aparecerá tu aporte con el monto y la modalidad.</div>
-    </div>
+  <!-- 2) CTA principal + cómo donar -->
+  <button class="btn-donar-grande" onclick="abrirDonar()">💚 Donar ahora</button>
+  <div class="ayuda-cta">
+    Toca <b>Donar ahora</b>, elige el método que prefieras, copia los datos con el botón <b>Copiar</b> y realiza tu aporte. ¡Gracias! 💚
   </div>
 
-  <button class="btn-donar-grande" onclick="abrirDonar()">💚 Donar ahora</button>
+  <!-- 3) Detalle por moneda -->
+  <h2 class="sec-tit">Detalle por moneda</h2>
+  <div class="cards" id="cards"></div>
 
+  <!-- 4) Buscar tu donación -->
+  <h2 class="sec-tit">¿Ya donaste? Busca tu nombre</h2>
   <div class="toolbar">
-    <input id="q" placeholder="🔎 Buscar por nombre de donante…" oninput="render()">
+    <input id="q" placeholder="🔎 Escribe tu nombre…" oninput="render()">
     <select id="fMod" onchange="render()"><option value="">Todas las modalidades</option></select>
     <select id="fMon" onchange="render()"><option value="">Todas las monedas</option></select>
   </div>
@@ -133,6 +146,7 @@
   <div id="tablaWrap"><div class="loading">Cargando…</div></div>
   <div class="foot" id="foot"></div>
 
+  <!-- 5) Transparencia: egresos -->
   <div id="egresosList" class="egresos-sec"></div>
 
   <footer class="site-foot">
@@ -213,8 +227,8 @@
       'Actualizado ' + d.actualizado;
 
     document.getElementById('cardDonaciones').innerHTML =
-      '<div class="tu-label">Donaciones recibidas</div>'+
-      '<div class="tu-monto">'+fmt0(d.totalDonaciones)+'</div>';
+      '<div class="rc-label">Donaciones recibidas</div>'+
+      '<div class="rc-monto">'+fmt0(d.totalDonaciones)+'</div>';
 
     var cards = d.porMoneda.map(function(m){
       var equiv = (m.usd != null)
@@ -228,18 +242,25 @@
     // Tarjeta destacada: total estimado en USD
     if (d.totalUSD != null) {
       document.getElementById('totalUsd').innerHTML =
-        '<div class="tu-label">Total recaudado estimado</div>'+
-        '<div class="tu-monto">≈ US$ '+fmt(d.totalUSD)+'</div>'+
-        '<div class="tu-nota">Conversión estimada · ARS '+fmt(d.tasas.arsPorUsd)+
-        '/USD · Bs '+fmt(d.tasas.bsPorUsd)+'/USD · EUR×'+d.tasas.usdPorEur+
-        ' · USD y USDT 1:1</div>';
+        '<div class="rc-label">Total recaudado</div>'+
+        '<div class="rc-monto">≈ US$ '+fmt(d.totalUSD)+'</div>';
+      document.getElementById('notaTasas').textContent =
+        'Conversión estimada · ARS '+fmt(d.tasas.arsPorUsd)+'/USD · Bs '+fmt(d.tasas.bsPorUsd)+
+        '/USD · EUR×'+d.tasas.usdPorEur+' · USD y USDT 1:1';
+    }
+
+    // Tarjeta de saldo disponible
+    if (d.saldo != null) {
+      document.getElementById('cardSaldo').innerHTML =
+        '<div class="rc-label">Saldo disponible</div>'+
+        '<div class="rc-monto">≈ US$ '+fmt(d.saldo)+'</div>';
     }
 
     // Tarjeta de egresos + lista detallada
     if (d.totalEgresos != null && d.totalEgresos > 0) {
       document.getElementById('totalEgresos').innerHTML =
-        '<div class="tu-label">Total egresos</div>'+
-        '<div class="tu-monto">≈ US$ '+fmt(d.totalEgresos)+'</div>';
+        '<div class="rc-label">Total egresos</div>'+
+        '<div class="rc-monto">≈ US$ '+fmt(d.totalEgresos)+'</div>';
 
       var filas = (d.egresos || []).map(function(e){
         return '<tr><td>'+escapeHtml(e.concepto)+'</td>'+
