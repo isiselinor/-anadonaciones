@@ -28,6 +28,11 @@
   .egresos-sec{margin:26px 0 8px}
   .sec-tit{font-size:16px;margin:0 0 8px;color:var(--text)}
   .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:22px}
+  .ayuda{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;margin:0 0 20px}
+  .ayuda-item{display:flex;gap:10px;background:var(--card);border:1px solid var(--line);
+    border-radius:12px;padding:14px;font-size:14px;line-height:1.45;color:var(--text)}
+  .ayuda-item b{color:var(--accent)}
+  .ayuda-ico{font-size:20px;flex-shrink:0}
   .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px}
   .card .moneda{color:var(--accent);font-weight:700;font-size:13px;letter-spacing:.5px}
   .card .monto{font-size:22px;font-weight:700;margin-top:6px}
@@ -52,10 +57,10 @@
     border:1px dashed var(--line);border-radius:12px;background:rgba(58,80,107,.12)}
   @media(max-width:520px){ .card .monto{font-size:18px} td,th{padding:8px} }
 
-  .btn-donar{position:fixed;right:18px;bottom:18px;z-index:30;background:var(--accent);
-    color:#06121a;font-weight:800;border:none;border-radius:30px;padding:14px 22px;font-size:16px;
-    cursor:pointer;box-shadow:0 8px 24px rgba(0,0,0,.45)}
-  .btn-donar:hover{filter:brightness(1.07)}
+  .btn-donar-grande{display:block;width:100%;background:var(--accent);color:#06121a;font-weight:800;
+    border:none;border-radius:14px;padding:20px;font-size:22px;cursor:pointer;margin:0 0 22px;
+    box-shadow:0 8px 24px rgba(91,192,190,.3)}
+  .btn-donar-grande:hover{filter:brightness(1.07)}
   .head-donar{background:var(--accent);color:#06121a;font-weight:800;border:none;border-radius:9px;
     padding:9px 16px;font-size:14px;cursor:pointer}
   .overlay{position:fixed;inset:0;background:rgba(2,7,15,.72);display:none;z-index:40;
@@ -104,6 +109,21 @@
 
   <div class="cards" id="cards"></div>
 
+  <div class="ayuda">
+    <div class="ayuda-item">
+      <span class="ayuda-ico">💚</span>
+      <div><b>¿Cómo donar?</b> Toca el botón <b>Donar</b> (arriba a la derecha o abajo).
+      Elige el método que prefieras, copia los datos con el botón <b>Copiar</b> y realiza tu aporte. ¡Gracias!</div>
+    </div>
+    <div class="ayuda-item">
+      <span class="ayuda-ico">🔎</span>
+      <div><b>¿Cómo ver tu donación?</b> Escribe tu nombre en la barra de búsqueda de abajo
+      y aparecerá tu aporte con el monto y la modalidad.</div>
+    </div>
+  </div>
+
+  <button class="btn-donar-grande" onclick="abrirDonar()">💚 Donar ahora</button>
+
   <div class="toolbar">
     <input id="q" placeholder="🔎 Buscar por nombre de donante…" oninput="render()">
     <select id="fMod" onchange="render()"><option value="">Todas las modalidades</option></select>
@@ -119,8 +139,6 @@
     Sistema creado por
     <a href="https://www.instagram.com/isiselinor/" target="_blank" rel="noopener">Isis Elinor</a>
   </footer>
-
-  <button class="btn-donar" onclick="abrirDonar()">💚 Donar</button>
 
   <div class="overlay" id="overlay" onclick="if(event.target===this)cerrarDonar()">
     <div class="modal">
