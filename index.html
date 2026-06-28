@@ -20,6 +20,8 @@
   .total-usd .tu-label{color:var(--muted);font-size:13px;letter-spacing:.5px;text-transform:uppercase}
   .total-usd .tu-monto{color:var(--accent);font-size:34px;font-weight:800;margin-top:2px}
   .total-usd .tu-nota{color:var(--muted);font-size:12px;margin-top:6px}
+  .donaciones-card{background:linear-gradient(135deg,#13314a,#1c2541);border-color:var(--accent);text-align:center}
+  .donaciones-card .tu-monto{color:#fff;font-size:40px}
   .egresos-card{background:linear-gradient(135deg,#3a2230,#2a1c25);border-color:#c97a8a}
   .egresos-card .tu-monto{color:#f0a6b4;font-size:26px}
   .egresos-sec:empty{display:none}
@@ -96,6 +98,7 @@
     <button class="head-donar" onclick="abrirDonar()">💚 Donar</button>
   </div>
 
+  <div id="cardDonaciones" class="total-usd donaciones-card"></div>
   <div id="totalUsd" class="total-usd"></div>
   <div id="totalEgresos" class="total-usd egresos-card"></div>
 
@@ -182,11 +185,18 @@
   function fmt(n, moneda){
     return new Intl.NumberFormat('es-AR',{minimumFractionDigits:2, maximumFractionDigits:2}).format(n);
   }
+  function fmt0(n){
+    return new Intl.NumberFormat('es-AR',{maximumFractionDigits:0}).format(n);
+  }
 
   function init(d){
     DATA = d;
     document.getElementById('sub').textContent =
-      d.totalDonaciones + ' donaciones · actualizado ' + d.actualizado;
+      'Actualizado ' + d.actualizado;
+
+    document.getElementById('cardDonaciones').innerHTML =
+      '<div class="tu-label">Donaciones recibidas</div>'+
+      '<div class="tu-monto">'+fmt0(d.totalDonaciones)+'</div>';
 
     var cards = d.porMoneda.map(function(m){
       var equiv = (m.usd != null)
