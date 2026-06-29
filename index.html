@@ -95,6 +95,9 @@
     padding:20px;margin-top:24px}
   .modal h2{margin:0 0 4px;font-size:20px}
   .modal .sub2{color:var(--muted);font-size:13px;margin-bottom:16px}
+  .aviso{background:rgba(240,166,180,.1);border:1px solid #c97a8a;border-radius:8px;
+    padding:8px 10px;font-size:12px;line-height:1.4;color:var(--muted);margin-bottom:14px}
+  .aviso b{color:#f0a6b4}
   .pay{border:1px solid var(--line);border-radius:12px;padding:14px;margin-bottom:12px}
   .pay .nombre{color:var(--accent);font-weight:700;font-size:14px;margin-bottom:8px}
   .field{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:6px 0;
@@ -166,6 +169,7 @@
   <h2 class="sec-tit">¿Ya donaste? Busca tu nombre</h2>
   <div class="toolbar">
     <input id="q" placeholder="🔎 Escribe tu nombre…" oninput="render()">
+    <select id="fMet" onchange="render()"><option value="">Todos los métodos</option></select>
     <select id="fMon" onchange="render()"><option value="">Todas las monedas</option></select>
   </div>
 
@@ -190,59 +194,11 @@
         <button class="x" onclick="cerrarDonar()">&times;</button>
       </div>
 
-      <div class="pay">
-        <div class="nombre">📱 Pago móvil — Banco de Venezuela</div>
-        <div class="field"><span class="k">Cédula</span><span class="v">20227615</span><button class="copy" onclick="copiar(this,'20227615')">Copiar</button></div>
-        <div class="field"><span class="k">Teléfono</span><span class="v">0412 230 0869</span><button class="copy" onclick="copiar(this,'04122300869')">Copiar</button></div>
-        <div class="field"><span class="k">Banco</span><span class="v">Banco de Venezuela</span><button class="copy" onclick="copiar(this,'Banco de Venezuela')">Copiar</button></div>
+      <div class="aviso">
+        ⚠️ En el asunto de la transferencia <b>no menciones Venezuela</b> ni la causa.
       </div>
 
-      <div class="pay">
-        <div class="nombre">🟡 Binance</div>
-        <div class="field"><span class="k">Correo</span><span class="v">Lermit.rg@gmail.com</span><button class="copy" onclick="copiar(this,'Lermit.rg@gmail.com')">Copiar</button></div>
-      </div>
-
-      <div class="pay">
-        <div class="nombre">🇺🇸 Zelle</div>
-        <div class="field"><span class="k">Correo</span><span class="v">maria.leonor.cordero@gmail.com</span><button class="copy" onclick="copiar(this,'maria.leonor.cordero@gmail.com')">Copiar</button></div>
-      </div>
-
-      <div class="pay">
-        <div class="nombre">💶 Bizum</div>
-        <div class="field"><span class="k">Teléfono</span><span class="v">+34 677 765 697</span><button class="copy" onclick="copiar(this,'+34677765697')">Copiar</button></div>
-      </div>
-
-      <div class="pay">
-        <div class="nombre">🔵 Revolut</div>
-        <div class="field"><span class="k">Enlace</span><a class="v lnk" href="https://revolut.me/leitovi93" target="_blank" rel="noopener">revolut.me/leitovi93</a><button class="copy" onclick="copiar(this,'https://revolut.me/leitovi93')">Copiar</button></div>
-      </div>
-
-      <div class="pay">
-        <div class="nombre">🅿️ PayPal</div>
-        <div class="field"><span class="k">Correo</span><span class="v">plan.yoga.madrid@gmail.com</span><button class="copy" onclick="copiar(this,'plan.yoga.madrid@gmail.com')">Copiar</button></div>
-      </div>
-
-      <div class="pay">
-        <div class="nombre">🇦🇷 Pesos argentinos — Lemon</div>
-        <div class="field"><span class="k">Alias</span><span class="v">Eidos.lemon</span><button class="copy" onclick="copiar(this,'Eidos.lemon')">Copiar</button></div>
-      </div>
-
-      <div class="pay">
-        <div class="nombre">🇦🇷 Pesos argentinos — Mercado Pago</div>
-        <div class="field"><span class="k">Alias</span><span class="v">anana.g.uku</span><button class="copy" onclick="copiar(this,'anana.g.uku')">Copiar</button></div>
-      </div>
-
-      <div class="pay">
-        <div class="nombre">🏦 Transferencia IBAN (España)</div>
-        <div class="field"><span class="k">IBAN</span><span class="v">ES05 0049 2832 4126 1619 8685</span><button class="copy" onclick="copiar(this,'ES0500492832412616198685')">Copiar</button></div>
-        <div class="field"><span class="k">Titular</span><span class="v">María Leonor Cordero Riera</span><button class="copy" onclick="copiar(this,'María Leonor Cordero Riera')">Copiar</button></div>
-        <div class="field"><span class="k">Correo</span><span class="v">maria.leonor.cordero@gmail.com</span><button class="copy" onclick="copiar(this,'maria.leonor.cordero@gmail.com')">Copiar</button></div>
-      </div>
-
-      <div class="pay">
-        <div class="nombre">💳 Tarjeta de crédito (Stripe)</div>
-        <div class="field"><span class="k">Pagar</span><a class="v lnk" href="https://buy.stripe.com/00w14mdyh9qdcKL1Yjak00b" target="_blank" rel="noopener">Abrir link de pago</a><button class="copy" onclick="copiar(this,'https://buy.stripe.com/00w14mdyh9qdcKL1Yjak00b')">Copiar</button></div>
-      </div>
+      <div id="metodosWrap"></div>
     </div>
   </div>
 
@@ -316,9 +272,31 @@
       }
     }
 
+    // Modal de donación (desde la hoja Metodos)
+    var mw = document.getElementById('metodosWrap');
+    if (d.metodosDonacion && d.metodosDonacion.length) {
+      mw.innerHTML = d.metodosDonacion.map(function(m){
+        var campos = (m.campos||[]).map(function(c){
+          var val = c.enlace
+            ? '<a class="v lnk" href="'+escapeHtml(c.copiar)+'" target="_blank" rel="noopener">'+escapeHtml(c.valor)+'</a>'
+            : '<span class="v">'+escapeHtml(c.valor)+'</span>';
+          var k = c.campo ? '<span class="k">'+escapeHtml(c.campo)+'</span>' : '';
+          return '<div class="field">'+k+val+
+                 '<button class="copy" data-c="'+escapeHtml(c.copiar)+'" onclick="copiar(this, this.dataset.c)">Copiar</button></div>';
+        }).join('');
+        return '<div class="pay"><div class="nombre">'+escapeHtml(m.metodo)+'</div>'+campos+'</div>';
+      }).join('');
+    } else {
+      mw.innerHTML = '<div class="note">No hay métodos de pago configurados en la hoja "Metodos".</div>';
+    }
+
     var fMon = document.getElementById('fMon');
     d.porMoneda.forEach(function(m){
       var o=document.createElement('option'); o.value=m.moneda; o.textContent=m.simbolo+' ('+m.moneda+')'; fMon.appendChild(o);
+    });
+    var fMet = document.getElementById('fMet');
+    (d.metodosPago||[]).forEach(function(met){
+      var o=document.createElement('option'); o.value=met; o.textContent=met; fMet.appendChild(o);
     });
 
     render();
@@ -328,6 +306,7 @@
     if(!DATA) return;
     var q = document.getElementById('q').value.trim().toLowerCase();
     var fmon = document.getElementById('fMon').value;
+    var fmet = document.getElementById('fMet').value;
 
     // Minimalista: la lista se oculta hasta que se busca un nombre
     if(q === ''){
@@ -340,6 +319,7 @@
     var rows = DATA.movimientos.filter(function(m){
       if(q && m.donante.toLowerCase().indexOf(q)===-1) return false;
       if(fmon && m.moneda!==fmon) return false;
+      if(fmet && m.metodo!==fmet) return false;
       return true;
     });
 
@@ -359,10 +339,12 @@
 
     var html = '<table><thead><tr>'+
       '<th onclick="sortBy(\'donante\')">Donante</th>'+
+      '<th onclick="sortBy(\'metodo\')">Método</th>'+
       '<th onclick="sortBy(\'monto\')" style="text-align:right">Monto</th>'+
       '</tr></thead><tbody>';
     rows.forEach(function(m){
       html += '<tr><td>'+escapeHtml(m.donante)+'</td>'+
+              '<td><span class="tag">'+escapeHtml(m.metodo)+'</span></td>'+
               '<td class="monto">'+m.simbolo+' '+fmt(m.monto,m.moneda)+'</td></tr>';
     });
     html += '</tbody></table>';
