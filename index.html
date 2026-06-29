@@ -102,6 +102,8 @@
   .field:first-of-type{border-top:none}
   .field .k{color:var(--muted);font-size:12px}
   .field .v{font-weight:600;font-size:14px;word-break:break-all;text-align:right;flex:1}
+  .field a.lnk{color:var(--accent);text-decoration:none}
+  .field a.lnk:hover{text-decoration:underline}
   .copy{background:var(--line);color:var(--text);border:none;border-radius:7px;padding:5px 10px;
     font-size:12px;cursor:pointer;white-space:nowrap}
   .copy:hover{background:#46618a}
@@ -207,7 +209,12 @@
 
       <div class="pay">
         <div class="nombre">💶 Bizum</div>
-        <div class="field"><span class="k">Teléfono</span><span class="v">+34 692 529 351</span><button class="copy" onclick="copiar(this,'+34692529351')">Copiar</button></div>
+        <div class="field"><span class="k">Teléfono</span><span class="v">+34 677 765 697</span><button class="copy" onclick="copiar(this,'+34677765697')">Copiar</button></div>
+      </div>
+
+      <div class="pay">
+        <div class="nombre">🔵 Revolut</div>
+        <div class="field"><span class="k">Enlace</span><a class="v lnk" href="https://revolut.me/leitovi93" target="_blank" rel="noopener">revolut.me/leitovi93</a><button class="copy" onclick="copiar(this,'https://revolut.me/leitovi93')">Copiar</button></div>
       </div>
 
       <div class="pay">
@@ -233,8 +240,8 @@
       </div>
 
       <div class="pay">
-        <div class="nombre">💳 Tarjeta de crédito</div>
-        <div class="note">Escríbeme por DM y te paso el link de Stripe.</div>
+        <div class="nombre">💳 Tarjeta de crédito (Stripe)</div>
+        <div class="field"><span class="k">Pagar</span><a class="v lnk" href="https://buy.stripe.com/00w14mdyh9qdcKL1Yjak00b" target="_blank" rel="noopener">Abrir link de pago</a><button class="copy" onclick="copiar(this,'https://buy.stripe.com/00w14mdyh9qdcKL1Yjak00b')">Copiar</button></div>
       </div>
     </div>
   </div>
