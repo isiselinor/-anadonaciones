@@ -88,6 +88,9 @@
   .btn-donar-grande:hover{filter:brightness(1.07)}
   .head-donar{background:var(--accent);color:#06121a;font-weight:800;border:none;border-radius:9px;
     padding:9px 16px;font-size:14px;cursor:pointer}
+  .btn-lang{background:transparent;color:var(--text);border:1px solid var(--line);border-radius:9px;
+    padding:9px 12px;font-size:13px;font-weight:700;cursor:pointer}
+  .btn-lang:hover{border-color:var(--accent);color:var(--accent)}
   .overlay{position:fixed;inset:0;background:rgba(2,7,15,.72);display:none;z-index:40;
     align-items:flex-start;justify-content:center;padding:24px;overflow:auto}
   .overlay.open{display:flex}
@@ -143,7 +146,10 @@
       </div>
       <div class="sub" id="sub">Cargando datos en vivo…</div>
     </div>
-    <button class="head-donar" onclick="abrirDonar()">💚 Donar</button>
+    <div style="display:flex;gap:8px;align-items:center">
+      <button class="btn-lang" id="btnLang" onclick="alternarIdioma()">EN</button>
+      <button class="head-donar" id="btnDonarTop" onclick="abrirDonar()">💚 Donar</button>
+    </div>
   </div>
 
   <!-- 1) Resumen / impacto -->
@@ -156,17 +162,15 @@
   <div class="nota-tasas" id="notaTasas"></div>
 
   <!-- 2) CTA principal + cómo donar -->
-  <button class="btn-donar-grande" onclick="abrirDonar()">💚 Donar ahora</button>
-  <div class="ayuda-cta">
-    Toca <b>Donar ahora</b>, elige el método que prefieras, copia los datos con el botón <b>Copiar</b> y realiza tu aporte. ¡Gracias! 💚
-  </div>
+  <button class="btn-donar-grande" id="btnDonarBig" onclick="abrirDonar()">💚 Donar ahora</button>
+  <div class="ayuda-cta" id="ctaHelp"></div>
 
   <!-- 3) Detalle por moneda -->
-  <h2 class="sec-tit">Detalle por moneda</h2>
+  <h2 class="sec-tit" id="titMoneda">Detalle por moneda</h2>
   <div class="cards" id="cards"></div>
 
   <!-- 4) Buscar tu donación -->
-  <h2 class="sec-tit">¿Ya donaste? Busca tu nombre</h2>
+  <h2 class="sec-tit" id="titBuscar">¿Ya donaste? Busca tu nombre</h2>
   <div class="toolbar">
     <input id="q" placeholder="🔎 Escribe tu nombre…" oninput="render()">
     <select id="fMet" onchange="render()"><option value="">Todos los métodos</option></select>
@@ -180,7 +184,7 @@
   <div id="egresosList" class="egresos-sec"></div>
 
   <footer class="site-foot">
-    Sistema creado por
+    <span id="createdBy">Sistema creado por</span>
     <a href="https://www.instagram.com/isiselinor/" target="_blank" rel="noopener">Isis Elinor</a>
   </footer>
 
@@ -188,13 +192,13 @@
     <div class="modal">
       <div class="top">
         <div>
-          <h2>Quiero donar 💚</h2>
-          <div class="sub2">Elige un método y copia los datos. ¡Gracias!</div>
+          <h2 id="modalTitle">Quiero donar 💚</h2>
+          <div class="sub2" id="modalSub">Elige un método y copia los datos. ¡Gracias!</div>
         </div>
         <button class="x" onclick="cerrarDonar()">&times;</button>
       </div>
 
-      <div class="aviso">
+      <div class="aviso" id="aviso">
         ⚠️ En el asunto de la transferencia <b>no menciones Venezuela</b> ni la causa.
       </div>
 
@@ -206,6 +210,53 @@
   var DATA = null;
   var sortCol = 'donante', sortDir = 1;
 
+  // ---------- Idiomas (solo interfaz) ----------
+  var I18N = {
+    es: {
+      donar:'💚 Donar', donarAhora:'💚 Donar ahora',
+      cta:'Toca <b>Donar ahora</b>, elige el método que prefieras, copia los datos con el botón <b>Copiar</b> y realiza tu aporte. ¡Gracias! 💚',
+      tituloMoneda:'Detalle por moneda', tituloBuscar:'¿Ya donaste? Busca tu nombre',
+      buscarPh:'🔎 Escribe tu nombre…', todosMetodos:'Todos los métodos', todasMonedas:'Todas las monedas',
+      actualizado:'Actualizado', cargandoLive:'Cargando datos en vivo…', cargando:'Cargando…',
+      donacionesRecibidas:'Donaciones recibidas', totalRecaudado:'Total recaudado',
+      totalEgresos:'Total egresos', saldoDisponible:'Saldo disponible',
+      donaciones:'donaciones', convEst:'Conversión estimada', usdUsdt:'USD y USDT 1:1',
+      egresosCat:'Egresos por categoría', colDonante:'Donante', colMetodo:'Método', colMonto:'Monto',
+      resultados:function(n){return n+' resultado(s) mostrados';},
+      vacioBuscar:'🔎 Escribe un nombre en la barra de búsqueda para ver las donaciones de esa persona.',
+      sinResultados:'No encontramos donaciones con ese nombre. Revisa cómo está escrito.',
+      modalTitulo:'Quiero donar 💚', modalSub:'Elige un método y copia los datos. ¡Gracias!',
+      aviso:'⚠️ En el asunto de la transferencia <b>no menciones Venezuela</b> ni la causa.',
+      copiar:'Copiar', copiado:'✓ Copiado',
+      sinMetodos:'No hay métodos de pago configurados en la hoja "Metodos".',
+      creadoPor:'Sistema creado por', errorConexion:'Error de conexión',
+      errorDatos:'No se pudieron cargar los datos. Verifica que API_URL esté bien pegada y que la app esté publicada para "Cualquier persona".'
+    },
+    en: {
+      donar:'💚 Donate', donarAhora:'💚 Donate now',
+      cta:'Tap <b>Donate now</b>, choose your preferred method, copy the details with the <b>Copy</b> button and make your contribution. Thank you! 💚',
+      tituloMoneda:'By currency', tituloBuscar:'Already donated? Search your name',
+      buscarPh:'🔎 Type your name…', todosMetodos:'All methods', todasMonedas:'All currencies',
+      actualizado:'Updated', cargandoLive:'Loading live data…', cargando:'Loading…',
+      donacionesRecibidas:'Donations received', totalRecaudado:'Total raised',
+      totalEgresos:'Total expenses', saldoDisponible:'Available balance',
+      donaciones:'donations', convEst:'Estimated conversion', usdUsdt:'USD & USDT 1:1',
+      egresosCat:'Expenses by category', colDonante:'Donor', colMetodo:'Method', colMonto:'Amount',
+      resultados:function(n){return n+' result(s) shown';},
+      vacioBuscar:'🔎 Type a name in the search bar to see that person’s donations.',
+      sinResultados:'No donations found with that name. Check the spelling.',
+      modalTitulo:'I want to donate 💚', modalSub:'Choose a method and copy the details. Thank you!',
+      aviso:'⚠️ In the transfer note <b>do not mention Venezuela</b> or the cause.',
+      copiar:'Copy', copiado:'✓ Copied',
+      sinMetodos:'No payment methods configured in the "Metodos" sheet.',
+      creadoPor:'System created by', errorConexion:'Connection error',
+      errorDatos:'Could not load the data. Check that API_URL is pasted correctly and the app is published for "Anyone".'
+    }
+  };
+  var LANG = 'es';
+  try { var g = localStorage.getItem('lang'); if (g) LANG = g; else if ((navigator.language||'').toLowerCase().indexOf('en')===0) LANG='en'; } catch(e){}
+  function T(k){ return I18N[LANG][k]; }
+
   function fmt(n, moneda){
     return new Intl.NumberFormat('es-AR',{minimumFractionDigits:2, maximumFractionDigits:2}).format(n);
   }
@@ -213,62 +264,81 @@
     return new Intl.NumberFormat('es-AR',{maximumFractionDigits:0}).format(n);
   }
 
-  function init(d){
-    DATA = d;
-    document.getElementById('sub').textContent =
-      'Actualizado ' + d.actualizado;
+  // Aplica los textos fijos de la interfaz según el idioma.
+  function aplicarEstaticos(){
+    document.documentElement.lang = LANG;
+    document.getElementById('btnLang').textContent = (LANG==='es') ? 'EN' : 'ES';
+    document.getElementById('btnDonarTop').textContent = T('donar');
+    document.getElementById('btnDonarBig').textContent = T('donarAhora');
+    document.getElementById('ctaHelp').innerHTML = T('cta');
+    document.getElementById('titMoneda').textContent = T('tituloMoneda');
+    document.getElementById('titBuscar').textContent = T('tituloBuscar');
+    document.getElementById('q').placeholder = T('buscarPh');
+    document.querySelector('#fMet option[value=""]').textContent = T('todosMetodos');
+    document.querySelector('#fMon option[value=""]').textContent = T('todasMonedas');
+    document.getElementById('modalTitle').textContent = T('modalTitulo');
+    document.getElementById('modalSub').textContent = T('modalSub');
+    document.getElementById('aviso').innerHTML = T('aviso');
+    document.getElementById('createdBy').textContent = T('creadoPor');
+    if (!DATA) document.getElementById('sub').textContent = T('cargandoLive');
+  }
+
+  function alternarIdioma(){
+    LANG = (LANG==='es') ? 'en' : 'es';
+    try { localStorage.setItem('lang', LANG); } catch(e){}
+    aplicarEstaticos();
+    if (DATA) pintar(DATA);
+    render();
+  }
+
+  function init(d){ DATA = d; aplicarEstaticos(); pintar(d); render(); }
+
+  // Pinta el contenido dinámico (tarjetas, modal, filtros) con el idioma actual.
+  function pintar(d){
+    document.getElementById('sub').textContent = T('actualizado') + ' ' + d.actualizado;
 
     document.getElementById('cardDonaciones').innerHTML =
-      '<div class="rc-label">Donaciones recibidas</div>'+
+      '<div class="rc-label">'+T('donacionesRecibidas')+'</div>'+
       '<div class="rc-monto">'+fmt0(d.totalDonaciones)+'</div>';
 
-    var cards = d.porMoneda.map(function(m){
-      var equiv = (m.usd != null)
-        ? '<div class="det">≈ US$ '+fmt(m.usd)+'</div>' : '';
+    document.getElementById('cards').innerHTML = d.porMoneda.map(function(m){
+      var equiv = (m.usd != null) ? '<div class="det">≈ US$ '+fmt(m.usd)+'</div>' : '';
       return '<div class="card"><div class="moneda">'+m.simbolo+' · '+m.moneda+'</div>'+
              '<div class="monto">'+fmt(m.total)+'</div>'+
-             '<div class="det">'+m.count+' donaciones</div>'+equiv+'</div>';
+             '<div class="det">'+m.count+' '+T('donaciones')+'</div>'+equiv+'</div>';
     }).join('');
-    document.getElementById('cards').innerHTML = cards;
 
-    // Tarjeta destacada: total estimado en USD
     if (d.totalUSD != null) {
       document.getElementById('totalUsd').innerHTML =
-        '<div class="rc-label">Total recaudado</div>'+
+        '<div class="rc-label">'+T('totalRecaudado')+'</div>'+
         '<div class="rc-monto">≈ US$ '+fmt(d.totalUSD)+'</div>';
       document.getElementById('notaTasas').textContent =
-        'Conversión estimada · ARS '+fmt(d.tasas.arsPorUsd)+'/USD · Bs '+fmt(d.tasas.bsPorUsd)+
-        '/USD · EUR×'+d.tasas.usdPorEur+' · USD y USDT 1:1';
+        T('convEst')+' · ARS '+fmt(d.tasas.arsPorUsd)+'/USD · Bs '+fmt(d.tasas.bsPorUsd)+
+        '/USD · EUR×'+d.tasas.usdPorEur+' · '+T('usdUsdt');
     }
 
-    // Tarjeta de saldo disponible
     if (d.saldo != null) {
       document.getElementById('cardSaldo').innerHTML =
-        '<div class="rc-label">Saldo disponible</div>'+
+        '<div class="rc-label">'+T('saldoDisponible')+'</div>'+
         '<div class="rc-monto">≈ US$ '+fmt(d.saldo)+'</div>';
     }
 
-    // Tarjeta de egresos + lista detallada
     if (d.totalEgresos != null && d.totalEgresos > 0) {
       document.getElementById('totalEgresos').innerHTML =
-        '<div class="rc-label">Total egresos</div>'+
+        '<div class="rc-label">'+T('totalEgresos')+'</div>'+
         '<div class="rc-monto">≈ US$ '+fmt(d.totalEgresos)+'</div>';
-
       var cats = d.egresosPorCategoria || [];
       if (cats.length) {
         var bloques = cats.map(function(c){
           var items = c.items.map(function(it){
-            return '<tr><td>'+escapeHtml(it.concepto)+'</td>'+
-                   '<td class="monto">US$ '+fmt(it.monto)+'</td></tr>';
+            return '<tr><td>'+escapeHtml(it.concepto)+'</td><td class="monto">US$ '+fmt(it.monto)+'</td></tr>';
           }).join('');
-          return '<details class="cat">'+
-            '<summary><span class="cat-nom">'+escapeHtml(c.categoria)+'</span>'+
+          return '<details class="cat"><summary><span class="cat-nom">'+escapeHtml(c.categoria)+'</span>'+
             '<span class="cat-tot">US$ '+fmt(c.total)+'</span></summary>'+
-            '<table><tbody>'+items+'</tbody></table>'+
-            '</details>';
+            '<table><tbody>'+items+'</tbody></table></details>';
         }).join('');
         document.getElementById('egresosList').innerHTML =
-          '<h2 class="sec-tit">Egresos por categoría</h2>'+ bloques;
+          '<h2 class="sec-tit">'+T('egresosCat')+'</h2>'+ bloques;
       }
     }
 
@@ -282,24 +352,27 @@
             : '<span class="v">'+escapeHtml(c.valor)+'</span>';
           var k = c.campo ? '<span class="k">'+escapeHtml(c.campo)+'</span>' : '';
           return '<div class="field">'+k+val+
-                 '<button class="copy" data-c="'+escapeHtml(c.copiar)+'" onclick="copiar(this, this.dataset.c)">Copiar</button></div>';
+                 '<button class="copy" data-c="'+escapeHtml(c.copiar)+'" onclick="copiar(this, this.dataset.c)">'+T('copiar')+'</button></div>';
         }).join('');
         return '<div class="pay"><div class="nombre">'+escapeHtml(m.metodo)+'</div>'+campos+'</div>';
       }).join('');
     } else {
-      mw.innerHTML = '<div class="note">No hay métodos de pago configurados en la hoja "Metodos".</div>';
+      mw.innerHTML = '<div class="note">'+T('sinMetodos')+'</div>';
     }
 
+    // Filtros (rellenar opciones una sola vez)
     var fMon = document.getElementById('fMon');
-    d.porMoneda.forEach(function(m){
-      var o=document.createElement('option'); o.value=m.moneda; o.textContent=m.simbolo+' ('+m.moneda+')'; fMon.appendChild(o);
-    });
+    if (fMon.options.length <= 1) {
+      d.porMoneda.forEach(function(m){
+        var o=document.createElement('option'); o.value=m.moneda; o.textContent=m.simbolo+' ('+m.moneda+')'; fMon.appendChild(o);
+      });
+    }
     var fMet = document.getElementById('fMet');
-    (d.metodosPago||[]).forEach(function(met){
-      var o=document.createElement('option'); o.value=met; o.textContent=met; fMet.appendChild(o);
-    });
-
-    render();
+    if (fMet.options.length <= 1) {
+      (d.metodosPago||[]).forEach(function(met){
+        var o=document.createElement('option'); o.value=met; o.textContent=met; fMet.appendChild(o);
+      });
+    }
   }
 
   function render(){
@@ -308,10 +381,8 @@
     var fmon = document.getElementById('fMon').value;
     var fmet = document.getElementById('fMet').value;
 
-    // Minimalista: la lista se oculta hasta que se busca un nombre
     if(q === ''){
-      document.getElementById('tablaWrap').innerHTML =
-        '<div class="empty">🔎 Escribe un nombre en la barra de búsqueda para ver las donaciones de esa persona.</div>';
+      document.getElementById('tablaWrap').innerHTML = '<div class="empty">'+T('vacioBuscar')+'</div>';
       document.getElementById('foot').textContent = '';
       return;
     }
@@ -324,8 +395,7 @@
     });
 
     if(rows.length === 0){
-      document.getElementById('tablaWrap').innerHTML =
-        '<div class="empty">No encontramos donaciones con ese nombre. Revisa cómo está escrito.</div>';
+      document.getElementById('tablaWrap').innerHTML = '<div class="empty">'+T('sinResultados')+'</div>';
       document.getElementById('foot').textContent = '';
       return;
     }
@@ -338,9 +408,9 @@
     });
 
     var html = '<table><thead><tr>'+
-      '<th onclick="sortBy(\'donante\')">Donante</th>'+
-      '<th onclick="sortBy(\'metodo\')">Método</th>'+
-      '<th onclick="sortBy(\'monto\')" style="text-align:right">Monto</th>'+
+      '<th onclick="sortBy(\'donante\')">'+T('colDonante')+'</th>'+
+      '<th onclick="sortBy(\'metodo\')">'+T('colMetodo')+'</th>'+
+      '<th onclick="sortBy(\'monto\')" style="text-align:right">'+T('colMonto')+'</th>'+
       '</tr></thead><tbody>';
     rows.forEach(function(m){
       html += '<tr><td>'+escapeHtml(m.donante)+'</td>'+
@@ -349,7 +419,7 @@
     });
     html += '</tbody></table>';
     document.getElementById('tablaWrap').innerHTML = html;
-    document.getElementById('foot').textContent = rows.length + ' resultado(s) mostrados';
+    document.getElementById('foot').textContent = T('resultados')(rows.length);
   }
 
   function sortBy(col){
@@ -364,9 +434,8 @@
   }
 
   function fallar(e){
-    document.getElementById('tablaWrap').innerHTML =
-      '<div class="empty">No se pudieron cargar los datos. Verifica que API_URL esté bien pegada y que la app esté publicada para "Cualquier persona".</div>';
-    document.getElementById('sub').textContent = 'Error de conexión';
+    document.getElementById('tablaWrap').innerHTML = '<div class="empty">'+T('errorDatos')+'</div>';
+    document.getElementById('sub').textContent = T('errorConexion');
   }
 
   // ---- Modal donar ----
@@ -376,7 +445,7 @@
 
   function copiar(btn, texto){
     var done = function(){
-      var t = btn.textContent; btn.textContent='✓ Copiado'; btn.classList.add('ok');
+      var t = btn.textContent; btn.textContent=T('copiado'); btn.classList.add('ok');
       setTimeout(function(){ btn.textContent=t; btn.classList.remove('ok'); }, 1400);
     };
     if(navigator.clipboard && navigator.clipboard.writeText){
@@ -388,6 +457,9 @@
     ta.style.position='fixed'; ta.style.opacity='0'; document.body.appendChild(ta);
     ta.select(); try{ document.execCommand('copy'); }catch(e){} document.body.removeChild(ta);
   }
+
+  // Idioma inicial en la interfaz fija (antes de que lleguen los datos)
+  aplicarEstaticos();
 
   // ---- Cargar datos desde el Apps Script vía JSONP (evita el bloqueo CORS) ----
   var _cargado = false;
