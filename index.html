@@ -88,6 +88,10 @@
   .btn-donar-grande:hover{filter:brightness(1.07)}
   .head-donar{background:var(--accent);color:#06121a;font-weight:800;border:none;border-radius:9px;
     padding:9px 16px;font-size:14px;cursor:pointer}
+  .btn-donar-flotante{position:fixed;right:18px;bottom:18px;z-index:30;background:var(--accent);
+    color:#06121a;font-weight:800;border:none;border-radius:30px;padding:14px 22px;font-size:16px;
+    cursor:pointer;box-shadow:0 8px 24px rgba(0,0,0,.45)}
+  .btn-donar-flotante:hover{filter:brightness(1.07)}
   .btn-lang{background:transparent;color:var(--text);border:1px solid var(--line);border-radius:9px;
     padding:9px 12px;font-size:13px;font-weight:700;cursor:pointer}
   .btn-lang:hover{border-color:var(--accent);color:var(--accent)}
@@ -146,11 +150,10 @@
       </div>
       <div class="sub" id="sub">Cargando datos en vivo…</div>
     </div>
-    <div style="display:flex;gap:8px;align-items:center">
-      <button class="btn-lang" id="btnLang" onclick="alternarIdioma()">EN</button>
-      <button class="head-donar" id="btnDonarTop" onclick="abrirDonar()">💚 Donar</button>
-    </div>
+    <button class="btn-lang" id="btnLang" onclick="alternarIdioma()">EN</button>
   </div>
+
+  <button class="btn-donar-flotante" id="btnDonarFloat" onclick="abrirDonar()">💚 Donar</button>
 
   <!-- 1) Resumen / impacto -->
   <div class="resumen">
@@ -293,7 +296,7 @@
     document.documentElement.lang = LANG;
     document.title = T('tituloPagina');
     document.getElementById('btnLang').textContent = (LANG==='es') ? 'EN' : 'ES';
-    document.getElementById('btnDonarTop').textContent = T('donar');
+    document.getElementById('btnDonarFloat').textContent = T('donar');
     document.getElementById('btnDonarBig').textContent = T('donarAhora');
     document.getElementById('ctaHelp').innerHTML = T('cta');
     document.getElementById('titMoneda').textContent = T('tituloMoneda');
