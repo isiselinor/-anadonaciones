@@ -3,112 +3,112 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Donaciones · Reporte público</title>
+<title>NEXOS · Reporte de donaciones</title>
 <style>
   :root{
-    --bg:#0b132b; --card:#1c2541; --accent:#5bc0be; --line:#3a506b;
-    --text:#e8eef2; --muted:#9fb3c8;
+    --bg:#ffffff; --card:#ffffff; --accent:#e85d45; --blue:#2b4fd1; --blue-lt:#7e9ce8;
+    --peach:#f7e3dc; --line:#e7e9f0; --text:#1c2340; --muted:#6b7385;
+    --shadow:0 4px 16px rgba(28,35,64,.06);
   }
   *{box-sizing:border-box}
   body{margin:0;font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
-       background:var(--bg);color:var(--text);padding:18px}
+       background:var(--bg);color:var(--text);padding:18px;max-width:900px;margin:0 auto}
   h1{font-size:22px;margin:0 0 2px}
   .logo{display:flex;align-items:center;gap:10px}
-  .logo-text{font-size:30px;font-weight:800;letter-spacing:3px;color:var(--text)}
-  .sub{color:var(--muted);font-size:13px;margin-bottom:18px}
+  .logo-img{height:66px;width:auto;display:block}
+  .logo-text{font-size:30px;font-weight:800;letter-spacing:3px;color:var(--blue)}
+  .sub{color:var(--muted);font-size:13px;margin-bottom:14px}
+  .bienvenida{color:var(--text);font-size:15px;line-height:1.55;margin:6px 0 22px;max-width:680px}
   .total-usd:empty{display:none}
-  .total-usd{background:linear-gradient(135deg,#13314a,#1c2541);border:1px solid var(--accent);
-    border-radius:14px;padding:18px 20px;margin-bottom:16px}
+  .total-usd{background:var(--card);border:1px solid var(--line);box-shadow:var(--shadow);
+    border-radius:16px;padding:18px 20px;margin-bottom:16px}
   .total-usd .tu-label{color:var(--muted);font-size:13px;letter-spacing:.5px;text-transform:uppercase}
   .total-usd .tu-monto{color:var(--accent);font-size:34px;font-weight:800;margin-top:2px}
   .total-usd .tu-nota{color:var(--muted);font-size:12px;margin-top:6px}
-  .donaciones-card{background:linear-gradient(135deg,#13314a,#1c2541);border-color:var(--accent);text-align:center}
-  .donaciones-card .tu-monto{color:#fff;font-size:40px}
-  .egresos-card{background:linear-gradient(135deg,#3a2230,#2a1c25);border-color:#c97a8a}
-  .egresos-card .tu-monto{color:#f0a6b4;font-size:26px}
   .egresos-sec:empty{display:none}
   .egresos-sec{margin:26px 0 8px}
-  .cat{background:var(--card);border:1px solid var(--line);border-radius:10px;margin-bottom:8px;overflow:hidden}
+  .cat{background:var(--card);border:1px solid var(--line);box-shadow:var(--shadow);
+    border-radius:12px;margin-bottom:8px;overflow:hidden}
   .cat summary{display:flex;justify-content:space-between;align-items:center;gap:10px;
     padding:13px 14px;cursor:pointer;font-size:15px;list-style:none}
   .cat summary::-webkit-details-marker{display:none}
   .cat summary::before{content:'▸';color:var(--accent);margin-right:6px;transition:transform .15s}
   .cat[open] summary::before{transform:rotate(90deg)}
   .cat-nom{display:flex;flex-direction:column;gap:2px;flex:1;min-width:0}
-  .cat-t{font-weight:600}
+  .cat-t{font-weight:700}
   .cat-desc{font-size:12px;color:var(--muted);font-weight:400}
-  .cat-tot{color:var(--accent);font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap;
+  .cat-tot{color:var(--blue);font-weight:800;font-variant-numeric:tabular-nums;white-space:nowrap;
     text-align:right;display:flex;flex-direction:column;gap:2px}
   .cat-pct{font-size:12px;color:var(--muted);font-weight:400}
   .cat table{margin:0 0 6px}
   .cat td{padding:8px 14px;border-bottom:1px solid var(--line);font-size:13px;color:var(--muted)}
-  .sec-tit{font-size:16px;margin:22px 0 10px;color:var(--text)}
+  .sec-tit{font-size:16px;margin:22px 0 10px;color:var(--text);font-weight:800}
   .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:22px}
   .resumen{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin:0 0 6px}
-  .resumen-card{padding:14px 16px}
-  .resumen-card.acc{border-color:var(--accent)}
-  .resumen-card.egr{border-color:#c97a8a}
-  .resumen-card.sal{border-color:#9bd4a0}
+  .resumen-card{padding:16px;box-shadow:var(--shadow);border-top:3px solid var(--line)}
+  .resumen-card.acc{border-top-color:var(--accent)}
+  .resumen-card.egr{border-top-color:var(--blue-lt)}
+  .resumen-card.sal{border-top-color:var(--blue)}
   .rc-label{color:var(--muted);font-size:12px;letter-spacing:.4px;text-transform:uppercase}
-  .rc-monto{font-size:26px;font-weight:800;margin-top:4px}
+  .rc-monto{font-size:26px;font-weight:800;margin-top:4px;color:var(--text)}
   .resumen-card.acc .rc-monto{color:var(--accent)}
-  .resumen-card.egr .rc-monto{color:#f0a6b4}
-  .resumen-card.sal .rc-monto{color:#9bd4a0}
+  .resumen-card.egr .rc-monto{color:var(--blue-lt)}
+  .resumen-card.sal .rc-monto{color:var(--blue)}
   .nota-tasas{color:var(--muted);font-size:12px;margin:0 0 20px}
   .ayuda-cta{text-align:center;color:var(--muted);font-size:13px;margin:-12px 0 26px;line-height:1.5}
   .ayuda-cta b{color:var(--accent)}
-  .ayuda{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;margin:0 0 16px}
-  .ayuda-item{display:flex;gap:10px;background:var(--card);border:1px solid var(--line);
-    border-radius:12px;padding:14px;font-size:14px;line-height:1.45;color:var(--text)}
-  .ayuda-item b{color:var(--accent)}
-  .ayuda-ico{font-size:20px;flex-shrink:0}
-  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px}
+  .card{background:var(--card);border:1px solid var(--line);box-shadow:var(--shadow);border-radius:12px;padding:14px}
   .card .moneda{color:var(--accent);font-weight:700;font-size:13px;letter-spacing:.5px}
-  .card .monto{font-size:22px;font-weight:700;margin-top:6px}
+  .card .monto{font-size:22px;font-weight:800;margin-top:6px}
   .card .det{color:var(--muted);font-size:12px;margin-top:4px}
   .toolbar{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:12px;align-items:center}
   input,select{background:var(--card);border:1px solid var(--line);color:var(--text);
        padding:9px 12px;border-radius:9px;font-size:14px;outline:none}
+  input:focus,select:focus{border-color:var(--blue)}
   input{flex:1;min-width:180px}
   table{width:100%;border-collapse:collapse;font-size:14px}
   th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line)}
   th{color:var(--muted);font-weight:600;cursor:pointer;user-select:none}
   td.monto{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
-  tr:hover td{background:rgba(91,192,190,.06)}
-  .tag{font-size:11px;color:var(--accent);border:1px solid var(--line);border-radius:20px;padding:2px 8px}
+  tr:hover td{background:rgba(232,93,69,.06)}
+  .tag{font-size:11px;color:var(--blue);border:1px solid var(--blue-lt);border-radius:20px;padding:2px 8px}
   .foot{color:var(--muted);font-size:12px;margin-top:14px;text-align:center}
-  .site-foot{color:var(--muted);font-size:13px;text-align:center;margin:28px 0 80px;
+  .site-foot{color:var(--muted);font-size:13px;text-align:center;margin:28px 0 90px;
     padding-top:16px;border-top:1px solid var(--line)}
-  .site-foot a{color:var(--accent);text-decoration:none;font-weight:600}
+  .site-foot a{color:var(--blue);text-decoration:none;font-weight:600}
   .site-foot a:hover{text-decoration:underline}
   .loading{color:var(--muted);padding:40px;text-align:center}
   .empty{color:var(--muted);padding:34px 18px;text-align:center;font-size:15px;
-    border:1px dashed var(--line);border-radius:12px;background:rgba(58,80,107,.12)}
-  @media(max-width:520px){ .card .monto{font-size:18px} td,th{padding:8px} }
+    border:1px dashed var(--line);border-radius:12px;background:#fafbfd}
+  @media(max-width:520px){ .card .monto{font-size:18px} td,th{padding:8px} .logo-img{height:54px} }
 
-  .btn-donar-grande{display:block;width:100%;background:var(--accent);color:#06121a;font-weight:800;
+  .btn-donar-grande{display:block;width:100%;background:var(--accent);color:#fff;font-weight:800;
     border:none;border-radius:14px;padding:20px;font-size:22px;cursor:pointer;margin:0 0 22px;
-    box-shadow:0 8px 24px rgba(91,192,190,.3)}
-  .btn-donar-grande:hover{filter:brightness(1.07)}
-  .head-donar{background:var(--accent);color:#06121a;font-weight:800;border:none;border-radius:9px;
+    box-shadow:0 8px 22px rgba(232,93,69,.3)}
+  .btn-donar-grande:hover{filter:brightness(1.05)}
+  .head-donar{background:var(--accent);color:#fff;font-weight:800;border:none;border-radius:9px;
     padding:9px 16px;font-size:14px;cursor:pointer}
   .btn-donar-flotante{position:fixed;right:18px;bottom:18px;z-index:30;background:var(--accent);
-    color:#06121a;font-weight:800;border:none;border-radius:30px;padding:14px 22px;font-size:16px;
-    cursor:pointer;box-shadow:0 8px 24px rgba(0,0,0,.45)}
-  .btn-donar-flotante:hover{filter:brightness(1.07)}
-  .btn-lang{background:transparent;color:var(--text);border:1px solid var(--line);border-radius:9px;
-    padding:9px 12px;font-size:13px;font-weight:700;cursor:pointer}
+    color:#fff;font-weight:800;border:none;border-radius:30px;padding:14px 22px;font-size:16px;
+    cursor:pointer;box-shadow:0 8px 24px rgba(232,93,69,.4)}
+  .btn-donar-flotante:hover{filter:brightness(1.05)}
+  .btn-lang,.btn-ig{background:#fff;color:var(--text);border:1px solid var(--line);border-radius:9px;
+    padding:9px 12px;font-size:13px;font-weight:700;cursor:pointer;text-decoration:none;
+    display:inline-flex;align-items:center;gap:6px;line-height:1}
   .btn-lang:hover{border-color:var(--accent);color:var(--accent)}
-  .overlay{position:fixed;inset:0;background:rgba(2,7,15,.72);display:none;z-index:40;
+  .btn-ig{color:var(--blue)}
+  .btn-ig:hover{border-color:var(--blue);background:#f4f6fe}
+  .btn-ig svg{width:16px;height:16px}
+  .overlay{position:fixed;inset:0;background:rgba(28,35,64,.5);display:none;z-index:40;
     align-items:flex-start;justify-content:center;padding:24px;overflow:auto}
   .overlay.open{display:flex}
-  .modal{background:var(--card);border:1px solid var(--line);border-radius:16px;max-width:460px;width:100%;
-    padding:20px;margin-top:24px}
-  .modal h2{margin:0 0 4px;font-size:20px}
+  .modal{background:#fff;border:1px solid var(--line);border-radius:16px;max-width:460px;width:100%;
+    padding:20px;margin-top:24px;box-shadow:0 20px 50px rgba(28,35,64,.2)}
+  .modal h2{margin:0 0 4px;font-size:20px;color:var(--text)}
   .modal .sub2{color:var(--muted);font-size:13px;margin-bottom:16px}
-  .aviso{background:rgba(240,166,180,.1);border:1px solid #c97a8a;border-radius:8px;
-    padding:8px 10px;font-size:12px;line-height:1.4;color:var(--muted);margin-bottom:14px}
-  .aviso b{color:#f0a6b4}
+  .aviso{background:var(--peach);border:1px solid var(--accent);border-radius:8px;
+    padding:8px 10px;font-size:12px;line-height:1.4;color:var(--text);margin-bottom:14px}
+  .aviso b{color:var(--accent)}
   .pay{border:1px solid var(--line);border-radius:12px;padding:14px;margin-bottom:12px}
   .pay .nombre{color:var(--accent);font-weight:700;font-size:14px;margin-bottom:8px}
   .field{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:6px 0;
@@ -116,12 +116,12 @@
   .field:first-of-type{border-top:none}
   .field .k{color:var(--muted);font-size:12px}
   .field .v{font-weight:600;font-size:14px;word-break:break-all;text-align:right;flex:1}
-  .field a.lnk{color:var(--accent);text-decoration:none}
+  .field a.lnk{color:var(--blue);text-decoration:none}
   .field a.lnk:hover{text-decoration:underline}
-  .copy{background:var(--line);color:var(--text);border:none;border-radius:7px;padding:5px 10px;
-    font-size:12px;cursor:pointer;white-space:nowrap}
-  .copy:hover{background:#46618a}
-  .copy.ok{background:var(--accent);color:#06121a}
+  .copy{background:var(--peach);color:var(--accent);border:none;border-radius:7px;padding:5px 10px;
+    font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap}
+  .copy:hover{filter:brightness(.97)}
+  .copy.ok{background:var(--accent);color:#fff}
   .note{color:var(--muted);font-size:13px;padding:4px 0}
   .modal .top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px}
   .x{background:none;border:none;color:var(--muted);font-size:24px;cursor:pointer;line-height:1}
@@ -139,23 +139,24 @@
   <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap">
     <div>
       <div class="logo">
-        <svg viewBox="0 0 48 48" width="40" height="40" aria-hidden="true">
-          <circle cx="24" cy="24" r="6" fill="var(--accent)"/>
-          <circle cx="10" cy="13" r="4.5" fill="none" stroke="var(--accent)" stroke-width="2.2"/>
-          <circle cx="38" cy="13" r="4.5" fill="none" stroke="var(--accent)" stroke-width="2.2"/>
-          <circle cx="10" cy="35" r="4.5" fill="none" stroke="var(--accent)" stroke-width="2.2"/>
-          <circle cx="38" cy="35" r="4.5" fill="none" stroke="var(--accent)" stroke-width="2.2"/>
-          <line x1="24" y1="24" x2="10" y2="13" stroke="var(--accent)" stroke-width="2.2"/>
-          <line x1="24" y1="24" x2="38" y2="13" stroke="var(--accent)" stroke-width="2.2"/>
-          <line x1="24" y1="24" x2="10" y2="35" stroke="var(--accent)" stroke-width="2.2"/>
-          <line x1="24" y1="24" x2="38" y2="35" stroke="var(--accent)" stroke-width="2.2"/>
-        </svg>
-        <span class="logo-text">NEXOS</span>
+        <img class="logo-img" src="logo.png" alt="NEXOS">
       </div>
       <div class="sub" id="sub">Cargando datos en vivo…</div>
     </div>
-    <button class="btn-lang" id="btnLang" onclick="alternarIdioma()">EN</button>
+    <div style="display:flex;gap:8px;align-items:center">
+      <a class="btn-ig" href="https://instagram.com/somos.nexosve" target="_blank" rel="noopener" aria-label="Instagram">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <rect x="2.5" y="2.5" width="19" height="19" rx="5.2"/>
+          <circle cx="12" cy="12" r="4.2"/>
+          <circle cx="17.6" cy="6.4" r="1.1" fill="currentColor" stroke="none"/>
+        </svg>
+        Instagram
+      </a>
+      <button class="btn-lang" id="btnLang" onclick="alternarIdioma()">EN</button>
+    </div>
   </div>
+
+  <div class="bienvenida" id="bienvenida"></div>
 
   <button class="btn-donar-flotante" id="btnDonarFloat" onclick="abrirDonar()">💚 Donar</button>
 
@@ -221,6 +222,7 @@
   var I18N = {
     es: {
       tituloPagina:'NEXOS · Reporte de donaciones',
+      bienvenida:'Somos el puente entre la voluntad de los que quieren aportar y la resiliencia de las comunidades que hoy necesitan reconstruirse. Somos la prueba de que cuando las manos se juntan de forma transparente, la ayuda llega más lejos, más rápido y de forma más humana.',
       donar:'💚 Donar', donarAhora:'💚 Donar ahora',
       cta:'Toca <b>Donar ahora</b>, elige el método que prefieras, copia los datos con el botón <b>Copiar</b> y realiza tu aporte. ¡Gracias! 💚',
       tituloMoneda:'Detalle por moneda', tituloBuscar:'¿Ya donaste? Busca tu nombre',
@@ -242,6 +244,7 @@
     },
     en: {
       tituloPagina:'NEXOS · Donations report',
+      bienvenida:'We are the bridge between the will of those who want to give and the resilience of communities that today need to rebuild. We are proof that when hands come together transparently, help reaches further, faster, and in a more human way.',
       donar:'💚 Donate', donarAhora:'💚 Donate now',
       cta:'Tap <b>Donate now</b>, choose your preferred method, copy the details with the <b>Copy</b> button and make your contribution. Thank you! 💚',
       tituloMoneda:'By currency', tituloBuscar:'Already donated? Search your name',
@@ -302,6 +305,7 @@
   function aplicarEstaticos(){
     document.documentElement.lang = LANG;
     document.title = T('tituloPagina');
+    document.getElementById('bienvenida').textContent = T('bienvenida');
     document.getElementById('btnLang').textContent = (LANG==='es') ? 'EN' : 'ES';
     document.getElementById('btnDonarFloat').textContent = T('donar');
     document.getElementById('btnDonarBig').textContent = T('donarAhora');
