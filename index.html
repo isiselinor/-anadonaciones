@@ -34,8 +34,12 @@
   .cat summary::-webkit-details-marker{display:none}
   .cat summary::before{content:'▸';color:var(--accent);margin-right:6px;transition:transform .15s}
   .cat[open] summary::before{transform:rotate(90deg)}
-  .cat-nom{font-weight:600;flex:1}
-  .cat-tot{color:var(--accent);font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap}
+  .cat-nom{display:flex;flex-direction:column;gap:2px;flex:1;min-width:0}
+  .cat-t{font-weight:600}
+  .cat-desc{font-size:12px;color:var(--muted);font-weight:400}
+  .cat-tot{color:var(--accent);font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap;
+    text-align:right;display:flex;flex-direction:column;gap:2px}
+  .cat-pct{font-size:12px;color:var(--muted);font-weight:400}
   .cat table{margin:0 0 6px}
   .cat td{padding:8px 14px;border-bottom:1px solid var(--line);font-size:13px;color:var(--muted)}
   .sec-tit{font-size:16px;margin:22px 0 10px;color:var(--text)}
@@ -225,7 +229,7 @@
       donacionesRecibidas:'Donaciones recibidas', totalRecaudado:'Total recaudado',
       totalEgresos:'Total egresos', saldoDisponible:'Saldo disponible',
       donaciones:'donaciones', convEst:'Conversión estimada', usdUsdt:'USD y USDT 1:1',
-      egresosCat:'Egresos por categoría', colDonante:'Donante', colMetodo:'Método', colMonto:'Monto',
+      egresosCat:'Egresos por categoría', pctSuffix:'% del total', colDonante:'Donante', colMetodo:'Método', colMonto:'Monto',
       resultados:function(n){return n+' resultado(s) mostrados';},
       vacioBuscar:'🔎 Escribe un nombre en la barra de búsqueda para ver las donaciones de esa persona.',
       sinResultados:'No encontramos donaciones con ese nombre. Revisa cómo está escrito.',
@@ -246,7 +250,7 @@
       donacionesRecibidas:'Donations received', totalRecaudado:'Total raised',
       totalEgresos:'Total expenses', saldoDisponible:'Available balance',
       donaciones:'donations', convEst:'Estimated conversion', usdUsdt:'USD & USDT 1:1',
-      egresosCat:'Expenses by category', colDonante:'Donor', colMetodo:'Method', colMonto:'Amount',
+      egresosCat:'Expenses by category', pctSuffix:'% of total', colDonante:'Donor', colMetodo:'Method', colMonto:'Amount',
       resultados:function(n){return n+' result(s) shown';},
       vacioBuscar:'🔎 Type a name in the search bar to see that person’s donations.',
       sinResultados:'No donations found with that name. Check the spelling.',
@@ -269,6 +273,9 @@
   }
   function fmt0(n){
     return new Intl.NumberFormat(loc(),{maximumFractionDigits:0}).format(n);
+  }
+  function fmtPct(n){
+    return new Intl.NumberFormat(loc(),{maximumFractionDigits:1}).format(n);
   }
 
   // Mini-diccionario para términos que vienen del Sheet (solo se traducen en inglés).
@@ -361,8 +368,11 @@
           var items = c.items.map(function(it){
             return '<tr><td>'+escapeHtml(it.concepto)+'</td><td class="monto">US$ '+fmt(it.monto)+'</td></tr>';
           }).join('');
-          return '<details class="cat"><summary><span class="cat-nom">'+escapeHtml(tDato(c.categoria))+'</span>'+
-            '<span class="cat-tot">US$ '+fmt(c.total)+'</span></summary>'+
+          var desc = c.descripcion ? '<span class="cat-desc">'+escapeHtml(c.descripcion)+'</span>' : '';
+          var pct = (c.pct!=null) ? '<span class="cat-pct">'+fmtPct(c.pct)+T('pctSuffix')+'</span>' : '';
+          return '<details class="cat"><summary>'+
+            '<span class="cat-nom"><span class="cat-t">'+escapeHtml(tDato(c.categoria))+'</span>'+desc+'</span>'+
+            '<span class="cat-tot">US$ '+fmt(c.total)+pct+'</span></summary>'+
             '<table><tbody>'+items+'</tbody></table></details>';
         }).join('');
         document.getElementById('egresosList').innerHTML =
