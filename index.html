@@ -7,28 +7,34 @@
 <style>
   :root{
     --bg:#ffffff; --card:#ffffff; --accent:#e85d45; --blue:#2b4fd1; --blue-lt:#7e9ce8;
-    --peach:#f7e3dc; --line:#e7e9f0; --text:#1c2340; --muted:#6b7385;
-    --shadow:0 4px 16px rgba(28,35,64,.06);
+    --peach:#f7e3dc; --line:#ecedf3; --text:#1c2340; --muted:#7a8194;
+    --shadow:0 10px 30px rgba(28,35,64,.07);
+    --radius:20px;
   }
   *{box-sizing:border-box}
-  body{margin:0;font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
-       background:var(--bg);color:var(--text);padding:18px;max-width:900px;margin:0 auto}
+  body{margin:0 auto;font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+       color:var(--text);padding:22px 20px;max-width:920px;
+       background:
+         radial-gradient(1100px 420px at 108% -120px, rgba(232,93,69,.10), transparent 60%),
+         radial-gradient(1000px 420px at -120px -140px, rgba(43,79,209,.08), transparent 60%),
+         #ffffff;
+       background-attachment:fixed;}
   h1{font-size:22px;margin:0 0 2px}
   .logo{display:flex;align-items:center;gap:10px}
-  .logo-img{height:66px;width:auto;display:block}
+  .logo-img{height:92px;width:auto;display:block}
   .logo-text{font-size:30px;font-weight:800;letter-spacing:3px;color:var(--blue)}
   .sub{color:var(--muted);font-size:13px;margin-bottom:14px}
-  .bienvenida{color:var(--text);font-size:15px;line-height:1.55;margin:6px 0 22px;max-width:680px}
+  .bienvenida{color:var(--text);font-size:16px;line-height:1.6;margin:10px 0 26px;max-width:680px}
   .total-usd:empty{display:none}
   .total-usd{background:var(--card);border:1px solid var(--line);box-shadow:var(--shadow);
-    border-radius:16px;padding:18px 20px;margin-bottom:16px}
+    border-radius:var(--radius);padding:20px 22px;margin-bottom:16px}
   .total-usd .tu-label{color:var(--muted);font-size:13px;letter-spacing:.5px;text-transform:uppercase}
   .total-usd .tu-monto{color:var(--accent);font-size:34px;font-weight:800;margin-top:2px}
   .total-usd .tu-nota{color:var(--muted);font-size:12px;margin-top:6px}
   .egresos-sec:empty{display:none}
   .egresos-sec{margin:26px 0 8px}
   .cat{background:var(--card);border:1px solid var(--line);box-shadow:var(--shadow);
-    border-radius:12px;margin-bottom:8px;overflow:hidden}
+    border-radius:16px;margin-bottom:10px;overflow:hidden}
   .cat summary{display:flex;justify-content:space-between;align-items:center;gap:10px;
     padding:13px 14px;cursor:pointer;font-size:15px;list-style:none}
   .cat summary::-webkit-details-marker{display:none}
@@ -42,10 +48,10 @@
   .cat-pct{font-size:12px;color:var(--muted);font-weight:400}
   .cat table{margin:0 0 6px}
   .cat td{padding:8px 14px;border-bottom:1px solid var(--line);font-size:13px;color:var(--muted)}
-  .sec-tit{font-size:16px;margin:22px 0 10px;color:var(--text);font-weight:800}
-  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:22px}
-  .resumen{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin:0 0 6px}
-  .resumen-card{padding:16px;box-shadow:var(--shadow);border-top:3px solid var(--line)}
+  .sec-tit{font-size:19px;margin:26px 0 12px;color:var(--text);font-weight:800;letter-spacing:-.2px}
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;margin-bottom:24px}
+  .resumen{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin:0 0 6px}
+  .resumen-card{padding:18px 20px;box-shadow:var(--shadow);border-top:3px solid var(--line)}
   .resumen-card.acc{border-top-color:var(--accent)}
   .resumen-card.egr{border-top-color:var(--blue-lt)}
   .resumen-card.sal{border-top-color:var(--blue)}
@@ -57,13 +63,13 @@
   .nota-tasas{color:var(--muted);font-size:12px;margin:0 0 20px}
   .ayuda-cta{text-align:center;color:var(--muted);font-size:13px;margin:-12px 0 26px;line-height:1.5}
   .ayuda-cta b{color:var(--accent)}
-  .card{background:var(--card);border:1px solid var(--line);box-shadow:var(--shadow);border-radius:12px;padding:14px}
+  .card{background:var(--card);border:1px solid var(--line);box-shadow:var(--shadow);border-radius:18px;padding:16px}
   .card .moneda{color:var(--accent);font-weight:700;font-size:13px;letter-spacing:.5px}
   .card .monto{font-size:22px;font-weight:800;margin-top:6px}
   .card .det{color:var(--muted);font-size:12px;margin-top:4px}
   .toolbar{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:12px;align-items:center}
   input,select{background:var(--card);border:1px solid var(--line);color:var(--text);
-       padding:9px 12px;border-radius:9px;font-size:14px;outline:none}
+       padding:11px 14px;border-radius:12px;font-size:14px;outline:none;box-shadow:var(--shadow)}
   input:focus,select:focus{border-color:var(--blue)}
   input{flex:1;min-width:180px}
   table{width:100%;border-collapse:collapse;font-size:14px}
@@ -79,22 +85,25 @@
   .site-foot a:hover{text-decoration:underline}
   .loading{color:var(--muted);padding:40px;text-align:center}
   .empty{color:var(--muted);padding:34px 18px;text-align:center;font-size:15px;
-    border:1px dashed var(--line);border-radius:12px;background:#fafbfd}
-  @media(max-width:520px){ .card .monto{font-size:18px} td,th{padding:8px} .logo-img{height:54px} }
+    border:1px dashed var(--line);border-radius:18px;background:#fafbfd}
+  @media(max-width:520px){ .card .monto{font-size:18px} td,th{padding:8px} .logo-img{height:72px}
+    .btn-donar-grande{font-size:19px;padding:18px} }
 
-  .btn-donar-grande{display:block;width:100%;background:var(--accent);color:#fff;font-weight:800;
-    border:none;border-radius:14px;padding:20px;font-size:22px;cursor:pointer;margin:0 0 22px;
-    box-shadow:0 8px 22px rgba(232,93,69,.3)}
-  .btn-donar-grande:hover{filter:brightness(1.05)}
-  .head-donar{background:var(--accent);color:#fff;font-weight:800;border:none;border-radius:9px;
-    padding:9px 16px;font-size:14px;cursor:pointer}
-  .btn-donar-flotante{position:fixed;right:18px;bottom:18px;z-index:30;background:var(--accent);
-    color:#fff;font-weight:800;border:none;border-radius:30px;padding:14px 22px;font-size:16px;
-    cursor:pointer;box-shadow:0 8px 24px rgba(232,93,69,.4)}
-  .btn-donar-flotante:hover{filter:brightness(1.05)}
-  .btn-lang,.btn-ig{background:#fff;color:var(--text);border:1px solid var(--line);border-radius:9px;
-    padding:9px 12px;font-size:13px;font-weight:700;cursor:pointer;text-decoration:none;
-    display:inline-flex;align-items:center;gap:6px;line-height:1}
+  .btn-donar-grande{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;
+    background:var(--accent);color:#fff;font-weight:800;border:none;border-radius:999px;
+    padding:22px;font-size:22px;cursor:pointer;margin:4px 0 26px;letter-spacing:.2px;
+    box-shadow:0 14px 30px rgba(232,93,69,.32);transition:transform .12s, filter .12s}
+  .btn-donar-grande:hover{filter:brightness(1.05);transform:translateY(-1px)}
+  .btn-donar-grande:active{transform:translateY(0)}
+  .head-donar{background:var(--accent);color:#fff;font-weight:800;border:none;border-radius:999px;
+    padding:10px 18px;font-size:14px;cursor:pointer}
+  .btn-donar-flotante{position:fixed;right:20px;bottom:20px;z-index:30;background:var(--accent);
+    color:#fff;font-weight:800;border:none;border-radius:999px;padding:16px 26px;font-size:17px;
+    cursor:pointer;box-shadow:0 12px 28px rgba(232,93,69,.42);transition:transform .12s, filter .12s}
+  .btn-donar-flotante:hover{filter:brightness(1.05);transform:translateY(-2px)}
+  .btn-lang,.btn-ig{background:#fff;color:var(--text);border:1px solid var(--line);border-radius:999px;
+    padding:10px 16px;font-size:13px;font-weight:700;cursor:pointer;text-decoration:none;
+    display:inline-flex;align-items:center;gap:6px;line-height:1;box-shadow:var(--shadow)}
   .btn-lang:hover{border-color:var(--accent);color:var(--accent)}
   .btn-ig{color:var(--blue)}
   .btn-ig:hover{border-color:var(--blue);background:#f4f6fe}
@@ -102,14 +111,14 @@
   .overlay{position:fixed;inset:0;background:rgba(28,35,64,.5);display:none;z-index:40;
     align-items:flex-start;justify-content:center;padding:24px;overflow:auto}
   .overlay.open{display:flex}
-  .modal{background:#fff;border:1px solid var(--line);border-radius:16px;max-width:460px;width:100%;
-    padding:20px;margin-top:24px;box-shadow:0 20px 50px rgba(28,35,64,.2)}
+  .modal{background:#fff;border:1px solid var(--line);border-radius:24px;max-width:460px;width:100%;
+    padding:22px;margin-top:24px;box-shadow:0 24px 60px rgba(28,35,64,.22)}
   .modal h2{margin:0 0 4px;font-size:20px;color:var(--text)}
   .modal .sub2{color:var(--muted);font-size:13px;margin-bottom:16px}
   .aviso{background:var(--peach);border:1px solid var(--accent);border-radius:8px;
     padding:8px 10px;font-size:12px;line-height:1.4;color:var(--text);margin-bottom:14px}
   .aviso b{color:var(--accent)}
-  .pay{border:1px solid var(--line);border-radius:12px;padding:14px;margin-bottom:12px}
+  .pay{border:1px solid var(--line);border-radius:16px;padding:14px;margin-bottom:12px}
   .pay .nombre{color:var(--accent);font-weight:700;font-size:14px;margin-bottom:8px}
   .field{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:6px 0;
     border-top:1px dashed var(--line)}
@@ -224,7 +233,7 @@
       tituloPagina:'NEXOS · Reporte de donaciones',
       bienvenida:'Somos el puente entre la voluntad de los que quieren aportar y la resiliencia de las comunidades que hoy necesitan reconstruirse. Somos la prueba de que cuando las manos se juntan de forma transparente, la ayuda llega más lejos, más rápido y de forma más humana.',
       donar:'💙 Donar', donarAhora:'💙 Donar ahora',
-      cta:'Toca <b>Donar ahora</b>, elige el método que prefieras, copia los datos con el botón <b>Copiar</b> y realiza tu aporte. ¡Gracias! 💚',
+      cta:'Toca <b>Donar ahora</b>, elige el método que prefieras, copia los datos con el botón <b>Copiar</b> y realiza tu aporte. ¡Gracias! 💙',
       tituloMoneda:'Detalle por moneda', tituloBuscar:'¿Ya donaste? Busca tu nombre',
       buscarPh:'🔎 Escribe tu nombre…', todosMetodos:'Todos los métodos', todasMonedas:'Todas las monedas',
       actualizado:'Actualizado', cargandoLive:'Cargando datos en vivo…', cargando:'Cargando…',
@@ -246,7 +255,7 @@
       tituloPagina:'NEXOS · Donations report',
       bienvenida:'We are the bridge between the will of those who want to give and the resilience of communities that today need to rebuild. We are proof that when hands come together transparently, help reaches further, faster, and in a more human way.',
       donar:'💙 Donate', donarAhora:'💙 Donate now',
-      cta:'Tap <b>Donate now</b>, choose your preferred method, copy the details with the <b>Copy</b> button and make your contribution. Thank you! 💚',
+      cta:'Tap <b>Donate now</b>, choose your preferred method, copy the details with the <b>Copy</b> button and make your contribution. Thank you! 💙',
       tituloMoneda:'By currency', tituloBuscar:'Already donated? Search your name',
       buscarPh:'🔎 Type your name…', todosMetodos:'All methods', todasMonedas:'All currencies',
       actualizado:'Updated', cargandoLive:'Loading live data…', cargando:'Loading…',
