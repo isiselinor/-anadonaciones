@@ -512,17 +512,25 @@
   // Idioma inicial en la interfaz fija (antes de que lleguen los datos)
   aplicarEstaticos();
 
-  // ---- Cargar datos desde el Apps Script vía JSONP (evita el bloqueo CORS) ----
-  var _cargado = false;
+  // ---- Cargar datos vía JSONP con reintentos (tolera el arranque en frío) ----
+  var _cargado = false, _intentos = 0, _maxIntentos = 3;
   window.__recibeDonaciones = function(d){ _cargado = true; init(d); };
 
   function cargarDatos(){
+    if (_cargado) return;
+    _intentos++;
+    var hecho = false;
+    var terminar = function(){
+      if (hecho) return; hecho = true;
+      if (_cargado) return;
+      if (_intentos < _maxIntentos) cargarDatos(); else fallar();
+    };
     var sep = API_URL.indexOf('?') === -1 ? '?' : '&';
     var s = document.createElement('script');
-    s.src = API_URL + sep + 'callback=__recibeDonaciones';
-    s.onerror = function(){ fallar(); };
+    s.src = API_URL + sep + 'callback=__recibeDonaciones&t=' + Date.now();
+    s.onerror = terminar;
     document.body.appendChild(s);
-    setTimeout(function(){ if(!_cargado) fallar(); }, 12000);
+    setTimeout(terminar, 15000); // si no respondió en 15s, reintenta
   }
   cargarDatos();
 </script>
