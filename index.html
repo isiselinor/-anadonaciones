@@ -61,18 +61,15 @@
   .resumen-card.egr .rc-monto{color:var(--blue-lt)}
   .resumen-card.sal .rc-monto{color:var(--blue)}
   .nota-tasas{color:var(--muted);font-size:12px;margin:0 0 20px}
-  .pasos{margin:4px 0 26px}
-  .pasos-tit{font-size:12px;font-weight:800;color:var(--text);margin:0 0 10px;
-    text-transform:uppercase;letter-spacing:.5px}
+  .pasos{margin:26px 0 14px}
+  .pasos-tit{font-size:19px;font-weight:800;color:var(--text);margin:0 0 12px;letter-spacing:-.2px}
   .pasos-list{list-style:none;counter-reset:paso;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
-  .pasos-list li{counter-increment:paso;position:relative;padding:6px 4px 6px 34px;
+  .pasos-list li{counter-increment:paso;position:relative;min-height:24px;padding:5px 4px 5px 36px;
     font-size:13.5px;line-height:1.5;color:var(--muted)}
-  .pasos-list li::before{content:counter(paso);position:absolute;left:0;top:4px;width:22px;height:22px;
+  .pasos-list li::before{content:counter(paso);position:absolute;left:0;top:4px;width:24px;height:24px;
     border-radius:50%;background:var(--accent);color:#fff;font-size:12px;font-weight:800;
     display:flex;align-items:center;justify-content:center}
   .pasos-list li b{color:var(--accent)}
-  .pasos-list li.paso-alerta{background:var(--peach);border-radius:10px;padding:8px 12px 8px 34px}
-  .pasos-list li.paso-alerta::before{top:8px;left:10px}
   .ayuda-cta b{color:var(--accent)}
   .card{background:var(--card);border:1px solid var(--line);box-shadow:var(--shadow);border-radius:18px;padding:16px}
   .card .moneda{color:var(--accent);font-weight:700;font-size:13px;letter-spacing:.5px}
@@ -189,9 +186,9 @@
   </div>
   <div class="nota-tasas" id="notaTasas"></div>
 
-  <!-- 2) CTA principal + cómo donar (paso a paso) -->
-  <button class="btn-donar-grande" id="btnDonarBig" onclick="abrirDonar()">💙 Donar ahora</button>
+  <!-- 2) Cómo donar (paso a paso) + botón -->
   <div class="pasos" id="pasos"></div>
+  <button class="btn-donar-grande" id="btnDonarBig" onclick="abrirDonar()">💙 Donar ahora</button>
 
   <!-- 3) Detalle por moneda -->
   <h2 class="sec-tit" id="titMoneda">Detalle por moneda</h2>
