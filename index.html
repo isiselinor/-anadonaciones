@@ -61,10 +61,18 @@
   .resumen-card.egr .rc-monto{color:var(--blue-lt)}
   .resumen-card.sal .rc-monto{color:var(--blue)}
   .nota-tasas{color:var(--muted);font-size:12px;margin:0 0 20px}
-  .aviso-donar{background:#fff;border:1px solid var(--line);border-left:4px solid var(--accent);
-    border-radius:10px;padding:9px 14px;margin:2px 0 24px;font-size:12.5px;line-height:1.5;color:var(--muted)}
-  .aviso-donar b{color:var(--accent)}
-  .ayuda-cta{text-align:center;color:var(--muted);font-size:13px;margin:0 0 10px;line-height:1.5}
+  .pasos{margin:4px 0 26px}
+  .pasos-tit{font-size:12px;font-weight:800;color:var(--text);margin:0 0 10px;
+    text-transform:uppercase;letter-spacing:.5px}
+  .pasos-list{list-style:none;counter-reset:paso;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+  .pasos-list li{counter-increment:paso;position:relative;padding:6px 4px 6px 34px;
+    font-size:13.5px;line-height:1.5;color:var(--muted)}
+  .pasos-list li::before{content:counter(paso);position:absolute;left:0;top:4px;width:22px;height:22px;
+    border-radius:50%;background:var(--accent);color:#fff;font-size:12px;font-weight:800;
+    display:flex;align-items:center;justify-content:center}
+  .pasos-list li b{color:var(--accent)}
+  .pasos-list li.paso-alerta{background:var(--peach);border-radius:10px;padding:8px 12px 8px 34px}
+  .pasos-list li.paso-alerta::before{top:8px;left:10px}
   .ayuda-cta b{color:var(--accent)}
   .card{background:var(--card);border:1px solid var(--line);box-shadow:var(--shadow);border-radius:18px;padding:16px}
   .card .moneda{color:var(--accent);font-weight:700;font-size:13px;letter-spacing:.5px}
@@ -181,10 +189,9 @@
   </div>
   <div class="nota-tasas" id="notaTasas"></div>
 
-  <!-- 2) CTA principal + notas pequeñas -->
+  <!-- 2) CTA principal + cómo donar (paso a paso) -->
   <button class="btn-donar-grande" id="btnDonarBig" onclick="abrirDonar()">💙 Donar ahora</button>
-  <div class="ayuda-cta" id="ctaHelp"></div>
-  <div class="aviso-donar" id="avisoDonar"></div>
+  <div class="pasos" id="pasos"></div>
 
   <!-- 3) Detalle por moneda -->
   <h2 class="sec-tit" id="titMoneda">Detalle por moneda</h2>
@@ -250,7 +257,11 @@
       sinResultados:'No encontramos donaciones con ese nombre. Revisa cómo está escrito.',
       modalTitulo:'Quiero donar 💙', modalSub:'Elige un método y copia los datos. ¡Gracias!',
       aviso:'⚠️ En el asunto de la transferencia <b>no menciones Venezuela</b> ni la causa.',
-      avisoDonar:'⚠️ Al transferir, en el asunto <b>no menciones Venezuela</b> ni la causa. Con tu nombre o un “gracias” basta 💙 (así evitamos el cierre de las cuentas).',
+      avisoDonar:'⚠️ Al transferir, en el asunto <b>no menciones Venezuela</b> ni la causa. Con tu nombre o un “gracias” basta 💙 (así cuidamos la cuenta).',
+      comoDonar:'Cómo donar en 3 pasos',
+      p1:'Toca <b>Donar ahora</b> y elige el método que prefieras.',
+      p2:'Copia los datos con el botón <b>Copiar</b> y haz tu transferencia.',
+      p3:'En el asunto <b>no menciones Venezuela</b> ni la causa. Con tu nombre o un “gracias” basta 💙',
       copiar:'Copiar', copiado:'✓ Copiado',
       sinMetodos:'No hay métodos de pago configurados en la hoja "Metodos".',
       creadoPor:'Sistema creado por', errorConexion:'Error de conexión',
@@ -274,6 +285,10 @@
       modalTitulo:'I want to donate 💙', modalSub:'Choose a method and copy the details. Thank you!',
       aviso:'⚠️ In the transfer note <b>do not mention Venezuela</b> or the cause.',
       avisoDonar:'⚠️ When transferring, please <b>don’t mention Venezuela</b> or the cause in the note. Your name or a “thank you” is enough 💙 (it keeps the account safe).',
+      comoDonar:'How to donate in 3 steps',
+      p1:'Tap <b>Donate now</b> and choose your preferred method.',
+      p2:'Copy the details with the <b>Copy</b> button and make your transfer.',
+      p3:'In the note, please <b>don’t mention Venezuela</b> or the cause. Your name or a “thank you” is enough 💙',
       copiar:'Copy', copiado:'✓ Copied',
       sinMetodos:'No payment methods configured in the "Metodos" sheet.',
       creadoPor:'System created by', errorConexion:'Connection error',
@@ -324,7 +339,13 @@
     document.getElementById('btnLang').textContent = (LANG==='es') ? 'EN' : 'ES';
     document.getElementById('btnDonarFloat').textContent = T('donar');
     document.getElementById('btnDonarBig').textContent = T('donarAhora');
-    document.getElementById('ctaHelp').innerHTML = T('cta');
+    document.getElementById('pasos').innerHTML =
+      '<div class="pasos-tit">'+T('comoDonar')+'</div>'+
+      '<ol class="pasos-list">'+
+        '<li>'+T('p1')+'</li>'+
+        '<li>'+T('p2')+'</li>'+
+        '<li class="paso-alerta">'+T('p3')+'</li>'+
+      '</ol>';
     document.getElementById('titMoneda').textContent = T('tituloMoneda');
     document.getElementById('titBuscar').textContent = T('tituloBuscar');
     document.getElementById('q').placeholder = T('buscarPh');
@@ -333,7 +354,6 @@
     document.getElementById('modalTitle').textContent = T('modalTitulo');
     document.getElementById('modalSub').textContent = T('modalSub');
     document.getElementById('aviso').innerHTML = T('aviso');
-    document.getElementById('avisoDonar').innerHTML = T('avisoDonar');
     document.getElementById('createdBy').textContent = T('creadoPor');
     if (!DATA) document.getElementById('sub').textContent = T('cargandoLive');
   }
