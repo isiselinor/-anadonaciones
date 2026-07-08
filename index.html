@@ -61,7 +61,10 @@
   .resumen-card.egr .rc-monto{color:var(--blue-lt)}
   .resumen-card.sal .rc-monto{color:var(--blue)}
   .nota-tasas{color:var(--muted);font-size:12px;margin:0 0 20px}
-  .ayuda-cta{text-align:center;color:var(--muted);font-size:13px;margin:-12px 0 26px;line-height:1.5}
+  .aviso-donar{background:#fff;border:1px solid var(--line);border-left:4px solid var(--accent);
+    border-radius:10px;padding:9px 14px;margin:2px 0 24px;font-size:12.5px;line-height:1.5;color:var(--muted)}
+  .aviso-donar b{color:var(--accent)}
+  .ayuda-cta{text-align:center;color:var(--muted);font-size:13px;margin:0 0 10px;line-height:1.5}
   .ayuda-cta b{color:var(--accent)}
   .card{background:var(--card);border:1px solid var(--line);box-shadow:var(--shadow);border-radius:18px;padding:16px}
   .card .moneda{color:var(--accent);font-weight:700;font-size:13px;letter-spacing:.5px}
@@ -178,9 +181,10 @@
   </div>
   <div class="nota-tasas" id="notaTasas"></div>
 
-  <!-- 2) CTA principal + cómo donar -->
+  <!-- 2) CTA principal + notas pequeñas -->
   <button class="btn-donar-grande" id="btnDonarBig" onclick="abrirDonar()">💙 Donar ahora</button>
   <div class="ayuda-cta" id="ctaHelp"></div>
+  <div class="aviso-donar" id="avisoDonar"></div>
 
   <!-- 3) Detalle por moneda -->
   <h2 class="sec-tit" id="titMoneda">Detalle por moneda</h2>
@@ -246,6 +250,7 @@
       sinResultados:'No encontramos donaciones con ese nombre. Revisa cómo está escrito.',
       modalTitulo:'Quiero donar 💙', modalSub:'Elige un método y copia los datos. ¡Gracias!',
       aviso:'⚠️ En el asunto de la transferencia <b>no menciones Venezuela</b> ni la causa.',
+      avisoDonar:'⚠️ Al transferir, en el asunto <b>no menciones Venezuela</b> ni la causa. Con tu nombre o un “gracias” basta 💙 (así evitamos el cierre de las cuentas).',
       copiar:'Copiar', copiado:'✓ Copiado',
       sinMetodos:'No hay métodos de pago configurados en la hoja "Metodos".',
       creadoPor:'Sistema creado por', errorConexion:'Error de conexión',
@@ -268,6 +273,7 @@
       sinResultados:'No donations found with that name. Check the spelling.',
       modalTitulo:'I want to donate 💙', modalSub:'Choose a method and copy the details. Thank you!',
       aviso:'⚠️ In the transfer note <b>do not mention Venezuela</b> or the cause.',
+      avisoDonar:'⚠️ When transferring, please <b>don’t mention Venezuela</b> or the cause in the note. Your name or a “thank you” is enough 💙 (it keeps the account safe).',
       copiar:'Copy', copiado:'✓ Copied',
       sinMetodos:'No payment methods configured in the "Metodos" sheet.',
       creadoPor:'System created by', errorConexion:'Connection error',
@@ -327,6 +333,7 @@
     document.getElementById('modalTitle').textContent = T('modalTitulo');
     document.getElementById('modalSub').textContent = T('modalSub');
     document.getElementById('aviso').innerHTML = T('aviso');
+    document.getElementById('avisoDonar').innerHTML = T('avisoDonar');
     document.getElementById('createdBy').textContent = T('creadoPor');
     if (!DATA) document.getElementById('sub').textContent = T('cargandoLive');
   }
