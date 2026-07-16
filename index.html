@@ -20,11 +20,22 @@
          #ffffff;
        background-attachment:fixed;}
   h1{font-size:22px;margin:0 0 2px}
-  .logo{display:flex;align-items:center;gap:10px}
-  .logo-img{height:92px;width:auto;display:block}
-  .logo-text{font-size:30px;font-weight:800;letter-spacing:3px;color:var(--blue)}
-  .sub{color:var(--muted);font-size:13px;margin-bottom:14px}
-  .bienvenida{color:var(--text);font-size:16px;line-height:1.6;margin:10px 0 26px;max-width:680px}
+  .topbar{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:10px}
+  .topbar .btn-ig{justify-self:start}
+  .topbar .btn-lang{justify-self:end}
+  .brand{justify-self:center;min-width:0;display:flex;align-items:center;gap:13px}
+  .logo-img{height:78px;width:auto;display:block}
+  .logo-name{font-size:32px;font-weight:800;letter-spacing:4px;color:var(--blue);line-height:1}
+  .brand-tag{text-align:center;font-size:13px;color:var(--muted);margin:4px 0 0}
+  @media(max-width:520px){ .logo-img{height:56px} .logo-name{font-size:24px;letter-spacing:2px} .ig-txt{display:none} }
+  .sub{color:#b3b8c4;font-size:10.5px;text-align:center;margin:5px 0 14px}
+  .foot-tag{font-size:13px;color:var(--text);margin:0 0 8px}
+  .mision{max-width:700px;margin:24px auto 6px;text-align:center}
+  .mision-label{font-size:11px;font-weight:800;letter-spacing:1px;color:var(--accent);
+    text-transform:uppercase;margin-bottom:10px}
+  .mision-txt{font-size:16.5px;line-height:1.75;color:var(--text);text-align:justify;text-align-last:center}
+  .mision-txt b{color:var(--accent)}
+  @media(max-width:520px){ .mision-txt{text-align:left;text-align-last:left} }
   .total-usd:empty{display:none}
   .total-usd{background:var(--card);border:1px solid var(--line);box-shadow:var(--shadow);
     border-radius:var(--radius);padding:20px 22px;margin-bottom:16px}
@@ -48,7 +59,7 @@
   .cat-pct{font-size:12px;color:var(--muted);font-weight:400}
   .cat table{margin:0 0 6px}
   .cat td{padding:8px 14px;border-bottom:1px solid var(--line);font-size:13px;color:var(--muted)}
-  .sec-tit{font-size:19px;margin:26px 0 12px;color:var(--text);font-weight:800;letter-spacing:-.2px}
+  .sec-tit{font-size:19px;margin:40px 0 14px;color:var(--text);font-weight:800;letter-spacing:-.2px}
   .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;margin-bottom:24px}
   .resumen{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin:0 0 6px}
   .resumen-card{padding:18px 20px;box-shadow:var(--shadow);border-top:3px solid var(--line)}
@@ -60,16 +71,24 @@
   .resumen-card.acc .rc-monto{color:var(--accent)}
   .resumen-card.egr .rc-monto{color:var(--blue-lt)}
   .resumen-card.sal .rc-monto{color:var(--blue)}
-  .nota-tasas{color:var(--muted);font-size:12px;margin:0 0 20px}
-  .pasos{margin:26px 0 14px}
-  .pasos-tit{font-size:19px;font-weight:800;color:var(--text);margin:0 0 12px;letter-spacing:-.2px}
-  .pasos-list{list-style:none;counter-reset:paso;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
-  .pasos-list li{counter-increment:paso;position:relative;min-height:24px;padding:5px 4px 5px 36px;
-    font-size:13.5px;line-height:1.5;color:var(--muted)}
-  .pasos-list li::before{content:counter(paso);position:absolute;left:0;top:4px;width:24px;height:24px;
-    border-radius:50%;background:var(--accent);color:#fff;font-size:12px;font-weight:800;
-    display:flex;align-items:center;justify-content:center}
-  .pasos-list li b{color:var(--accent)}
+  .nota-tasas{color:var(--muted);font-size:12px;margin:0 0 4px}
+  .pasos{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:0 0 18px}
+  .paso-card{background:var(--card);border:1px solid var(--line);box-shadow:var(--shadow);
+    border-radius:14px;padding:13px 14px}
+  .paso-h{display:flex;align-items:center;gap:8px;margin-bottom:5px}
+  .paso-n{font-size:24px;font-weight:800;color:var(--accent);line-height:1}
+  .paso-t{font-weight:700;color:var(--text);font-size:13.5px}
+  .paso-d{font-size:12.5px;color:var(--muted);line-height:1.45}
+  .paso-d b{color:var(--accent)}
+  .transp{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;align-items:stretch;margin:0 0 6px}
+  .transp .card{display:flex;flex-direction:column;justify-content:center}
+  .btn-drive{border-radius:14px;padding:14px;text-align:center;font-weight:800;font-size:14px;
+    text-decoration:none;display:flex;align-items:center;justify-content:center;line-height:1.35;
+    background:#fff;box-shadow:var(--shadow);transition:filter .12s}
+  .btn-drive:hover{filter:brightness(.98)}
+  .btn-drive.fac{border:1.5px solid var(--blue);color:var(--blue)}
+  .btn-drive.fot{border:1.5px solid var(--accent);color:var(--accent)}
+  @media(max-width:560px){ .pasos,.transp{grid-template-columns:1fr} }
   .ayuda-cta b{color:var(--accent)}
   .card{background:var(--card);border:1px solid var(--line);box-shadow:var(--shadow);border-radius:18px;padding:16px}
   .card .moneda{color:var(--accent);font-weight:700;font-size:13px;letter-spacing:.5px}
@@ -97,9 +116,10 @@
   @media(max-width:520px){ .card .monto{font-size:18px} td,th{padding:8px} .logo-img{height:72px}
     .btn-donar-grande{font-size:19px;padding:18px} }
 
-  .btn-donar-grande{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;
+  .btn-donar-grande{display:flex;align-items:center;justify-content:center;gap:10px;
+    width:340px;max-width:100%;margin:8px auto 6px;
     background:var(--accent);color:#fff;font-weight:800;border:none;border-radius:999px;
-    padding:22px;font-size:22px;cursor:pointer;margin:4px 0 26px;letter-spacing:.2px;
+    padding:17px;font-size:20px;cursor:pointer;letter-spacing:.2px;
     box-shadow:0 14px 30px rgba(232,93,69,.32);transition:transform .12s, filter .12s}
   .btn-donar-grande:hover{filter:brightness(1.05);transform:translateY(-1px)}
   .btn-donar-grande:active{transform:translateY(0)}
@@ -153,44 +173,56 @@
     const API_URL = "https://script.google.com/macros/s/AKfycbyKLVJVc4mT39F_xOuCSrjFfnIICHVYNQHpMTMlk9HxT8yg6KwwB6WLInSqY_QMsZg/exec";
   </script>
 
-  <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap">
-    <div>
-      <div class="logo">
-        <img class="logo-img" src="logo.png" alt="NEXOS">
-      </div>
-      <div class="sub" id="sub">Cargando datos en vivo…</div>
+  <!-- Encabezado: Instagram (izq) · logo + NEXOS (centro) · idioma (der) -->
+  <div class="topbar">
+    <a class="btn-ig" href="https://instagram.com/somos.nexosve" target="_blank" rel="noopener" aria-label="Instagram">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <rect x="2.5" y="2.5" width="19" height="19" rx="5.2"/>
+        <circle cx="12" cy="12" r="4.2"/>
+        <circle cx="17.6" cy="6.4" r="1.1" fill="currentColor" stroke="none"/>
+      </svg>
+      <span class="ig-txt">Instagram</span>
+    </a>
+    <div class="brand">
+      <img class="logo-img" src="logo.png" alt="NEXOS">
+      <span class="logo-name">NEXOS</span>
     </div>
-    <div style="display:flex;gap:8px;align-items:center">
-      <a class="btn-ig" href="https://instagram.com/somos.nexosve" target="_blank" rel="noopener" aria-label="Instagram">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-          <rect x="2.5" y="2.5" width="19" height="19" rx="5.2"/>
-          <circle cx="12" cy="12" r="4.2"/>
-          <circle cx="17.6" cy="6.4" r="1.1" fill="currentColor" stroke="none"/>
-        </svg>
-        Instagram
-      </a>
-      <button class="btn-lang" id="btnLang" onclick="alternarIdioma()">EN</button>
-    </div>
+    <button class="btn-lang" id="btnLang" onclick="alternarIdioma()">EN</button>
   </div>
+  <div class="sub" id="sub">Cargando datos en vivo…</div>
 
-  <div class="bienvenida" id="bienvenida"></div>
+  <div class="mision">
+    <div class="mision-label" id="misionLabel">Nuestra misión</div>
+    <div class="mision-txt" id="bienvenida"></div>
+  </div>
 
   <button class="btn-donar-flotante" id="btnDonarFloat" onclick="abrirDonar()">💙 Donar</button>
 
-  <!-- 1) Resumen / impacto -->
+  <!-- 1) Cómo donar en 3 pasos (tarjetas) -->
+  <h2 class="sec-tit" id="titPasos">Cómo donar en 3 pasos</h2>
+  <div class="pasos" id="pasos"></div>
+
+  <!-- 2) Botón principal -->
+  <button class="btn-donar-grande" id="btnDonarBig" onclick="abrirDonar()">💙 Donar ahora</button>
+
+  <!-- 3) La ayuda en números -->
+  <h2 class="sec-tit" id="titNumeros">La ayuda en números</h2>
   <div class="resumen">
-    <div id="cardDonaciones" class="card resumen-card"></div>
     <div id="totalUsd" class="card resumen-card acc"></div>
     <div id="totalEgresos" class="card resumen-card egr"></div>
     <div id="cardSaldo" class="card resumen-card sal"></div>
   </div>
   <div class="nota-tasas" id="notaTasas"></div>
 
-  <!-- 2) Cómo donar (paso a paso) + botón -->
-  <div class="pasos" id="pasos"></div>
-  <button class="btn-donar-grande" id="btnDonarBig" onclick="abrirDonar()">💙 Donar ahora</button>
+  <!-- 4) Transparencia: donaciones + enlaces de Drive -->
+  <h2 class="sec-tit" id="titTransparencia">Mira en qué se usó tu ayuda</h2>
+  <div class="transp">
+    <div id="cardDonaciones" class="card"></div>
+    <a id="btnFacturas" class="btn-drive fac" target="_blank" rel="noopener" style="display:none"></a>
+    <a id="btnFotos" class="btn-drive fot" target="_blank" rel="noopener" style="display:none"></a>
+  </div>
 
-  <!-- 3) Detalle por moneda -->
+  <!-- 5) Detalle por moneda -->
   <h2 class="sec-tit" id="titMoneda">Detalle por moneda</h2>
   <div class="cards" id="cards"></div>
 
@@ -209,6 +241,7 @@
   <div id="egresosList" class="egresos-sec"></div>
 
   <footer class="site-foot">
+    <div class="foot-tag" id="tagline"></div>
     <span id="createdBy">Sistema creado por</span>
     <a href="https://www.instagram.com/isiselinor/" target="_blank" rel="noopener">Isis Elinor</a>
   </footer>
@@ -239,7 +272,8 @@
   var I18N = {
     es: {
       tituloPagina:'NEXOS · Reporte de donaciones',
-      bienvenida:'Somos el puente entre la voluntad de los que quieren aportar y la resiliencia de las comunidades que hoy necesitan reconstruirse. Somos la prueba de que cuando las manos se juntan de forma transparente, la ayuda llega más lejos, más rápido y de forma más humana.',
+      misionTit:'Nuestra misión',
+      bienvenida:'Somos <b>el puente</b> entre la voluntad de los que quieren aportar y la resiliencia de las comunidades que hoy necesitan reconstruirse. Somos la prueba de que cuando las manos se juntan de forma transparente, la ayuda llega <b>más lejos, más rápido y de forma más humana</b>.',
       donar:'💙 Donar', donarAhora:'💙 Donar ahora',
       cta:'Toca <b>Donar ahora</b>, elige el método que prefieras, copia los datos con el botón <b>Copiar</b> y realiza tu aporte. ¡Gracias! 💙',
       tituloMoneda:'Detalle por moneda', tituloBuscar:'¿Ya donaste? Busca tu nombre',
@@ -256,9 +290,12 @@
       aviso:'⚠️ En el asunto de la transferencia <b>no menciones Venezuela</b> ni la causa.',
       avisoDonar:'⚠️ Al transferir, en el asunto <b>no menciones Venezuela</b> ni la causa. Con tu nombre o un “gracias” basta 💙 (así cuidamos la cuenta).',
       comoDonar:'Cómo donar en 3 pasos',
-      p1:'Toca <b>Donar ahora</b> y elige el método que prefieras.',
-      p2:'Copia los datos con el botón <b>Copiar</b> y haz tu transferencia.',
-      p3:'En el asunto <b>no menciones Venezuela</b> ni la causa. Con tu nombre o un “gracias” basta 💙',
+      titNumeros:'La ayuda en números', titTransparencia:'Mira en qué se usó tu ayuda',
+      verFacturas:'📄 Ver facturas de compras', verFotos:'📷 Ver fotos de las donaciones',
+      p1t:'Elige método', p2t:'Copia y transfiere', p3t:'Cuida el asunto',
+      p1:'Toca <b>Donar ahora</b> y elige el que prefieras.',
+      p2:'Copia con <b>Copiar</b> y haz tu aporte.',
+      p3:'No menciones Venezuela. Tu nombre o un “gracias” basta 💙',
       copiar:'Copiar', copiado:'✓ Copiado',
       sinMetodos:'No hay métodos de pago configurados en la hoja "Metodos".',
       creadoPor:'Sistema creado por', errorConexion:'Error de conexión',
@@ -266,7 +303,8 @@
     },
     en: {
       tituloPagina:'NEXOS · Donations report',
-      bienvenida:'We are the bridge between the will of those who want to give and the resilience of communities that today need to rebuild. We are proof that when hands come together transparently, help reaches further, faster, and in a more human way.',
+      misionTit:'Our mission',
+      bienvenida:'We are <b>the bridge</b> between the will of those who want to give and the resilience of communities that today need to rebuild. We are proof that when hands come together transparently, help reaches <b>further, faster, and in a more human way</b>.',
       donar:'💙 Donate', donarAhora:'💙 Donate now',
       cta:'Tap <b>Donate now</b>, choose your preferred method, copy the details with the <b>Copy</b> button and make your contribution. Thank you! 💙',
       tituloMoneda:'By currency', tituloBuscar:'Already donated? Search your name',
@@ -283,9 +321,12 @@
       aviso:'⚠️ In the transfer note <b>do not mention Venezuela</b> or the cause.',
       avisoDonar:'⚠️ When transferring, please <b>don’t mention Venezuela</b> or the cause in the note. Your name or a “thank you” is enough 💙 (it keeps the account safe).',
       comoDonar:'How to donate in 3 steps',
-      p1:'Tap <b>Donate now</b> and choose your preferred method.',
-      p2:'Copy the details with the <b>Copy</b> button and make your transfer.',
-      p3:'In the note, please <b>don’t mention Venezuela</b> or the cause. Your name or a “thank you” is enough 💙',
+      titNumeros:'The help in numbers', titTransparencia:'See how your help was used',
+      verFacturas:'📄 View purchase invoices', verFotos:'📷 View donation photos',
+      p1t:'Choose method', p2t:'Copy & transfer', p3t:'Mind the note',
+      p1:'Tap <b>Donate now</b> and choose your preferred one.',
+      p2:'Copy with <b>Copy</b> and make your contribution.',
+      p3:'Please don’t mention Venezuela. Your name or a “thank you” is enough 💙',
       copiar:'Copy', copiado:'✓ Copied',
       sinMetodos:'No payment methods configured in the "Metodos" sheet.',
       creadoPor:'System created by', errorConexion:'Connection error',
@@ -306,6 +347,10 @@
   }
   function fmtPct(n){
     return new Intl.NumberFormat(loc(),{maximumFractionDigits:1}).format(n);
+  }
+  function paso_(n, titulo, desc){
+    return '<div class="paso-card"><div class="paso-h"><span class="paso-n">'+n+'</span>'+
+           '<span class="paso-t">'+titulo+'</span></div><div class="paso-d">'+desc+'</div></div>';
   }
 
   // Mini-diccionario para términos que vienen del Sheet (solo se traducen en inglés).
@@ -332,17 +377,18 @@
   function aplicarEstaticos(){
     document.documentElement.lang = LANG;
     document.title = T('tituloPagina');
-    document.getElementById('bienvenida').textContent = T('bienvenida');
+    document.getElementById('misionLabel').textContent = T('misionTit');
+    document.getElementById('bienvenida').innerHTML = T('bienvenida');
     document.getElementById('btnLang').textContent = (LANG==='es') ? 'EN' : 'ES';
     document.getElementById('btnDonarFloat').textContent = T('donar');
     document.getElementById('btnDonarBig').textContent = T('donarAhora');
+    document.getElementById('titPasos').textContent = T('comoDonar');
     document.getElementById('pasos').innerHTML =
-      '<div class="pasos-tit">'+T('comoDonar')+'</div>'+
-      '<ol class="pasos-list">'+
-        '<li>'+T('p1')+'</li>'+
-        '<li>'+T('p2')+'</li>'+
-        '<li class="paso-alerta">'+T('p3')+'</li>'+
-      '</ol>';
+      paso_(1, T('p1t'), T('p1')) + paso_(2, T('p2t'), T('p2')) + paso_(3, T('p3t'), T('p3'));
+    document.getElementById('titNumeros').textContent = T('titNumeros');
+    document.getElementById('titTransparencia').textContent = T('titTransparencia');
+    document.getElementById('btnFacturas').textContent = T('verFacturas');
+    document.getElementById('btnFotos').textContent = T('verFotos');
     document.getElementById('titMoneda').textContent = T('tituloMoneda');
     document.getElementById('titBuscar').textContent = T('tituloBuscar');
     document.getElementById('q').placeholder = T('buscarPh');
@@ -368,6 +414,18 @@
   // Pinta el contenido dinámico (tarjetas, modal, filtros) con el idioma actual.
   function pintar(d){
     document.getElementById('sub').textContent = T('actualizado') + ' ' + d.actualizado;
+    document.getElementById('tagline').textContent = ((LANG==='en' && d.taglineEn) ? d.taglineEn : d.tagline) || '';
+    // Título y texto de la misión desde la hoja Config (según idioma); si están vacíos usa los del código
+    var misTit = (LANG==='en' ? d.misionTitEn : d.misionTitEs);
+    document.getElementById('misionLabel').textContent = misTit || T('misionTit');
+    var mis = (LANG==='en' ? d.misionEn : d.misionEs);
+    document.getElementById('bienvenida').innerHTML = mis || T('bienvenida');
+
+    // Botones de Drive (desde la hoja Config): se ocultan si no hay enlace
+    var bf = document.getElementById('btnFacturas');
+    if (d.enlaceFacturas) { bf.href = d.enlaceFacturas; bf.style.display = ''; } else { bf.style.display = 'none'; }
+    var bfo = document.getElementById('btnFotos');
+    if (d.enlaceFotos) { bfo.href = d.enlaceFotos; bfo.style.display = ''; } else { bfo.style.display = 'none'; }
 
     document.getElementById('cardDonaciones').innerHTML =
       '<div class="rc-label">'+T('donacionesRecibidas')+'</div>'+
@@ -405,10 +463,12 @@
           var items = c.items.map(function(it){
             return '<tr><td>'+escapeHtml(it.concepto)+'</td><td class="monto">US$ '+fmt(it.monto)+'</td></tr>';
           }).join('');
-          var desc = c.descripcion ? '<span class="cat-desc">'+escapeHtml(c.descripcion)+'</span>' : '';
+          var nombre = (LANG==='en' && c.categoriaEN) ? c.categoriaEN : tDato(c.categoria);
+          var descTxt = (LANG==='en' && c.descripcionEN) ? c.descripcionEN : c.descripcion;
+          var desc = descTxt ? '<span class="cat-desc">'+escapeHtml(descTxt)+'</span>' : '';
           var pct = (c.pct!=null) ? '<span class="cat-pct">'+fmtPct(c.pct)+T('pctSuffix')+'</span>' : '';
           return '<details class="cat"><summary>'+
-            '<span class="cat-nom"><span class="cat-t">'+escapeHtml(tDato(c.categoria))+'</span>'+desc+'</span>'+
+            '<span class="cat-nom"><span class="cat-t">'+escapeHtml(nombre)+'</span>'+desc+'</span>'+
             '<span class="cat-tot">US$ '+fmt(c.total)+pct+'</span></summary>'+
             '<table><tbody>'+items+'</tbody></table></details>';
         }).join('');
