@@ -116,9 +116,10 @@
   @media(max-width:520px){ .card .monto{font-size:18px} td,th{padding:8px} .logo-img{height:72px}
     .btn-donar-grande{font-size:19px;padding:18px} }
 
-  .btn-donar-grande{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;
+  .btn-donar-grande{display:flex;align-items:center;justify-content:center;gap:10px;
+    width:340px;max-width:100%;margin:8px auto 6px;
     background:var(--accent);color:#fff;font-weight:800;border:none;border-radius:999px;
-    padding:22px;font-size:22px;cursor:pointer;margin:8px 0 6px;letter-spacing:.2px;
+    padding:17px;font-size:20px;cursor:pointer;letter-spacing:.2px;
     box-shadow:0 14px 30px rgba(232,93,69,.32);transition:transform .12s, filter .12s}
   .btn-donar-grande:hover{filter:brightness(1.05);transform:translateY(-1px)}
   .btn-donar-grande:active{transform:translateY(0)}
@@ -457,10 +458,12 @@
           var items = c.items.map(function(it){
             return '<tr><td>'+escapeHtml(it.concepto)+'</td><td class="monto">US$ '+fmt(it.monto)+'</td></tr>';
           }).join('');
-          var desc = c.descripcion ? '<span class="cat-desc">'+escapeHtml(c.descripcion)+'</span>' : '';
+          var nombre = (LANG==='en' && c.categoriaEN) ? c.categoriaEN : tDato(c.categoria);
+          var descTxt = (LANG==='en' && c.descripcionEN) ? c.descripcionEN : c.descripcion;
+          var desc = descTxt ? '<span class="cat-desc">'+escapeHtml(descTxt)+'</span>' : '';
           var pct = (c.pct!=null) ? '<span class="cat-pct">'+fmtPct(c.pct)+T('pctSuffix')+'</span>' : '';
           return '<details class="cat"><summary>'+
-            '<span class="cat-nom"><span class="cat-t">'+escapeHtml(tDato(c.categoria))+'</span>'+desc+'</span>'+
+            '<span class="cat-nom"><span class="cat-t">'+escapeHtml(nombre)+'</span>'+desc+'</span>'+
             '<span class="cat-tot">US$ '+fmt(c.total)+pct+'</span></summary>'+
             '<table><tbody>'+items+'</tbody></table></details>';
         }).join('');
