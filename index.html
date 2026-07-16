@@ -20,18 +20,21 @@
          #ffffff;
        background-attachment:fixed;}
   h1{font-size:22px;margin:0 0 2px}
-  .logo{display:flex;align-items:center;gap:14px}
-  .logo-img{height:104px;width:auto;display:block}
-  .logo-name{font-size:34px;font-weight:800;letter-spacing:4px;color:var(--blue);line-height:1}
-  .logo-tag{font-size:13px;color:var(--muted);margin-top:4px;max-width:230px}
+  .topbar{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:10px}
+  .topbar .btn-ig{justify-self:start}
+  .topbar .btn-lang{justify-self:end}
+  .brand{justify-self:center;min-width:0;display:flex;align-items:center;gap:13px}
+  .logo-img{height:78px;width:auto;display:block}
+  .logo-name{font-size:32px;font-weight:800;letter-spacing:4px;color:var(--blue);line-height:1}
+  .brand-tag{text-align:center;font-size:13px;color:var(--muted);margin:4px 0 0}
+  @media(max-width:520px){ .logo-img{height:56px} .logo-name{font-size:24px;letter-spacing:2px} .ig-txt{display:none} }
   .sub{color:var(--muted);font-size:13px;margin-bottom:14px}
-  .mision{background:#fff;border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);
-    padding:24px 30px;max-width:720px;margin:26px auto 6px;text-align:center}
+  .mision{max-width:700px;margin:24px auto 6px;text-align:center}
   .mision-label{font-size:11px;font-weight:800;letter-spacing:1px;color:var(--accent);
     text-transform:uppercase;margin-bottom:10px}
-  .mision-txt{font-size:16px;line-height:1.75;color:var(--text);text-align:justify;text-align-last:center}
+  .mision-txt{font-size:16.5px;line-height:1.75;color:var(--text);text-align:justify;text-align-last:center}
   .mision-txt b{color:var(--accent)}
-  @media(max-width:520px){ .mision{padding:20px 18px} .mision-txt{text-align:left;text-align-last:left} }
+  @media(max-width:520px){ .mision-txt{text-align:left;text-align-last:left} }
   .total-usd:empty{display:none}
   .total-usd{background:var(--card);border:1px solid var(--line);box-shadow:var(--shadow);
     border-radius:var(--radius);padding:20px 22px;margin-bottom:16px}
@@ -168,28 +171,24 @@
     const API_URL = "https://script.google.com/macros/s/AKfycbyKLVJVc4mT39F_xOuCSrjFfnIICHVYNQHpMTMlk9HxT8yg6KwwB6WLInSqY_QMsZg/exec";
   </script>
 
-  <!-- Encabezado: logo grande + nombre + tagline -->
-  <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap">
-    <div class="logo">
+  <!-- Encabezado: Instagram (izq) · logo + NEXOS (centro) · idioma (der) -->
+  <div class="topbar">
+    <a class="btn-ig" href="https://instagram.com/somos.nexosve" target="_blank" rel="noopener" aria-label="Instagram">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <rect x="2.5" y="2.5" width="19" height="19" rx="5.2"/>
+        <circle cx="12" cy="12" r="4.2"/>
+        <circle cx="17.6" cy="6.4" r="1.1" fill="currentColor" stroke="none"/>
+      </svg>
+      <span class="ig-txt">Instagram</span>
+    </a>
+    <div class="brand">
       <img class="logo-img" src="logo.png" alt="NEXOS">
-      <div class="logo-txt">
-        <div class="logo-name">NEXOS</div>
-        <div class="logo-tag" id="tagline"></div>
-      </div>
+      <span class="logo-name">NEXOS</span>
     </div>
-    <div style="display:flex;gap:8px;align-items:center">
-      <a class="btn-ig" href="https://instagram.com/somos.nexosve" target="_blank" rel="noopener" aria-label="Instagram">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-          <rect x="2.5" y="2.5" width="19" height="19" rx="5.2"/>
-          <circle cx="12" cy="12" r="4.2"/>
-          <circle cx="17.6" cy="6.4" r="1.1" fill="currentColor" stroke="none"/>
-        </svg>
-        Instagram
-      </a>
-      <button class="btn-lang" id="btnLang" onclick="alternarIdioma()">EN</button>
-    </div>
+    <button class="btn-lang" id="btnLang" onclick="alternarIdioma()">EN</button>
   </div>
-  <div class="sub" id="sub">Cargando datos en vivo…</div>
+  <div class="brand-tag" id="tagline"></div>
+  <div class="sub" id="sub" style="text-align:center">Cargando datos en vivo…</div>
 
   <div class="mision">
     <div class="mision-label" id="misionLabel">Nuestra misión</div>
