@@ -414,8 +414,10 @@
   // Pinta el contenido dinámico (tarjetas, modal, filtros) con el idioma actual.
   function pintar(d){
     document.getElementById('sub').textContent = T('actualizado') + ' ' + d.actualizado;
-    document.getElementById('tagline').textContent = d.tagline || '';
-    // Texto de la misión desde la hoja Config (según idioma); si está vacío usa el del código
+    document.getElementById('tagline').textContent = ((LANG==='en' && d.taglineEn) ? d.taglineEn : d.tagline) || '';
+    // Título y texto de la misión desde la hoja Config (según idioma); si están vacíos usa los del código
+    var misTit = (LANG==='en' ? d.misionTitEn : d.misionTitEs);
+    document.getElementById('misionLabel').textContent = misTit || T('misionTit');
     var mis = (LANG==='en' ? d.misionEn : d.misionEs);
     document.getElementById('bienvenida').innerHTML = mis || T('bienvenida');
 
