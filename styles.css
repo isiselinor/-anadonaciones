@@ -1,8 +1,163 @@
-@import url("tokens/fonts.css");
-@import url("tokens/colors.css");
-@import url("tokens/typography.css");
-@import url("tokens/spacing.css");
-@import url("tokens/radii.css");
-@import url("tokens/shadows.css");
-@import url("tokens/motion.css");
-@import url("tokens/backgrounds.css");
+/* NEXOS ships no custom webfont: the live site uses the system UI stack.
+   Poppins (Google Fonts) is a SUBSTITUTE for the geometric heavy sans of the
+   NEXOS wordmark until the real display font files are provided. */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&display=swap");
+
+:root{
+/* ---- Brand core (sampled from the official NEXOS logo) ---- */
+--nexos-coral:#fb6a4e;
+--nexos-blue:#125edb;
+--nexos-white:#ffffff;
+
+/* ---- Product palette (exact values shipped in the donations site) ---- */
+--accent:#e85d45;
+--blue:#2b4fd1;
+--blue-lt:#7e9ce8;
+--peach:#f7e3dc;
+--line:#ecedf3;
+--ink:#1c2340;
+--muted:#7a8194;
+--white:#ffffff;
+--soft:#fafbfd;
+
+/* ---- Alphas ---- */
+--overlay-scrim:rgba(28,35,64,.5);
+--row-hover:rgba(232,93,69,.06);
+--accent-glow-10:rgba(232,93,69,.10);
+--blue-glow-08:rgba(43,79,209,.08);
+--ig-hover:#f4f6fe;
+
+/* ---- Semantic aliases ---- */
+--surface-page:var(--white);
+--surface-card:var(--white);
+--surface-soft:var(--soft);
+--surface-notice:var(--peach);
+--text-heading:var(--ink);
+--text-body:var(--ink);
+--text-muted:var(--muted);
+--text-accent:var(--accent);
+--text-figure:var(--blue);
+--border-hairline:var(--line);
+--border-focus:var(--blue);
+--action-primary-bg:var(--accent);
+--action-primary-fg:var(--white);
+--action-quiet-bg:var(--white);
+--action-quiet-fg:var(--ink);
+--stat-income:var(--accent);
+--stat-expense:var(--blue-lt);
+--stat-balance:var(--blue);
+}
+
+:root{
+--font-ui:-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+--font-display:"Poppins",var(--font-ui);
+--font-numeric:var(--font-ui);
+
+--text-micro:10.5px;
+--text-label:11px;
+--text-xs:12px;
+--text-xs-plus:12.5px;
+--text-sm:13px;
+--text-sm-plus:13.5px;
+--text-base:14px;
+--text-md:15px;
+--text-lg:16.5px;
+--text-section:19px;
+--text-title:22px;
+--text-step:24px;
+--text-stat:26px;
+--text-wordmark:32px;
+--text-figure-xl:34px;
+
+--weight-regular:400;
+--weight-medium:600;
+--weight-semibold:700;
+--weight-black:800;
+
+--leading-tight:1;
+--leading-snug:1.35;
+--leading-body:1.45;
+--leading-prose:1.75;
+
+--tracking-wordmark:4px;
+--tracking-label:1px;
+--tracking-caps:.5px;
+--tracking-caps-sm:.4px;
+--tracking-title:-.2px;
+}
+
+:root{
+--space-1:2px;
+--space-2:4px;
+--space-3:6px;
+--space-4:8px;
+--space-5:10px;
+--space-6:12px;
+--space-7:14px;
+--space-8:16px;
+--space-9:18px;
+--space-10:20px;
+--space-11:22px;
+--space-12:24px;
+--space-13:26px;
+--space-14:28px;
+--space-16:40px;
+
+--pad-card:16px;
+--pad-card-lg:20px 22px;
+--pad-stat:18px 20px;
+--pad-step:13px 14px;
+--pad-control:11px 14px;
+--pad-cell:10px 12px;
+
+--gap-grid:14px;
+--gap-toolbar:10px;
+
+--width-page:920px;
+--width-prose:700px;
+--width-modal:460px;
+--width-cta:340px;
+--grid-min-card:160px;
+--grid-min-stat:180px;
+
+--bp-sm:520px;
+--bp-md:560px;
+}
+
+:root{
+--radius-xs:7px;
+--radius-sm:8px;
+--radius-md:12px;
+--radius-step:14px;
+--radius-cat:16px;
+--radius-card:18px;
+--radius-lg:20px;
+--radius-modal:24px;
+--radius-pill:999px;
+}
+
+:root{
+--shadow-card:0 10px 30px rgba(28,35,64,.07);
+--shadow-cta:0 14px 30px rgba(232,93,69,.32);
+--shadow-float:0 12px 28px rgba(232,93,69,.42);
+--shadow-modal:0 24px 60px rgba(28,35,64,.22);
+--border-card:1px solid var(--line);
+--border-stat-top:3px;
+--border-outline-strong:1.5px;
+}
+
+:root{
+--dur-fast:.12s; /* @kind other */
+--dur-base:.15s; /* @kind other */
+--ease-default:ease; /* @kind other */
+--lift-hover:translateY(-1px); /* @kind other */
+--lift-float:translateY(-2px); /* @kind other */
+--brighten-hover:brightness(1.05); /* @kind other */
+--dim-hover:brightness(.98); /* @kind other */
+}
+
+:root{
+--bg-page:radial-gradient(1100px 420px at 108% -120px, var(--accent-glow-10), transparent 60%),radial-gradient(1000px 420px at -120px -140px, var(--blue-glow-08), transparent 60%),var(--white);
+--bg-page-attachment:fixed;
+}
+
