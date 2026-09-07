@@ -7,15 +7,14 @@ const NEXOS_ES = {
     { id:'quienes', label:'Quiénes somos' },
     { id:'cifras', label:'La ayuda en números' },
     { id:'donar', label:'Cómo donar' },
-    { id:'evidencia', label:'Evidencia' },
-    { id:'aliados', label:'Aliados' },
+    { id:'evidencia', label:'Transparencia' },
     { id:'faq', label:'Preguntas' }
   ],
   hero: {
     eyebrow: 'Ayuda humanitaria · Venezuela',
-    titulo: 'Reconstruyendo los nexos rotos de nuestro país.',
-    tituloHtml: 'Reconstruyendo los <span style="color:var(--accent)">nexos rotos</span> de nuestro país.',
-    bajada: 'Somos el puente entre la voluntad de los que quieren aportar y la resiliencia de las comunidades que hoy necesitan reconstruirse.',
+    titulo: 'Crear Nexos. Transformar realidades. Construir comunidad.',
+    tituloHtml: 'Crear <span style="color:var(--accent)">Nexos</span>. Transformar realidades. Construir comunidad.',
+    bajada: 'Somos el puente entre los que quieren ayudar y las necesidades reales. Ayuda directa, humana y transparente.',
     credito: 'Foto: Francisco Rizquez — La Guaira 2026'
   },
   ventanas: {
@@ -23,7 +22,7 @@ const NEXOS_ES = {
       titulo: 'Quiénes somos',
       eyebrow: 'Nuestra misión',
       resumen: 'El puente entre quien puede aportar y quien necesita reconstruirse.',
-      foto: 'photo-rescate-edificio.jpg',
+      foto: 'https://cdn.jsdelivr.net/gh/isiselinor/-anadonaciones@develop/assets/photo-rescate-edificio.jpg',
       cuerpo: [
         'Somos <b>el puente</b> entre la voluntad de los que quieren aportar y la resiliencia de las comunidades que hoy necesitan reconstruirse.',
         'Nacimos después del <b>24 de junio</b>, cuando quedó claro que la ayuda existía pero no encontraba el camino. Unimos el movimiento con la acción y la estrategia con la empatía: voluntarios en terreno, compras verificadas y cuentas publicadas.',
@@ -36,17 +35,17 @@ const NEXOS_ES = {
       ]
     },
     evidencia: {
-      titulo: 'Evidencia',
+      titulo: 'Transparencia',
       eyebrow: 'Todo verificable',
       resumen: 'Facturas de cada compra y fotos de cada entrega.',
-      foto: 'photo-corte-atardecer.jpg',
+      foto: 'https://cdn.jsdelivr.net/gh/isiselinor/-anadonaciones@develop/assets/photo-corte-atardecer.jpg',
       cuerpo: ['Publicamos las facturas de cada compra y las fotos de cada entrega. Si algo no cuadra, escríbenos y lo corregimos a la vista de todos.']
     },
     aliados: {
       titulo: 'Aliados y voluntarios',
       eyebrow: 'Súmate',
       resumen: 'Cómo sumar tu tiempo, tu oficio o tu transporte.',
-      foto: 'photo-guante-mensaje.jpg',
+      foto: 'https://cdn.jsdelivr.net/gh/isiselinor/-anadonaciones@develop/assets/photo-guante-mensaje.jpg',
       cuerpo: [
         'No recibimos financiamiento institucional: cada campaña se sostiene con aportes de personas y con el trabajo de voluntarios que ponen tiempo, camioneta, cocina o manos.',
         'Si quieres sumar tu organización, tu oficio o tu transporte, escríbenos por Instagram y te decimos exactamente qué falta esta semana.'
@@ -62,12 +61,12 @@ const NEXOS_ES = {
       titulo: 'Preguntas frecuentes',
       eyebrow: 'Antes de donar',
       resumen: 'Dudas antes de donar, respondidas sin vueltas.',
-      foto: 'photo-calle-derrumbe.jpg',
+      foto: 'https://cdn.jsdelivr.net/gh/isiselinor/-anadonaciones@develop/assets/photo-calle-derrumbe.jpg',
       items: [
-        { q:'¿Cómo sé que mi dinero llegó?', a:'Cada donación aparece en el reporte con tu nombre, método y monto, y cada compra tiene su factura publicada. Puedes buscar tu nombre en esta misma página.' },
+        { q:'¿Cómo sé que mi dinero llegó?', a:'Cada donación aparece en el reporte con tu nombre, método de pago y monto. Puedes buscar tu nombre en nuestra página principal y encontrar tu aporte. El sistema se actualiza manualmente por lo que puede tomar algunos días.' },
         { q:'¿Por qué no debo mencionar Venezuela en la transferencia?', a:'Para proteger las cuentas personales que usamos para recibir los aportes. Con tu nombre o un “gracias” en el asunto es suficiente 💙' },
-        { q:'¿Puedo donar en bolívares, pesos o euros?', a:'Sí. Recibimos USD, VES, ARS y EUR, además de USDT. En el reporte convertimos todo a dólares con la tasa publicada.' },
-        { q:'¿Puedo donar cosas y no dinero?', a:'Sí, sobre todo medicinas y materiales. Escríbenos por Instagram para coordinar el punto de entrega.' }
+        { q:'¿En qué monedas puedo donar?', a:'Recibimos USD, VES, ARS, EUR y USDT. En el reporte convertimos todo a USD para simplificar.' },
+        { q:'¿Puedo donar cosas y no dinero?', a:'Sí, pero las necesidades van cambiando día a día por lo que no tenemos una lista fija de necesidades. Si quieres donar cosas ponte en contacto con nosotros por Instagram.' }
       ]
     }
   },
@@ -78,12 +77,12 @@ const NEXOS_ES = {
   ],
   credito: 'Francisco Rizquez — La Guaira 2026',
   fotos: [
-    { src:'photo-rescate-edificio.jpg' },
-    { src:'photo-calle-derrumbe.jpg' },
-    { src:'photo-rescate-escombros.jpg' },
-    { src:'photo-corte-atardecer.jpg' },
-    { src:'photo-guante-mensaje.jpg' },
-    { src:'photo-muro-marca.jpg' }
+    { src:'https://cdn.jsdelivr.net/gh/isiselinor/-anadonaciones@develop/assets/photo-rescate-edificio.jpg' },
+    { src:'https://cdn.jsdelivr.net/gh/isiselinor/-anadonaciones@develop/assets/photo-calle-derrumbe.jpg' },
+    { src:'https://cdn.jsdelivr.net/gh/isiselinor/-anadonaciones@develop/assets/photo-rescate-escombros.jpg' },
+    { src:'https://cdn.jsdelivr.net/gh/isiselinor/-anadonaciones@develop/assets/photo-corte-atardecer.jpg' },
+    { src:'https://cdn.jsdelivr.net/gh/isiselinor/-anadonaciones@develop/assets/photo-guante-mensaje.jpg' },
+    { src:'https://cdn.jsdelivr.net/gh/isiselinor/-anadonaciones@develop/assets/photo-muro-marca.jpg' }
   ],
   aviso: 'Al transferir, en el asunto no menciones Venezuela ni la causa. Con tu nombre o un “gracias” basta 💙',
   ui: {
@@ -106,7 +105,7 @@ const NEXOS_ES = {
     anterior: 'Anterior', siguiente: 'Siguiente', ampliar: 'Ampliar foto',
     cifrasTitulo: 'La ayuda en números',
     donarTitulo: 'Cómo donar en 3 pasos',
-    paso1t: 'Elige método', paso1: 'Toca <b style="color:var(--accent)">Donar ahora</b> y elige Zelle, pago móvil, transferencia o USDT.',
+    paso1t: 'Elige método', paso1: 'Haz click en <b style="color:var(--accent)">Donar ahora</b> y selecciona la forma de pago que prefieras.',
     paso2t: 'Copia y transfiere', paso2: 'Copia los datos con <b style="color:var(--accent)">Copiar</b> y haz tu aporte desde tu banco.',
     paso3t: 'Cuida el asunto', paso3: 'No menciones Venezuela ni la causa. Tu nombre o un “gracias” basta 💙',
     evidenciaLead: 'Cada compra tiene su factura y cada entrega su foto.',
@@ -139,15 +138,14 @@ const NEXOS_EN = {
     { id:'quienes', label:'Who we are' },
     { id:'cifras', label:'Aid in numbers' },
     { id:'donar', label:'How to donate' },
-    { id:'evidencia', label:'Evidence' },
-    { id:'aliados', label:'Partners' },
+    { id:'evidencia', label:'Transparency' },
     { id:'faq', label:'FAQ' }
   ],
   hero: {
     eyebrow: 'Humanitarian aid · Venezuela',
-    titulo: 'Rebuilding the broken links of our country.',
-    tituloHtml: 'Rebuilding the <span style="color:var(--accent)">broken links</span> of our country.',
-    bajada: 'We are the bridge between the will of those who want to give and the resilience of the communities that need to rebuild today.',
+    titulo: 'Create Nexos. Transform realities. Build community.',
+    tituloHtml: 'Create <span style="color:var(--accent)">Nexos</span>. Transform realities. Build community.',
+    bajada: 'We are the bridge between those who want to help and real needs. Direct, human and transparent aid.',
     credito: 'Photo: Francisco Rizquez — La Guaira 2026'
   },
   ventanas: {
@@ -155,7 +153,7 @@ const NEXOS_EN = {
       titulo: 'Who we are',
       eyebrow: 'Our mission',
       resumen: 'The bridge between those who can give and those who need to rebuild.',
-      foto: 'photo-rescate-edificio.jpg',
+      foto: 'https://cdn.jsdelivr.net/gh/isiselinor/-anadonaciones@develop/assets/photo-rescate-edificio.jpg',
       cuerpo: [
         'We are <b>the bridge</b> between the will of those who want to give and the resilience of the communities that need to rebuild today.',
         'We started after <b>June 24th</b>, when it became clear that the aid existed but could not find its way. We joined movement with action and strategy with empathy: volunteers on the ground, verified purchases and published accounts.',
@@ -168,17 +166,17 @@ const NEXOS_EN = {
       ]
     },
     evidencia: {
-      titulo: 'Evidence',
+      titulo: 'Transparency',
       eyebrow: 'Everything verifiable',
       resumen: 'Receipts for every purchase and photos of every delivery.',
-      foto: 'photo-corte-atardecer.jpg',
+      foto: 'https://cdn.jsdelivr.net/gh/isiselinor/-anadonaciones@develop/assets/photo-corte-atardecer.jpg',
       cuerpo: ['We publish the receipt for every purchase and photos of every delivery. If something does not add up, write to us and we will fix it in plain sight.']
     },
     aliados: {
       titulo: 'Partners and volunteers',
       eyebrow: 'Join us',
       resumen: 'How to contribute your time, your trade or your transport.',
-      foto: 'photo-guante-mensaje.jpg',
+      foto: 'https://cdn.jsdelivr.net/gh/isiselinor/-anadonaciones@develop/assets/photo-guante-mensaje.jpg',
       cuerpo: [
         'We receive no institutional funding: every campaign is sustained by individual donations and by volunteers who give their time, their truck, their kitchen or their hands.',
         'If you want to bring in your organization, your trade or your transport, write to us on Instagram and we will tell you exactly what is missing this week.'
@@ -194,12 +192,12 @@ const NEXOS_EN = {
       titulo: 'Frequently asked questions',
       eyebrow: 'Before you donate',
       resumen: 'Questions before donating, answered straight.',
-      foto: 'photo-calle-derrumbe.jpg',
+      foto: 'https://cdn.jsdelivr.net/gh/isiselinor/-anadonaciones@develop/assets/photo-calle-derrumbe.jpg',
       items: [
-        { q:'How do I know my money arrived?', a:'Every donation appears in the report with your name, method and amount, and every purchase has its receipt published. You can search for your name on this page.' },
+        { q:'How do I know my money arrived?', a:'Every donation appears in the report with your name, payment method and amount. You can search for your name on our main page and find your contribution. The system is updated manually, so it may take a few days.' },
         { q:'Why should I not mention Venezuela in the transfer?', a:'To protect the personal accounts we use to receive contributions. Your name or a “thank you” in the reference is enough 💙' },
-        { q:'Can I donate in bolívares, pesos or euros?', a:'Yes. We accept USD, VES, ARS and EUR, plus USDT. In the report we convert everything to dollars at the published rate.' },
-        { q:'Can I donate goods instead of money?', a:'Yes, especially medicine and building materials. Write to us on Instagram to arrange a drop-off point.' }
+        { q:'What currencies can I donate in?', a:'We accept USD, VES, ARS, EUR and USDT. In the report we convert everything to USD to keep it simple.' },
+        { q:'Can I donate goods instead of money?', a:'Yes, but needs change day to day, so we do not have a fixed list of needs. If you want to donate goods, reach out to us on Instagram.' }
       ]
     }
   },
@@ -231,7 +229,7 @@ const NEXOS_EN = {
     anterior: 'Previous', siguiente: 'Next', ampliar: 'Enlarge photo',
     cifrasTitulo: 'Aid in numbers',
     donarTitulo: 'How to donate in 3 steps',
-    paso1t: 'Choose a method', paso1: 'Tap <b style="color:var(--accent)">Donate now</b> and choose Zelle, mobile payment, bank transfer or USDT.',
+    paso1t: 'Choose a method', paso1: 'Click <b style="color:var(--accent)">Donate now</b> and select the payment method you prefer.',
     paso2t: 'Copy and transfer', paso2: 'Copy the details with <b style="color:var(--accent)">Copy</b> and send your contribution from your bank.',
     paso3t: 'Mind the reference', paso3: 'Do not mention Venezuela or the cause. Your name or a “thank you” is enough 💙',
     evidenciaLead: 'Every purchase has its receipt and every delivery its photo.',

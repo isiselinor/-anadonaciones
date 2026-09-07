@@ -28,6 +28,7 @@ a,a:hover{color:var(--blue)}tr:hover td{background:var(--row-hover)}
 </head><body><div id="root"></div>
 <script src="image-slot.js"></script>
 <script src="_ds_bundle.js"></script>
+<script src="../donations-site/data.js"></script>
 <script src="data-source.js"></script>
 <script src="content.js"></script>
 <script type="text/babel" src="tweaks-panel.jsx"></script>
@@ -37,7 +38,7 @@ a,a:hover{color:var(--blue)}tr:hover td{background:var(--row-hover)}
 <script type="text/babel" src="EditorialLandingExport.jsx"></script>
 <script type="text/babel">
 const nexosRoot = ReactDOM.createRoot(document.getElementById('root'));
-window.__nexosRender = function(){ nexosRoot.render(<EditorialLandingExport key={Date.now()}/>); };
+window.__nexosRender = function(){ nexosRoot.render(<EditorialLanding key={Date.now()}/>); };
 window.__nexosRender();
 </script>
 </body></html>
