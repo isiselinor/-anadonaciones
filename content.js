@@ -22,7 +22,7 @@ const NEXOS_ES = {
       titulo: 'Quiénes somos',
       eyebrow: 'Nuestra misión',
       resumen: 'El puente entre quien puede aportar y quien necesita reconstruirse.',
-      foto: 'https://cdn.jsdelivr.net/gh/isiselinor/-anadonaciones@develop/assets/photo-rescate-edificio.jpg',
+      foto: '../../assets/photo-rescate-edificio.jpg',
       cuerpo: [
         'Somos <b>el puente</b> entre la voluntad de los que quieren aportar y la resiliencia de las comunidades que hoy necesitan reconstruirse.',
         'Nacimos después del <b>24 de junio</b>, cuando quedó claro que la ayuda existía pero no encontraba el camino. Unimos el movimiento con la acción y la estrategia con la empatía: voluntarios en terreno, compras verificadas y cuentas publicadas.',
@@ -38,14 +38,14 @@ const NEXOS_ES = {
       titulo: 'Transparencia',
       eyebrow: 'Todo verificable',
       resumen: 'Facturas de cada compra y fotos de cada entrega.',
-      foto: 'https://cdn.jsdelivr.net/gh/isiselinor/-anadonaciones@develop/assets/photo-corte-atardecer.jpg',
+      foto: '../../assets/photo-corte-atardecer.jpg',
       cuerpo: ['Publicamos las facturas de cada compra y las fotos de cada entrega. Si algo no cuadra, escríbenos y lo corregimos a la vista de todos.']
     },
     aliados: {
       titulo: 'Aliados y voluntarios',
       eyebrow: 'Súmate',
       resumen: 'Cómo sumar tu tiempo, tu oficio o tu transporte.',
-      foto: 'https://cdn.jsdelivr.net/gh/isiselinor/-anadonaciones@develop/assets/photo-guante-mensaje.jpg',
+      foto: '../../assets/photo-guante-mensaje.jpg',
       cuerpo: [
         'No recibimos financiamiento institucional: cada campaña se sostiene con aportes de personas y con el trabajo de voluntarios que ponen tiempo, camioneta, cocina o manos.',
         'Si quieres sumar tu organización, tu oficio o tu transporte, escríbenos por Instagram y te decimos exactamente qué falta esta semana.'
@@ -61,7 +61,7 @@ const NEXOS_ES = {
       titulo: 'Preguntas frecuentes',
       eyebrow: 'Antes de donar',
       resumen: 'Dudas antes de donar, respondidas sin vueltas.',
-      foto: 'https://cdn.jsdelivr.net/gh/isiselinor/-anadonaciones@develop/assets/photo-calle-derrumbe.jpg',
+      foto: '../../assets/photo-calle-derrumbe.jpg',
       items: [
         { q:'¿Cómo sé que mi dinero llegó?', a:'Cada donación aparece en el reporte con tu nombre, método de pago y monto. Puedes buscar tu nombre en nuestra página principal y encontrar tu aporte. El sistema se actualiza manualmente por lo que puede tomar algunos días.' },
         { q:'¿Por qué no debo mencionar Venezuela en la transferencia?', a:'Para proteger las cuentas personales que usamos para recibir los aportes. Con tu nombre o un “gracias” en el asunto es suficiente 💙' },
@@ -77,12 +77,12 @@ const NEXOS_ES = {
   ],
   credito: 'Francisco Rizquez — La Guaira 2026',
   fotos: [
-    { src:'https://cdn.jsdelivr.net/gh/isiselinor/-anadonaciones@develop/assets/photo-rescate-edificio.jpg' },
-    { src:'https://cdn.jsdelivr.net/gh/isiselinor/-anadonaciones@develop/assets/photo-calle-derrumbe.jpg' },
-    { src:'https://cdn.jsdelivr.net/gh/isiselinor/-anadonaciones@develop/assets/photo-rescate-escombros.jpg' },
-    { src:'https://cdn.jsdelivr.net/gh/isiselinor/-anadonaciones@develop/assets/photo-corte-atardecer.jpg' },
-    { src:'https://cdn.jsdelivr.net/gh/isiselinor/-anadonaciones@develop/assets/photo-guante-mensaje.jpg' },
-    { src:'https://cdn.jsdelivr.net/gh/isiselinor/-anadonaciones@develop/assets/photo-muro-marca.jpg' }
+    { src:'../../assets/photo-rescate-edificio.jpg' },
+    { src:'../../assets/photo-calle-derrumbe.jpg' },
+    { src:'../../assets/photo-rescate-escombros.jpg' },
+    { src:'../../assets/photo-corte-atardecer.jpg' },
+    { src:'../../assets/photo-guante-mensaje.jpg' },
+    { src:'../../assets/photo-muro-marca.jpg' }
   ],
   aviso: 'Al transferir, en el asunto no menciones Venezuela ni la causa. Con tu nombre o un “gracias” basta 💙',
   ui: {
@@ -153,7 +153,7 @@ const NEXOS_EN = {
       titulo: 'Who we are',
       eyebrow: 'Our mission',
       resumen: 'The bridge between those who can give and those who need to rebuild.',
-      foto: 'https://cdn.jsdelivr.net/gh/isiselinor/-anadonaciones@develop/assets/photo-rescate-edificio.jpg',
+      foto: '../../assets/photo-rescate-edificio.jpg',
       cuerpo: [
         'We are <b>the bridge</b> between the will of those who want to give and the resilience of the communities that need to rebuild today.',
         'We started after <b>June 24th</b>, when it became clear that the aid existed but could not find its way. We joined movement with action and strategy with empathy: volunteers on the ground, verified purchases and published accounts.',
@@ -169,14 +169,14 @@ const NEXOS_EN = {
       titulo: 'Transparency',
       eyebrow: 'Everything verifiable',
       resumen: 'Receipts for every purchase and photos of every delivery.',
-      foto: 'https://cdn.jsdelivr.net/gh/isiselinor/-anadonaciones@develop/assets/photo-corte-atardecer.jpg',
+      foto: '../../assets/photo-corte-atardecer.jpg',
       cuerpo: ['We publish the receipt for every purchase and photos of every delivery. If something does not add up, write to us and we will fix it in plain sight.']
     },
     aliados: {
       titulo: 'Partners and volunteers',
       eyebrow: 'Join us',
       resumen: 'How to contribute your time, your trade or your transport.',
-      foto: 'https://cdn.jsdelivr.net/gh/isiselinor/-anadonaciones@develop/assets/photo-guante-mensaje.jpg',
+      foto: '../../assets/photo-guante-mensaje.jpg',
       cuerpo: [
         'We receive no institutional funding: every campaign is sustained by individual donations and by volunteers who give their time, their truck, their kitchen or their hands.',
         'If you want to bring in your organization, your trade or your transport, write to us on Instagram and we will tell you exactly what is missing this week.'
@@ -192,7 +192,7 @@ const NEXOS_EN = {
       titulo: 'Frequently asked questions',
       eyebrow: 'Before you donate',
       resumen: 'Questions before donating, answered straight.',
-      foto: 'https://cdn.jsdelivr.net/gh/isiselinor/-anadonaciones@develop/assets/photo-calle-derrumbe.jpg',
+      foto: '../../assets/photo-calle-derrumbe.jpg',
       items: [
         { q:'How do I know my money arrived?', a:'Every donation appears in the report with your name, payment method and amount. You can search for your name on our main page and find your contribution. The system is updated manually, so it may take a few days.' },
         { q:'Why should I not mention Venezuela in the transfer?', a:'To protect the personal accounts we use to receive contributions. Your name or a “thank you” in the reference is enough 💙' },

@@ -33,7 +33,7 @@ function NavBar({ onOpen, onDonate, lang, setLang, forceSolid }) {
       backdropFilter: solid ? 'saturate(180%) blur(14px)' : 'none', borderBottom:'1px solid ' + (solid ? 'var(--line)' : 'transparent'), transition:'background .2s, border-color .2s' }}>
       <div style={{ ...A.wrap, display:'flex', alignItems:'center', gap:18, height:70 }}>
         <a href="#top" style={{ display:'flex', alignItems:'center', gap:9, textDecoration:'none' }}>
-          <img src="https://cdn.jsdelivr.net/gh/isiselinor/-anadonaciones@develop/assets/logo-nexos-mark.png" alt="" style={{ height:30, filter: solid ? 'none' : 'brightness(0) invert(1)' }} />
+          <img src="../../assets/logo-nexos-mark.png" alt="" style={{ height:30, filter: solid ? 'none' : 'brightness(0) invert(1)' }} />
           <span style={{ fontFamily:'var(--font-display)', fontSize:19, fontWeight:700, letterSpacing:3.4, color: solid ? 'var(--blue)' : '#fff' }}>NEXOS</span>
         </a>
         <nav style={{ display:'flex', gap:20, marginLeft:'auto', alignItems:'center', flexWrap:'nowrap' }} className="navlinks">
@@ -64,7 +64,7 @@ function Hero({ onDonate, onOpen, scrimBase, lang }) {
   const d = window.nexosContent(lang); const u = d.ui; const x = window.NEXOS_FIXTURE;
   return (
     <div style={{ position:'relative', minHeight:'clamp(560px,78vh,760px)', display:'flex', flexDirection:'column', justifyContent:'flex-end', marginTop:-70, paddingTop:70 }}>
-      <img src="https://cdn.jsdelivr.net/gh/isiselinor/-anadonaciones@develop/assets/photo-rescate-escombros.jpg" alt="" style={{ position:'absolute', inset:0, width:'100%', height:'100%', objectFit:'cover', objectPosition:'center 32%' }} />
+      <img src="../../assets/photo-rescate-escombros.jpg" alt="" style={{ position:'absolute', inset:0, width:'100%', height:'100%', objectFit:'cover', objectPosition:'center 32%' }} />
       <div style={{ position:'absolute', inset:0, background:'linear-gradient(180deg, color-mix(in oklab, ' + scrimBase + ' 62%, transparent) 0%, color-mix(in oklab, ' + scrimBase + ' 28%, transparent) 34%, color-mix(in oklab, ' + scrimBase + ' 88%, transparent) 100%) ' }}></div>
       <div style={{ ...A.wrap, position:'relative', paddingBottom:34, paddingTop:60 }}>
         <div style={{ ...A.eyebrow, color:'#ffb3a3' }}>{d.hero.eyebrow}</div>
@@ -110,7 +110,7 @@ function HeroCentrado({ onDonate, onOpen, lang }) {
   return (
     <section style={{ background:'#fff', borderBottom:'1px solid var(--line)' }}>
       <div style={{ ...A.wrap, maxWidth:860, textAlign:'center', paddingTop:'clamp(58px,9vw,116px)', paddingBottom:'clamp(40px,6vw,70px)' }}>
-        <img src="https://cdn.jsdelivr.net/gh/isiselinor/-anadonaciones@develop/assets/logo-nexos-mark.png" alt="" style={{ height:64, margin:'0 auto', display:'block' }} />
+        <img src="../../assets/logo-nexos-mark.png" alt="" style={{ height:64, margin:'0 auto', display:'block' }} />
         <h1 style={{ fontFamily:'var(--font-display)', fontSize:'clamp(32px,5vw,58px)', fontWeight:800, lineHeight:1.04, letterSpacing:'-2px', color:'var(--ink)', margin:'26px 0 0', textWrap:'balance' }} dangerouslySetInnerHTML={{ __html:d.hero.tituloHtml }} />
         <p style={{ fontSize:'clamp(15px,1.6vw,18px)', lineHeight:1.7, color:'var(--muted)', maxWidth:560, margin:'20px auto 0' }}>{d.hero.bajada}</p>
         <div style={{ display:'flex', gap:12, justifyContent:'center', margin:'30px 0 0', flexWrap:'wrap' }}>
@@ -341,7 +341,7 @@ function EditorialLandingExport() {
         <div style={A.wrap}>
           <div style={{ display:'flex', alignItems:'center', gap:10 }}>
             <div style={{ display:'flex', alignItems:'center', justifyContent:'center', width:58, height:57, borderRadius:'50%', background:'#fff', flexShrink:0 }}>
-              <img src="https://cdn.jsdelivr.net/gh/isiselinor/-anadonaciones@develop/assets/logo-nexos-mark.png" alt="" style={{ width:52, height:45, objectFit:'contain', display:'block' }} />
+              <img src="../../assets/logo-nexos-mark.png" alt="" style={{ width:52, height:45, objectFit:'contain', display:'block' }} />
             </div>
             <span style={{ fontFamily:'var(--font-display)', fontSize:19, fontWeight:700, letterSpacing:3.4, color:'#fff' }}>NEXOS</span>
           </div>
