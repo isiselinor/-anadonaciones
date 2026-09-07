@@ -19,7 +19,7 @@ function SectionPageExport({ id, onClose, onOpen, onDonate, lang }) {
   }, [id, onClose]);
 
   if (!v) return null;
-  const otras = Object.keys(d.ventanas).filter(function(k){ return k !== id; });
+  const otras = Object.keys(d.ventanas).filter(function(k){ return k !== id && k !== 'aliados'; });
   const col = { maxWidth:720, margin:'0 auto', padding:'0 24px' };
 
   return (
