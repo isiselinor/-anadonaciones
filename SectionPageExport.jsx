@@ -27,7 +27,7 @@ function SectionPageExport({ id, onClose, onOpen, onDonate, lang }) {
       <div style={{ position:'sticky', top:0, zIndex:3, background:'rgba(255,255,255,.94)', backdropFilter:'blur(12px)', borderBottom:'1px solid var(--line)' }}>
         <div style={{ maxWidth:1180, margin:'0 auto', padding:'0 24px', height:60, display:'flex', alignItems:'center', gap:14 }}>
           <a href="#top" onClick={onClose} style={{ display:'flex', alignItems:'center', gap:14, textDecoration:'none' }}>
-            <img src="https://cdn.jsdelivr.net/gh/isiselinor/-anadonaciones@develop/assets/logo-nexos-mark.png" alt="" style={{ height:24 }} />
+            <img src="../../assets/logo-nexos-mark.png" alt="" style={{ height:24 }} />
             <span style={{ fontSize:13, fontWeight:700, color:'var(--muted)', whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis' }}>{v.titulo}</span>
           </a>
           <button onClick={onClose} style={{ marginLeft:'auto', background:'none', border:'1px solid var(--line)', borderRadius:999, padding:'8px 16px', fontSize:13, fontWeight:700, color:'var(--ink)', cursor:'pointer', whiteSpace:'nowrap' }}>{u.volver}</button>
