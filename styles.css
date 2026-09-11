@@ -157,7 +157,7 @@
 }
 
 :root{
---bg-page:radial-gradient(1100px 420px at 108% -120px, var(--accent-glow-10), transparent 60%),radial-gradient(1000px 420px at -120px -140px, var(--blue-glow-08), transparent 60%),var(--white);
+--bg-page:radial-gradient(1200px 700px at 100% 0%, rgba(232,93,69,.16), transparent 62%),radial-gradient(1300px 800px at 0% 10%, rgba(43,79,209,.20), transparent 60%),radial-gradient(1000px 600px at 50% 90%, rgba(43,79,209,.10), transparent 65%),var(--white);
 --bg-page-attachment:fixed;
 }
 

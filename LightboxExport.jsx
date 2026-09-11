@@ -1,5 +1,5 @@
 /* Visor de fotos a pantalla completa con navegación. */
-function LightboxExport({ index, fotos, credito, onClose, onIndex }) {
+function LightboxExport({ index, fotos, onClose, onIndex }) {
   React.useEffect(function(){
     if (index == null) return;
     function k(e){
@@ -20,7 +20,7 @@ function LightboxExport({ index, fotos, credito, onClose, onIndex }) {
       style={{ position:'fixed', inset:0, zIndex:60, background:'#0c0e16', display:'flex', flexDirection:'column' }}>
       <div style={{ display:'flex', alignItems:'center', gap:14, padding:'16px 20px', color:'rgba(255,255,255,.75)', fontSize:12.5 }}>
         <span>{index + 1} / {fotos.length}</span>
-        <span style={{ marginLeft:'auto' }}>Foto: {credito}</span>
+        <span style={{ marginLeft:'auto' }}>Foto: {fotos[index].credito}</span>
         <button onClick={onClose} aria-label="Cerrar" style={{ ...nav, width:38, height:38, fontSize:19 }}>×</button>
       </div>
       <div style={{ flex:1, minHeight:0, display:'flex', alignItems:'center', gap:14, padding:'0 16px 26px' }}>
