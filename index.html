@@ -1,43 +1,621 @@
-<!-- @dsCard group="Landing" viewport="1180x760" name="Landing NEXOS (dirección elegida)" subtitle="Portada sobria, secciones en página propia, carrusel con visor" -->
-<!DOCTYPE html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>NEXOS</title><link rel="stylesheet" href="styles.css">
-<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
-<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
-<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
-<style>*{box-sizing:border-box}body{margin:0;font-family:var(--font-ui);color:var(--ink);background:#fff}
-a,a:hover{color:var(--blue)}tr:hover td{background:var(--row-hover)}
-.ev-link{transition:transform .12s,box-shadow .12s}.ev-link:hover{transform:translateY(-2px);box-shadow:0 16px 40px rgba(28,35,64,.10)}
-@media(max-width:640px){.ev-grid{grid-template-columns:1fr!important}}
-.strip{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(300px,38%);gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:6px;scrollbar-width:thin}
-.strip-item{scroll-snap-align:start}
-.strip::-webkit-scrollbar{height:6px}.strip::-webkit-scrollbar-thumb{background:var(--line);border-radius:999px}
-.zoomable{transition:filter .12s}.zoomable:hover{filter:brightness(1.06)}
-.lb-root{animation:swFade .18s ease}.lb-img{animation:swIn .24s cubic-bezier(.2,.7,.3,1) both}
-.strip-nav{background:#fff;border:1px solid var(--line);border-radius:999px;width:34px;height:34px;font-size:14px;color:var(--ink);cursor:pointer}
-.strip-nav:hover{border-color:var(--accent);color:var(--accent)}
-@media(max-width:640px){.strip{grid-auto-columns:minmax(240px,84%)}}
-.opener{transition:transform .12s,box-shadow .12s}.opener:hover{transform:translateY(-2px);box-shadow:0 16px 40px rgba(28,35,64,.10)}
-@keyframes swIn{from{opacity:0;transform:translateY(14px) scale(.985)}to{opacity:1;transform:none}}
-@keyframes swFade{from{opacity:0}to{opacity:1}}
-.sw-scrim{animation:swFade .18s ease}.sw-panel{animation:swIn .26s cubic-bezier(.2,.7,.3,1) both}
-.sp-root{animation:spIn .3s cubic-bezier(.2,.7,.3,1) both}@keyframes spIn{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
-@media(max-width:980px){.sw-body{grid-template-columns:1fr!important}.sw-body aside{border-left:none!important;border-top:1px solid var(--line)}}
-@media(max-width:1030px){.navlinks{display:none!important}.menubtn{display:block!important}}
-@media(max-width:640px){.cta-row{grid-template-columns:1fr!important}.mobile-cta{display:block!important}}</style>
-<template id="__bundler_thumbnail"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="#fdfcfa"/></svg></template>
-</head><body><div id="root"></div>
-<script src="image-slot.js"></script>
-<script src="_ds_bundle.js"></script>
-<script src="data-source.js"></script>
-<script src="content.js"></script>
-<script type="text/babel" src="tweaks-panel.jsx"></script>
-<script type="text/babel" src="SectionWindowExport.jsx"></script>
-<script type="text/babel" src="SectionPageExport.jsx"></script>
-<script type="text/babel" src="LightboxExport.jsx"></script>
-<script type="text/babel" src="EditorialLandingExport.jsx"></script>
-<script type="text/babel">
-const nexosRoot = ReactDOM.createRoot(document.getElementById('root'));
-window.__nexosRender = function(){ nexosRoot.render(<EditorialLandingExport key={Date.now()}/>); };
-window.__nexosRender();
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NEXOS · Reporte de donaciones</title>
+<style>
+  :root{
+    --bg:#ffffff; --card:#ffffff; --accent:#e85d45; --blue:#2b4fd1; --blue-lt:#7e9ce8;
+    --peach:#f7e3dc; --line:#ecedf3; --text:#1c2340; --muted:#7a8194;
+    --shadow:0 10px 30px rgba(28,35,64,.07);
+    --radius:20px;
+  }
+  *{box-sizing:border-box}
+  body{margin:0 auto;font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+       color:var(--text);padding:22px 20px;max-width:920px;
+       background:
+         radial-gradient(1100px 420px at 108% -120px, rgba(232,93,69,.10), transparent 60%),
+         radial-gradient(1000px 420px at -120px -140px, rgba(43,79,209,.08), transparent 60%),
+         #ffffff;
+       background-attachment:fixed;}
+  h1{font-size:22px;margin:0 0 2px}
+  .topbar{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:10px}
+  .topbar .btn-ig{justify-self:start}
+  .topbar .btn-lang{justify-self:end}
+  .brand{justify-self:center;min-width:0;display:flex;align-items:center;gap:13px}
+  .logo-img{height:78px;width:auto;display:block}
+  .logo-name{font-size:32px;font-weight:800;letter-spacing:4px;color:var(--blue);line-height:1}
+  .brand-tag{text-align:center;font-size:13px;color:var(--muted);margin:4px 0 0}
+  @media(max-width:520px){ .logo-img{height:56px} .logo-name{font-size:24px;letter-spacing:2px} .ig-txt{display:none} }
+  .sub{color:#b3b8c4;font-size:10.5px;text-align:center;margin:5px 0 14px}
+  .foot-tag{font-size:13px;color:var(--text);margin:0 0 8px}
+  .mision{max-width:700px;margin:24px auto 6px;text-align:center}
+  .mision-label{font-size:11px;font-weight:800;letter-spacing:1px;color:var(--accent);
+    text-transform:uppercase;margin-bottom:10px}
+  .mision-txt{font-size:16.5px;line-height:1.75;color:var(--text);text-align:justify;text-align-last:center}
+  .mision-txt b{color:var(--accent)}
+  @media(max-width:520px){ .mision-txt{text-align:left;text-align-last:left} }
+  .total-usd:empty{display:none}
+  .total-usd{background:var(--card);border:1px solid var(--line);box-shadow:var(--shadow);
+    border-radius:var(--radius);padding:20px 22px;margin-bottom:16px}
+  .total-usd .tu-label{color:var(--muted);font-size:13px;letter-spacing:.5px;text-transform:uppercase}
+  .total-usd .tu-monto{color:var(--accent);font-size:34px;font-weight:800;margin-top:2px}
+  .total-usd .tu-nota{color:var(--muted);font-size:12px;margin-top:6px}
+  .egresos-sec:empty{display:none}
+  .egresos-sec{margin:26px 0 8px}
+  .cat{background:var(--card);border:1px solid var(--line);box-shadow:var(--shadow);
+    border-radius:16px;margin-bottom:10px;overflow:hidden}
+  .cat summary{display:flex;justify-content:space-between;align-items:center;gap:10px;
+    padding:13px 14px;cursor:pointer;font-size:15px;list-style:none}
+  .cat summary::-webkit-details-marker{display:none}
+  .cat summary::before{content:'▸';color:var(--accent);margin-right:6px;transition:transform .15s}
+  .cat[open] summary::before{transform:rotate(90deg)}
+  .cat-nom{display:flex;flex-direction:column;gap:2px;flex:1;min-width:0}
+  .cat-t{font-weight:700}
+  .cat-desc{font-size:12px;color:var(--muted);font-weight:400}
+  .cat-tot{color:var(--blue);font-weight:800;font-variant-numeric:tabular-nums;white-space:nowrap;
+    text-align:right;display:flex;flex-direction:column;gap:2px}
+  .cat-pct{font-size:12px;color:var(--muted);font-weight:400}
+  .cat table{margin:0 0 6px}
+  .cat td{padding:8px 14px;border-bottom:1px solid var(--line);font-size:13px;color:var(--muted)}
+  .sec-tit{font-size:19px;margin:40px 0 14px;color:var(--text);font-weight:800;letter-spacing:-.2px}
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;margin-bottom:24px}
+  .resumen{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin:0 0 6px}
+  .resumen-card{padding:18px 20px;box-shadow:var(--shadow);border-top:3px solid var(--line)}
+  .resumen-card.acc{border-top-color:var(--accent)}
+  .resumen-card.egr{border-top-color:var(--blue-lt)}
+  .resumen-card.sal{border-top-color:var(--blue)}
+  .rc-label{color:var(--muted);font-size:12px;letter-spacing:.4px;text-transform:uppercase}
+  .rc-monto{font-size:26px;font-weight:800;margin-top:4px;color:var(--text)}
+  .resumen-card.acc .rc-monto{color:var(--accent)}
+  .resumen-card.egr .rc-monto{color:var(--blue-lt)}
+  .resumen-card.sal .rc-monto{color:var(--blue)}
+  .nota-tasas{color:var(--muted);font-size:12px;margin:0 0 4px}
+  .pasos{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:0 0 18px}
+  .paso-card{background:var(--card);border:1px solid var(--line);box-shadow:var(--shadow);
+    border-radius:14px;padding:13px 14px}
+  .paso-h{display:flex;align-items:center;gap:8px;margin-bottom:5px}
+  .paso-n{font-size:24px;font-weight:800;color:var(--accent);line-height:1}
+  .paso-t{font-weight:700;color:var(--text);font-size:13.5px}
+  .paso-d{font-size:12.5px;color:var(--muted);line-height:1.45}
+  .paso-d b{color:var(--accent)}
+  .transp{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;align-items:stretch;margin:0 0 6px}
+  .transp .card{display:flex;flex-direction:column;justify-content:center}
+  .btn-drive{border-radius:14px;padding:14px;text-align:center;font-weight:800;font-size:14px;
+    text-decoration:none;display:flex;align-items:center;justify-content:center;line-height:1.35;
+    background:#fff;box-shadow:var(--shadow);transition:filter .12s}
+  .btn-drive:hover{filter:brightness(.98)}
+  .btn-drive.fac{border:1.5px solid var(--blue);color:var(--blue)}
+  .btn-drive.fot{border:1.5px solid var(--accent);color:var(--accent)}
+  @media(max-width:560px){ .pasos,.transp{grid-template-columns:1fr} }
+  .ayuda-cta b{color:var(--accent)}
+  .card{background:var(--card);border:1px solid var(--line);box-shadow:var(--shadow);border-radius:18px;padding:16px}
+  .card .moneda{color:var(--accent);font-weight:700;font-size:13px;letter-spacing:.5px}
+  .card .monto{font-size:22px;font-weight:800;margin-top:6px}
+  .card .det{color:var(--muted);font-size:12px;margin-top:4px}
+  .toolbar{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:12px;align-items:center}
+  input,select{background:var(--card);border:1px solid var(--line);color:var(--text);
+       padding:11px 14px;border-radius:12px;font-size:14px;outline:none;box-shadow:var(--shadow)}
+  input:focus,select:focus{border-color:var(--blue)}
+  input{flex:1;min-width:180px}
+  table{width:100%;border-collapse:collapse;font-size:14px}
+  th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line)}
+  th{color:var(--muted);font-weight:600;cursor:pointer;user-select:none}
+  td.monto{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+  tr:hover td{background:rgba(232,93,69,.06)}
+  .tag{font-size:11px;color:var(--blue);border:1px solid var(--blue-lt);border-radius:20px;padding:2px 8px}
+  .foot{color:var(--muted);font-size:12px;margin-top:14px;text-align:center}
+  .site-foot{color:var(--muted);font-size:13px;text-align:center;margin:28px 0 90px;
+    padding-top:16px;border-top:1px solid var(--line)}
+  .site-foot a{color:var(--blue);text-decoration:none;font-weight:600}
+  .site-foot a:hover{text-decoration:underline}
+  .loading{color:var(--muted);padding:40px;text-align:center}
+  .empty{color:var(--muted);padding:34px 18px;text-align:center;font-size:15px;
+    border:1px dashed var(--line);border-radius:18px;background:#fafbfd}
+  @media(max-width:520px){ .card .monto{font-size:18px} td,th{padding:8px} .logo-img{height:72px}
+    .btn-donar-grande{font-size:19px;padding:18px} }
+
+  .btn-donar-grande{display:flex;align-items:center;justify-content:center;gap:10px;
+    width:340px;max-width:100%;margin:8px auto 6px;
+    background:var(--accent);color:#fff;font-weight:800;border:none;border-radius:999px;
+    padding:17px;font-size:20px;cursor:pointer;letter-spacing:.2px;
+    box-shadow:0 14px 30px rgba(232,93,69,.32);transition:transform .12s, filter .12s}
+  .btn-donar-grande:hover{filter:brightness(1.05);transform:translateY(-1px)}
+  .btn-donar-grande:active{transform:translateY(0)}
+  .head-donar{background:var(--accent);color:#fff;font-weight:800;border:none;border-radius:999px;
+    padding:10px 18px;font-size:14px;cursor:pointer}
+  .btn-donar-flotante{position:fixed;right:20px;bottom:20px;z-index:30;background:var(--accent);
+    color:#fff;font-weight:800;border:none;border-radius:999px;padding:16px 26px;font-size:17px;
+    cursor:pointer;box-shadow:0 12px 28px rgba(232,93,69,.42);transition:transform .12s, filter .12s}
+  .btn-donar-flotante:hover{filter:brightness(1.05);transform:translateY(-2px)}
+  .btn-lang,.btn-ig{background:#fff;color:var(--text);border:1px solid var(--line);border-radius:999px;
+    padding:10px 16px;font-size:13px;font-weight:700;cursor:pointer;text-decoration:none;
+    display:inline-flex;align-items:center;gap:6px;line-height:1;box-shadow:var(--shadow)}
+  .btn-lang:hover{border-color:var(--accent);color:var(--accent)}
+  .btn-ig{color:var(--blue)}
+  .btn-ig:hover{border-color:var(--blue);background:#f4f6fe}
+  .btn-ig svg{width:16px;height:16px}
+  .overlay{position:fixed;inset:0;background:rgba(28,35,64,.5);display:none;z-index:40;
+    align-items:flex-start;justify-content:center;padding:24px;overflow:auto}
+  .overlay.open{display:flex}
+  .modal{background:#fff;border:1px solid var(--line);border-radius:24px;max-width:460px;width:100%;
+    padding:22px;margin-top:24px;box-shadow:0 24px 60px rgba(28,35,64,.22)}
+  .modal h2{margin:0 0 4px;font-size:20px;color:var(--text)}
+  .modal .sub2{color:var(--muted);font-size:13px;margin-bottom:16px}
+  .aviso{background:var(--peach);border:1px solid var(--accent);border-radius:8px;
+    padding:8px 10px;font-size:12px;line-height:1.4;color:var(--text);margin-bottom:14px}
+  .aviso b{color:var(--accent)}
+  .pay{border:1px solid var(--line);border-radius:16px;padding:14px;margin-bottom:12px}
+  .pay .nombre{color:var(--accent);font-weight:700;font-size:14px;margin-bottom:8px}
+  .field{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:6px 0;
+    border-top:1px dashed var(--line)}
+  .field:first-of-type{border-top:none}
+  .field .k{color:var(--muted);font-size:12px}
+  .field .v{font-weight:600;font-size:14px;word-break:break-all;text-align:right;flex:1}
+  .field a.lnk{color:var(--blue);text-decoration:none}
+  .field a.lnk:hover{text-decoration:underline}
+  .copy{background:var(--peach);color:var(--accent);border:none;border-radius:7px;padding:5px 10px;
+    font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap}
+  .copy:hover{filter:brightness(.97)}
+  .copy.ok{background:var(--accent);color:#fff}
+  .note{color:var(--muted);font-size:13px;padding:4px 0}
+  .modal .top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px}
+  .x{background:none;border:none;color:var(--muted);font-size:24px;cursor:pointer;line-height:1}
+</style>
+</head>
+<body>
+
+  <!-- ================================================================= -->
+  <!--  URL de tu Apps Script (la que termina en /exec) — YA PEGADA       -->
+  <!-- ================================================================= -->
+  <script>
+    const API_URL = "https://script.google.com/macros/s/AKfycbyKLVJVc4mT39F_xOuCSrjFfnIICHVYNQHpMTMlk9HxT8yg6KwwB6WLInSqY_QMsZg/exec";
+  </script>
+
+  <!-- Encabezado: Instagram (izq) · logo + NEXOS (centro) · idioma (der) -->
+  <div class="topbar">
+    <a class="btn-ig" href="https://instagram.com/somos.nexosve" target="_blank" rel="noopener" aria-label="Instagram">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <rect x="2.5" y="2.5" width="19" height="19" rx="5.2"/>
+        <circle cx="12" cy="12" r="4.2"/>
+        <circle cx="17.6" cy="6.4" r="1.1" fill="currentColor" stroke="none"/>
+      </svg>
+      <span class="ig-txt">Instagram</span>
+    </a>
+    <div class="brand">
+      <img class="logo-img" src="logo.png" alt="NEXOS">
+      <span class="logo-name">NEXOS</span>
+    </div>
+    <button class="btn-lang" id="btnLang" onclick="alternarIdioma()">EN</button>
+  </div>
+  <div class="sub" id="sub">Cargando datos en vivo…</div>
+
+  <div class="mision">
+    <div class="mision-label" id="misionLabel">Nuestra misión</div>
+    <div class="mision-txt" id="bienvenida"></div>
+  </div>
+
+  <button class="btn-donar-flotante" id="btnDonarFloat" onclick="abrirDonar()">💙 Donar</button>
+
+  <!-- 1) Cómo donar en 3 pasos (tarjetas) -->
+  <h2 class="sec-tit" id="titPasos">Cómo donar en 3 pasos</h2>
+  <div class="pasos" id="pasos"></div>
+
+  <!-- 2) Botón principal -->
+  <button class="btn-donar-grande" id="btnDonarBig" onclick="abrirDonar()">💙 Donar ahora</button>
+
+  <!-- 3) La ayuda en números -->
+  <h2 class="sec-tit" id="titNumeros">La ayuda en números</h2>
+  <div class="resumen">
+    <div id="totalUsd" class="card resumen-card acc"></div>
+    <div id="totalEgresos" class="card resumen-card egr"></div>
+    <div id="cardSaldo" class="card resumen-card sal"></div>
+  </div>
+  <div class="nota-tasas" id="notaTasas"></div>
+
+  <!-- 4) Transparencia: donaciones + enlaces de Drive -->
+  <h2 class="sec-tit" id="titTransparencia">Mira en qué se usó tu ayuda</h2>
+  <div class="transp">
+    <div id="cardDonaciones" class="card"></div>
+    <a id="btnFacturas" class="btn-drive fac" target="_blank" rel="noopener" style="display:none"></a>
+    <a id="btnFotos" class="btn-drive fot" target="_blank" rel="noopener" style="display:none"></a>
+  </div>
+
+  <!-- 5) Detalle por moneda -->
+  <h2 class="sec-tit" id="titMoneda">Detalle por moneda</h2>
+  <div class="cards" id="cards"></div>
+
+  <!-- 4) Buscar tu donación -->
+  <h2 class="sec-tit" id="titBuscar">¿Ya donaste? Busca tu nombre</h2>
+  <div class="toolbar">
+    <input id="q" placeholder="🔎 Escribe tu nombre…" oninput="render()">
+    <select id="fMet" onchange="render()"><option value="">Todos los métodos</option></select>
+    <select id="fMon" onchange="render()"><option value="">Todas las monedas</option></select>
+  </div>
+
+  <div id="tablaWrap"><div class="loading">Cargando…</div></div>
+  <div class="foot" id="foot"></div>
+
+  <!-- 5) Transparencia: egresos -->
+  <div id="egresosList" class="egresos-sec"></div>
+
+  <footer class="site-foot">
+    <div class="foot-tag" id="tagline"></div>
+    <span id="createdBy">Sistema creado por</span>
+    <a href="https://www.instagram.com/isiselinor/" target="_blank" rel="noopener">Isis Elinor</a>
+  </footer>
+
+  <div class="overlay" id="overlay" onclick="if(event.target===this)cerrarDonar()">
+    <div class="modal">
+      <div class="top">
+        <div>
+          <h2 id="modalTitle">Quiero donar 💙</h2>
+          <div class="sub2" id="modalSub">Elige un método y copia los datos. ¡Gracias!</div>
+        </div>
+        <button class="x" onclick="cerrarDonar()">&times;</button>
+      </div>
+
+      <div class="aviso" id="aviso">
+        ⚠️ En el asunto de la transferencia <b>no menciones Venezuela</b> ni la causa.
+      </div>
+
+      <div id="metodosWrap"></div>
+    </div>
+  </div>
+
+<script>
+  var DATA = null;
+  var sortCol = 'donante', sortDir = 1;
+
+  // ---------- Idiomas (solo interfaz) ----------
+  var I18N = {
+    es: {
+      tituloPagina:'NEXOS · Reporte de donaciones',
+      misionTit:'Nuestra misión',
+      bienvenida:'Somos <b>el puente</b> entre la voluntad de los que quieren aportar y la resiliencia de las comunidades que hoy necesitan reconstruirse. Somos la prueba de que cuando las manos se juntan de forma transparente, la ayuda llega <b>más lejos, más rápido y de forma más humana</b>.',
+      donar:'💙 Donar', donarAhora:'💙 Donar ahora',
+      cta:'Toca <b>Donar ahora</b>, elige el método que prefieras, copia los datos con el botón <b>Copiar</b> y realiza tu aporte. ¡Gracias! 💙',
+      tituloMoneda:'Detalle por moneda', tituloBuscar:'¿Ya donaste? Busca tu nombre',
+      buscarPh:'🔎 Escribe tu nombre…', todosMetodos:'Todos los métodos', todasMonedas:'Todas las monedas',
+      actualizado:'Actualizado', cargandoLive:'Cargando datos en vivo…', cargando:'Cargando…',
+      donacionesRecibidas:'Donaciones recibidas', totalRecaudado:'Total recaudado',
+      totalEgresos:'Total egresos', saldoDisponible:'Saldo disponible',
+      donaciones:'donaciones', convEst:'Conversión estimada', usdUsdt:'USD y USDT 1:1',
+      egresosCat:'Egresos por categoría', pctSuffix:'% del total', colDonante:'Donante', colMetodo:'Método', colMonto:'Monto',
+      resultados:function(n){return n+' resultado(s) mostrados';},
+      vacioBuscar:'🔎 Escribe un nombre en la barra de búsqueda para ver las donaciones de esa persona.',
+      sinResultados:'No encontramos donaciones con ese nombre. Revisa cómo está escrito.',
+      modalTitulo:'Quiero donar 💙', modalSub:'Elige un método y copia los datos. ¡Gracias!',
+      aviso:'⚠️ En el asunto de la transferencia <b>no menciones Venezuela</b> ni la causa.',
+      avisoDonar:'⚠️ Al transferir, en el asunto <b>no menciones Venezuela</b> ni la causa. Con tu nombre o un “gracias” basta 💙 (así cuidamos la cuenta).',
+      comoDonar:'Cómo donar en 3 pasos',
+      titNumeros:'La ayuda en números', titTransparencia:'Mira en qué se usó tu ayuda',
+      verFacturas:'📄 Ver facturas de compras', verFotos:'📷 Ver fotos de las donaciones',
+      p1t:'Elige método', p2t:'Copia y transfiere', p3t:'Cuida el asunto',
+      p1:'Toca <b>Donar ahora</b> y elige el que prefieras.',
+      p2:'Copia con <b>Copiar</b> y haz tu aporte.',
+      p3:'No menciones Venezuela. Tu nombre o un “gracias” basta 💙',
+      copiar:'Copiar', copiado:'✓ Copiado',
+      sinMetodos:'No hay métodos de pago configurados en la hoja "Metodos".',
+      creadoPor:'Sistema creado por', errorConexion:'Error de conexión',
+      errorDatos:'No se pudieron cargar los datos. Verifica que API_URL esté bien pegada y que la app esté publicada para "Cualquier persona".'
+    },
+    en: {
+      tituloPagina:'NEXOS · Donations report',
+      misionTit:'Our mission',
+      bienvenida:'We are <b>the bridge</b> between the will of those who want to give and the resilience of communities that today need to rebuild. We are proof that when hands come together transparently, help reaches <b>further, faster, and in a more human way</b>.',
+      donar:'💙 Donate', donarAhora:'💙 Donate now',
+      cta:'Tap <b>Donate now</b>, choose your preferred method, copy the details with the <b>Copy</b> button and make your contribution. Thank you! 💙',
+      tituloMoneda:'By currency', tituloBuscar:'Already donated? Search your name',
+      buscarPh:'🔎 Type your name…', todosMetodos:'All methods', todasMonedas:'All currencies',
+      actualizado:'Updated', cargandoLive:'Loading live data…', cargando:'Loading…',
+      donacionesRecibidas:'Donations received', totalRecaudado:'Total raised',
+      totalEgresos:'Total expenses', saldoDisponible:'Available balance',
+      donaciones:'donations', convEst:'Estimated conversion', usdUsdt:'USD & USDT 1:1',
+      egresosCat:'Expenses by category', pctSuffix:'% of total', colDonante:'Donor', colMetodo:'Method', colMonto:'Amount',
+      resultados:function(n){return n+' result(s) shown';},
+      vacioBuscar:'🔎 Type a name in the search bar to see that person’s donations.',
+      sinResultados:'No donations found with that name. Check the spelling.',
+      modalTitulo:'I want to donate 💙', modalSub:'Choose a method and copy the details. Thank you!',
+      aviso:'⚠️ In the transfer note <b>do not mention Venezuela</b> or the cause.',
+      avisoDonar:'⚠️ When transferring, please <b>don’t mention Venezuela</b> or the cause in the note. Your name or a “thank you” is enough 💙 (it keeps the account safe).',
+      comoDonar:'How to donate in 3 steps',
+      titNumeros:'The help in numbers', titTransparencia:'See how your help was used',
+      verFacturas:'📄 View purchase invoices', verFotos:'📷 View donation photos',
+      p1t:'Choose method', p2t:'Copy & transfer', p3t:'Mind the note',
+      p1:'Tap <b>Donate now</b> and choose your preferred one.',
+      p2:'Copy with <b>Copy</b> and make your contribution.',
+      p3:'Please don’t mention Venezuela. Your name or a “thank you” is enough 💙',
+      copiar:'Copy', copiado:'✓ Copied',
+      sinMetodos:'No payment methods configured in the "Metodos" sheet.',
+      creadoPor:'System created by', errorConexion:'Connection error',
+      errorDatos:'Could not load the data. Check that API_URL is pasted correctly and the app is published for "Anyone".'
+    }
+  };
+  var LANG = 'es';
+  try { var g = localStorage.getItem('lang'); if (g) LANG = g; else if ((navigator.language||'').toLowerCase().indexOf('en')===0) LANG='en'; } catch(e){}
+  function T(k){ return I18N[LANG][k]; }
+
+  // Formato de números según idioma (es: 1.234,56 · en: 1,234.56)
+  function loc(){ return LANG==='en' ? 'en-US' : 'es-AR'; }
+  function fmt(n){
+    return new Intl.NumberFormat(loc(),{minimumFractionDigits:2, maximumFractionDigits:2}).format(n);
+  }
+  function fmt0(n){
+    return new Intl.NumberFormat(loc(),{maximumFractionDigits:0}).format(n);
+  }
+  function fmtPct(n){
+    return new Intl.NumberFormat(loc(),{maximumFractionDigits:1}).format(n);
+  }
+  function paso_(n, titulo, desc){
+    return '<div class="paso-card"><div class="paso-h"><span class="paso-n">'+n+'</span>'+
+           '<span class="paso-t">'+titulo+'</span></div><div class="paso-d">'+desc+'</div></div>';
+  }
+
+  // Mini-diccionario para términos que vienen del Sheet (solo se traducen en inglés).
+  var DIC_EN = {
+    // campos de métodos de pago
+    'cédula':'ID','cedula':'ID','correo':'Email','alias':'Alias','teléfono':'Phone','telefono':'Phone',
+    'titular':'Account holder','banco':'Bank','iban':'IBAN','enlace':'Link','pagar':'Pay','nombre':'Name',
+    // categorías de egresos comunes
+    'insumos médicos':'Medical supplies','insumos medicos':'Medical supplies','medicinas':'Medicines',
+    'medicinas / antibióticos':'Medicines / antibiotics','mercado':'Groceries','comida':'Food',
+    'comida y agua':'Food and water','herramientas':'Tools','artículos de higiene':'Hygiene items',
+    'articulos de higiene':'Hygiene items','ferretería':'Hardware','ferreteria':'Hardware','farmacia':'Pharmacy',
+    'transporte':'Transport','pasajes':'Fares','otros':'Other',
+    'sin categoría':'Uncategorized','sin categoria':'Uncategorized','sin especificar':'Unspecified',
+    'pago móvil':'Mobile payment','pago movil':'Mobile payment','transferencia':'Transfer'
+  };
+  function tDato(s){
+    if (LANG!=='en' || s==null) return s;
+    var hit = DIC_EN[String(s).trim().toLowerCase()];
+    return hit || s; // si no está en el diccionario, deja el original
+  }
+
+  // Aplica los textos fijos de la interfaz según el idioma.
+  function aplicarEstaticos(){
+    document.documentElement.lang = LANG;
+    document.title = T('tituloPagina');
+    document.getElementById('misionLabel').textContent = T('misionTit');
+    document.getElementById('bienvenida').innerHTML = T('bienvenida');
+    document.getElementById('btnLang').textContent = (LANG==='es') ? 'EN' : 'ES';
+    document.getElementById('btnDonarFloat').textContent = T('donar');
+    document.getElementById('btnDonarBig').textContent = T('donarAhora');
+    document.getElementById('titPasos').textContent = T('comoDonar');
+    document.getElementById('pasos').innerHTML =
+      paso_(1, T('p1t'), T('p1')) + paso_(2, T('p2t'), T('p2')) + paso_(3, T('p3t'), T('p3'));
+    document.getElementById('titNumeros').textContent = T('titNumeros');
+    document.getElementById('titTransparencia').textContent = T('titTransparencia');
+    document.getElementById('btnFacturas').textContent = T('verFacturas');
+    document.getElementById('btnFotos').textContent = T('verFotos');
+    document.getElementById('titMoneda').textContent = T('tituloMoneda');
+    document.getElementById('titBuscar').textContent = T('tituloBuscar');
+    document.getElementById('q').placeholder = T('buscarPh');
+    document.querySelector('#fMet option[value=""]').textContent = T('todosMetodos');
+    document.querySelector('#fMon option[value=""]').textContent = T('todasMonedas');
+    document.getElementById('modalTitle').textContent = T('modalTitulo');
+    document.getElementById('modalSub').textContent = T('modalSub');
+    document.getElementById('aviso').innerHTML = T('aviso');
+    document.getElementById('createdBy').textContent = T('creadoPor');
+    if (!DATA) document.getElementById('sub').textContent = T('cargandoLive');
+  }
+
+  function alternarIdioma(){
+    LANG = (LANG==='es') ? 'en' : 'es';
+    try { localStorage.setItem('lang', LANG); } catch(e){}
+    aplicarEstaticos();
+    if (DATA) pintar(DATA);
+    render();
+  }
+
+  function init(d){ DATA = d; aplicarEstaticos(); pintar(d); render(); }
+
+  // Pinta el contenido dinámico (tarjetas, modal, filtros) con el idioma actual.
+  function pintar(d){
+    document.getElementById('sub').textContent = T('actualizado') + ' ' + d.actualizado;
+    document.getElementById('tagline').textContent = ((LANG==='en' && d.taglineEn) ? d.taglineEn : d.tagline) || '';
+    // Título y texto de la misión desde la hoja Config (según idioma); si están vacíos usa los del código
+    var misTit = (LANG==='en' ? d.misionTitEn : d.misionTitEs);
+    document.getElementById('misionLabel').textContent = misTit || T('misionTit');
+    var mis = (LANG==='en' ? d.misionEn : d.misionEs);
+    document.getElementById('bienvenida').innerHTML = mis || T('bienvenida');
+
+    // Botones de Drive (desde la hoja Config): se ocultan si no hay enlace
+    var bf = document.getElementById('btnFacturas');
+    if (d.enlaceFacturas) { bf.href = d.enlaceFacturas; bf.style.display = ''; } else { bf.style.display = 'none'; }
+    var bfo = document.getElementById('btnFotos');
+    if (d.enlaceFotos) { bfo.href = d.enlaceFotos; bfo.style.display = ''; } else { bfo.style.display = 'none'; }
+
+    document.getElementById('cardDonaciones').innerHTML =
+      '<div class="rc-label">'+T('donacionesRecibidas')+'</div>'+
+      '<div class="rc-monto">'+fmt0(d.totalDonaciones)+'</div>';
+
+    document.getElementById('cards').innerHTML = d.porMoneda.map(function(m){
+      var equiv = (m.usd != null) ? '<div class="det">≈ US$ '+fmt(m.usd)+'</div>' : '';
+      return '<div class="card"><div class="moneda">'+m.simbolo+' · '+m.moneda+'</div>'+
+             '<div class="monto">'+fmt(m.total)+'</div>'+
+             '<div class="det">'+m.count+' '+T('donaciones')+'</div>'+equiv+'</div>';
+    }).join('');
+
+    if (d.totalUSD != null) {
+      document.getElementById('totalUsd').innerHTML =
+        '<div class="rc-label">'+T('totalRecaudado')+'</div>'+
+        '<div class="rc-monto">≈ US$ '+fmt(d.totalUSD)+'</div>';
+      document.getElementById('notaTasas').textContent =
+        T('convEst')+' · ARS '+fmt(d.tasas.arsPorUsd)+'/USD · Bs '+fmt(d.tasas.bsPorUsd)+
+        '/USD · EUR×'+d.tasas.usdPorEur+' · '+T('usdUsdt');
+    }
+
+    if (d.saldo != null) {
+      document.getElementById('cardSaldo').innerHTML =
+        '<div class="rc-label">'+T('saldoDisponible')+'</div>'+
+        '<div class="rc-monto">≈ US$ '+fmt(d.saldo)+'</div>';
+    }
+
+    if (d.totalEgresos != null && d.totalEgresos > 0) {
+      document.getElementById('totalEgresos').innerHTML =
+        '<div class="rc-label">'+T('totalEgresos')+'</div>'+
+        '<div class="rc-monto">≈ US$ '+fmt(d.totalEgresos)+'</div>';
+      var cats = d.egresosPorCategoria || [];
+      if (cats.length) {
+        var bloques = cats.map(function(c){
+          var items = c.items.map(function(it){
+            return '<tr><td>'+escapeHtml(it.concepto)+'</td><td class="monto">US$ '+fmt(it.monto)+'</td></tr>';
+          }).join('');
+          var nombre = (LANG==='en' && c.categoriaEN) ? c.categoriaEN : tDato(c.categoria);
+          var descTxt = (LANG==='en' && c.descripcionEN) ? c.descripcionEN : c.descripcion;
+          var desc = descTxt ? '<span class="cat-desc">'+escapeHtml(descTxt)+'</span>' : '';
+          var pct = (c.pct!=null) ? '<span class="cat-pct">'+fmtPct(c.pct)+T('pctSuffix')+'</span>' : '';
+          return '<details class="cat"><summary>'+
+            '<span class="cat-nom"><span class="cat-t">'+escapeHtml(nombre)+'</span>'+desc+'</span>'+
+            '<span class="cat-tot">US$ '+fmt(c.total)+pct+'</span></summary>'+
+            '<table><tbody>'+items+'</tbody></table></details>';
+        }).join('');
+        document.getElementById('egresosList').innerHTML =
+          '<h2 class="sec-tit">'+T('egresosCat')+'</h2>'+ bloques;
+      }
+    }
+
+    // Modal de donación (desde la hoja Metodos)
+    var mw = document.getElementById('metodosWrap');
+    if (d.metodosDonacion && d.metodosDonacion.length) {
+      mw.innerHTML = d.metodosDonacion.map(function(m){
+        var campos = (m.campos||[]).map(function(c){
+          var val = c.enlace
+            ? '<a class="v lnk" href="'+escapeHtml(c.copiar)+'" target="_blank" rel="noopener">'+escapeHtml(c.valor)+'</a>'
+            : '<span class="v">'+escapeHtml(c.valor)+'</span>';
+          var k = c.campo ? '<span class="k">'+escapeHtml(tDato(c.campo))+'</span>' : '';
+          return '<div class="field">'+k+val+
+                 '<button class="copy" data-c="'+escapeHtml(c.copiar)+'" onclick="copiar(this, this.dataset.c)">'+T('copiar')+'</button></div>';
+        }).join('');
+        return '<div class="pay"><div class="nombre">'+escapeHtml(m.metodo)+'</div>'+campos+'</div>';
+      }).join('');
+    } else {
+      mw.innerHTML = '<div class="note">'+T('sinMetodos')+'</div>';
+    }
+
+    // Filtros (rellenar opciones una sola vez)
+    var fMon = document.getElementById('fMon');
+    if (fMon.options.length <= 1) {
+      d.porMoneda.forEach(function(m){
+        var o=document.createElement('option'); o.value=m.moneda; o.textContent=m.simbolo+' ('+m.moneda+')'; fMon.appendChild(o);
+      });
+    }
+    var fMet = document.getElementById('fMet');
+    if (fMet.options.length <= 1) {
+      (d.metodosPago||[]).forEach(function(met){
+        var o=document.createElement('option'); o.value=met; o.textContent=met; fMet.appendChild(o);
+      });
+    }
+  }
+
+  function render(){
+    if(!DATA) return;
+    var q = document.getElementById('q').value.trim().toLowerCase();
+    var fmon = document.getElementById('fMon').value;
+    var fmet = document.getElementById('fMet').value;
+
+    if(q === ''){
+      document.getElementById('tablaWrap').innerHTML = '<div class="empty">'+T('vacioBuscar')+'</div>';
+      document.getElementById('foot').textContent = '';
+      return;
+    }
+
+    var rows = DATA.movimientos.filter(function(m){
+      if(q && m.donante.toLowerCase().indexOf(q)===-1) return false;
+      if(fmon && m.moneda!==fmon) return false;
+      if(fmet && m.metodo!==fmet) return false;
+      return true;
+    });
+
+    if(rows.length === 0){
+      document.getElementById('tablaWrap').innerHTML = '<div class="empty">'+T('sinResultados')+'</div>';
+      document.getElementById('foot').textContent = '';
+      return;
+    }
+
+    rows.sort(function(a,b){
+      var x=a[sortCol], y=b[sortCol];
+      if(sortCol==='monto'){ return (x-y)*sortDir; }
+      x=String(x).toLowerCase(); y=String(y).toLowerCase();
+      return (x<y?-1:x>y?1:0)*sortDir;
+    });
+
+    var html = '<table><thead><tr>'+
+      '<th onclick="sortBy(\'donante\')">'+T('colDonante')+'</th>'+
+      '<th onclick="sortBy(\'metodo\')">'+T('colMetodo')+'</th>'+
+      '<th onclick="sortBy(\'monto\')" style="text-align:right">'+T('colMonto')+'</th>'+
+      '</tr></thead><tbody>';
+    rows.forEach(function(m){
+      html += '<tr><td>'+escapeHtml(m.donante)+'</td>'+
+              '<td><span class="tag">'+escapeHtml(tDato(m.metodo))+'</span></td>'+
+              '<td class="monto">'+m.simbolo+' '+fmt(m.monto,m.moneda)+'</td></tr>';
+    });
+    html += '</tbody></table>';
+    document.getElementById('tablaWrap').innerHTML = html;
+    document.getElementById('foot').textContent = T('resultados')(rows.length);
+  }
+
+  function sortBy(col){
+    if(sortCol===col) sortDir*=-1; else { sortCol=col; sortDir=1; }
+    render();
+  }
+
+  function escapeHtml(s){
+    return String(s).replace(/[&<>"']/g,function(c){
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+    });
+  }
+
+  function fallar(e){
+    document.getElementById('tablaWrap').innerHTML = '<div class="empty">'+T('errorDatos')+'</div>';
+    document.getElementById('sub').textContent = T('errorConexion');
+  }
+
+  // ---- Modal donar ----
+  function abrirDonar(){ document.getElementById('overlay').classList.add('open'); }
+  function cerrarDonar(){ document.getElementById('overlay').classList.remove('open'); }
+  document.addEventListener('keydown', function(e){ if(e.key==='Escape') cerrarDonar(); });
+
+  function copiar(btn, texto){
+    var done = function(){
+      var t = btn.textContent; btn.textContent=T('copiado'); btn.classList.add('ok');
+      setTimeout(function(){ btn.textContent=t; btn.classList.remove('ok'); }, 1400);
+    };
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(texto).then(done, function(){ fallback(texto); done(); });
+    } else { fallback(texto); done(); }
+  }
+  function fallback(texto){
+    var ta=document.createElement('textarea'); ta.value=texto;
+    ta.style.position='fixed'; ta.style.opacity='0'; document.body.appendChild(ta);
+    ta.select(); try{ document.execCommand('copy'); }catch(e){} document.body.removeChild(ta);
+  }
+
+  // Idioma inicial en la interfaz fija (antes de que lleguen los datos)
+  aplicarEstaticos();
+
+  // ---- Cargar datos vía JSONP con reintentos (tolera el arranque en frío) ----
+  var _cargado = false, _intentos = 0, _maxIntentos = 3;
+  window.__recibeDonaciones = function(d){ _cargado = true; init(d); };
+
+  function cargarDatos(){
+    if (_cargado) return;
+    _intentos++;
+    var hecho = false;
+    var terminar = function(){
+      if (hecho) return; hecho = true;
+      if (_cargado) return;
+      if (_intentos < _maxIntentos) cargarDatos(); else fallar();
+    };
+    var sep = API_URL.indexOf('?') === -1 ? '?' : '&';
+    var s = document.createElement('script');
+    s.src = API_URL + sep + 'callback=__recibeDonaciones&t=' + Date.now();
+    s.onerror = terminar;
+    document.body.appendChild(s);
+    setTimeout(terminar, 15000); // si no respondió en 15s, reintenta
+  }
+  cargarDatos();
 </script>
 </body></html>
