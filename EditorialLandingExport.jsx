@@ -99,7 +99,7 @@ function HeroSobrio({ onDonate, onOpen, lang }) {
           <Button variant="primary" onClick={onDonate} style={{ width:'auto', padding:'15px 28px', fontSize:16, whiteSpace:'nowrap' }}>{u.donarAhora}</Button>
           <button onClick={function(){ onOpen('quienes'); }} style={{ background:'none', border:'none', padding:0, color:'#fff', fontSize:15, fontWeight:700, cursor:'pointer', textDecoration:'underline' }}>{u.quienesLink}</button>
         </div>
-        <div style={{ fontSize:12, color:'rgba(255,255,255,.68)', margin:'26px 0 0' }}>{u.recaudado} ≈ US$ {x.totalUSD} · {u.ejecutado} ≈ US$ {x.totalEgresos} · {u.actualizado} {x.actualizado}</div>
+        <div style={{ fontSize:12, color:'rgba(255,255,255,.68)', margin:'26px 0 0' }}>{x ? (u.recaudado + ' ≈ US$ ' + x.totalUSD + ' · ' + u.ejecutado + ' ≈ US$ ' + x.totalEgresos + ' · ' + u.actualizado + ' ' + x.actualizado) : ''}</div>
       </div>
     </section>
   );
@@ -210,8 +210,11 @@ function Section({ id, eyebrow, titulo, lead, leadWide, children, tone }) {
   );
 }
 
+const NEXOS_EMPTY = { actualizado:'', totalUSD:'0,00', totalEgresos:'0,00', saldo:'0,00', totalDonaciones:0, notaTasas:'', porMoneda:[], metodos:[], movimientos:[], egresos:[], metodosDonacion:[], enlaceFacturas:'', enlaceFotos:'' };
+
 function EditorialLandingExport() {
-  const x = window.NEXOS_FIXTURE;
+  const loadingData = !window.NEXOS_FIXTURE;
+  const x = window.NEXOS_FIXTURE || NEXOS_EMPTY;
   const [lang, setLang] = React.useState(function(){ try { return localStorage.getItem('nexos.lang') === 'EN' ? 'EN' : 'ES'; } catch (e) { return 'ES'; } });
   React.useEffect(function(){ try { localStorage.setItem('nexos.lang', lang); } catch (e) {} document.documentElement.lang = lang === 'EN' ? 'en' : 'es'; }, [lang]);
   const d = window.nexosContent(lang); const u = d.ui;
@@ -270,15 +273,19 @@ function EditorialLandingExport() {
         <PhotoStrip onZoom={setZoom} lang={lang} />
       </Section>
 
-      <Section id="cifras" tone="line" titulo={u.cifrasTitulo} lead={x.notaTasas} leadWide>
-        <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(200px,1fr))', gap:14, marginBottom:14 }}>
-          <StatCard tone="income" label={u.totalRecaudado} value={'≈ US$ ' + x.totalUSD} />
-          <StatCard tone="expense" label={u.totalEgresos} value={'≈ US$ ' + x.totalEgresos} />
-          <StatCard tone="balance" label={u.saldo} value={'≈ US$ ' + x.saldo} />
-        </div>
-        <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(170px,1fr))', gap:14 }}>
-          {x.porMoneda.map(function(m){ return <CurrencyCard key={m.moneda} {...m} />; })}
-        </div>
+      <Section id="cifras" tone="line" titulo={u.cifrasTitulo} lead={loadingData ? '' : x.notaTasas} leadWide>
+        {loadingData
+          ? <div style={{ color:'var(--muted)', fontSize:14, padding:'8px 0 20px' }}>Cargando cifras en vivo…</div>
+          : <React.Fragment>
+              <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(200px,1fr))', gap:14, marginBottom:14 }}>
+                <StatCard tone="income" label={u.totalRecaudado} value={'≈ US$ ' + x.totalUSD} />
+                <StatCard tone="expense" label={u.totalEgresos} value={'≈ US$ ' + x.totalEgresos} />
+                <StatCard tone="balance" label={u.saldo} value={'≈ US$ ' + x.saldo} />
+              </div>
+              <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(170px,1fr))', gap:14 }}>
+                {x.porMoneda.map(function(m){ return <CurrencyCard key={m.moneda} {...m} />; })}
+              </div>
+            </React.Fragment>}
       </Section>
 
       <Section id="donar" tone="coral" titulo={u.donarTitulo}>

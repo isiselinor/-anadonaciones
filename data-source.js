@@ -3,6 +3,7 @@
    si queda vacía, se muestran los datos de ejemplo de data.js.
    El script expone doGet con soporte JSONP (?callback=), así que no hace falta CORS. */
 window.NEXOS_ENDPOINT = 'https://script.google.com/macros/s/AKfycbyKLVJVc4mT39F_xOuCSrjFfnIICHVYNQHpMTMlk9HxT8yg6KwwB6WLInSqY_QMsZg/exec';
+window.NEXOS_FIXTURE = null;
 
 (function () {
   const nf = function (n, dec) {
