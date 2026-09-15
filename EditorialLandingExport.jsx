@@ -91,15 +91,15 @@ function Hero({ onDonate, onOpen, scrimBase, lang }) {
 function HeroSobrio({ onDonate, onOpen, lang }) {
   const d = window.nexosContent(lang); const u = d.ui; const x = window.NEXOS_FIXTURE;
   return (
-    <section style={{ background:'transparent', borderBottom:'1px solid var(--line)' }}>
+    <section style={{ background:'var(--nexos-blue)' }}>
       <div style={{ ...A.wrap, maxWidth:900, paddingTop:'clamp(56px,9vw,110px)', paddingBottom:'clamp(40px,6vw,72px)' }}>
-        <h1 style={{ fontFamily:'var(--font-display)', fontSize:'clamp(30px,4.4vw,52px)', fontWeight:700, lineHeight:1.08, letterSpacing:'-1.6px', color:'var(--ink)', margin:0, maxWidth:760, textWrap:'balance' }}>{d.hero.titulo}</h1>
-        <p style={{ fontSize:'clamp(15px,1.6vw,18px)', lineHeight:1.7, color:'var(--muted)', maxWidth:560, margin:'20px 0 0' }}>{d.hero.bajada}</p>
+        <h1 style={{ fontFamily:'var(--font-display)', fontSize:'clamp(30px,4.4vw,52px)', fontWeight:700, lineHeight:1.08, letterSpacing:'-1.6px', color:'#fff', margin:0, maxWidth:760, textWrap:'balance' }}>{d.hero.titulo}</h1>
+        <p style={{ fontSize:'clamp(15px,1.6vw,18px)', lineHeight:1.7, color:'rgba(255,255,255,.82)', maxWidth:560, margin:'20px 0 0' }}>{d.hero.bajada}</p>
         <div style={{ display:'flex', gap:14, alignItems:'center', margin:'30px 0 0', flexWrap:'wrap' }}>
           <Button variant="primary" onClick={onDonate} style={{ width:'auto', padding:'15px 28px', fontSize:16, whiteSpace:'nowrap' }}>{u.donarAhora}</Button>
-          <button onClick={function(){ onOpen('quienes'); }} style={{ background:'none', border:'none', padding:0, color:'var(--blue)', fontSize:15, fontWeight:700, cursor:'pointer' }}>{u.quienesLink}</button>
+          <button onClick={function(){ onOpen('quienes'); }} style={{ background:'none', border:'none', padding:0, color:'#fff', fontSize:15, fontWeight:700, cursor:'pointer', textDecoration:'underline' }}>{u.quienesLink}</button>
         </div>
-        <div style={{ fontSize:12, color:'var(--muted)', margin:'26px 0 0' }}>{u.recaudado} ≈ US$ {x.totalUSD} · {u.ejecutado} ≈ US$ {x.totalEgresos} · {u.actualizado} {x.actualizado}</div>
+        <div style={{ fontSize:12, color:'rgba(255,255,255,.68)', margin:'26px 0 0' }}>{u.recaudado} ≈ US$ {x.totalUSD} · {u.ejecutado} ≈ US$ {x.totalEgresos} · {u.actualizado} {x.actualizado}</div>
       </div>
     </section>
   );
@@ -196,12 +196,14 @@ function FaqRow({ q, a, open }) {
 }
 
 function Section({ id, eyebrow, titulo, lead, leadWide, children, tone }) {
+  const solid = tone === 'coral' ? 'var(--nexos-coral)' : null;
+  const light = !!solid;
   return (
-    <section id={id} style={{ padding:'clamp(56px,8vw,96px) 0', background: tone === 'soft' ? 'linear-gradient(180deg, rgba(43,79,209,.09), rgba(43,79,209,.015) 70%, transparent)' : tone === 'line' ? '#fff' : 'transparent', borderTop: tone ? '1px solid var(--line)' : 'none', borderBottom: tone ? '1px solid var(--line)' : 'none' }}>
+    <section id={id} style={{ padding:'clamp(56px,8vw,96px) 0', background: solid || '#fff' }}>
       <div style={A.wrap}>
-        {eyebrow ? <div style={A.eyebrow}>{eyebrow}</div> : null}
-        {titulo ? <h2 style={A.h2}>{titulo}</h2> : null}
-        {lead ? <p style={leadWide ? { ...A.lead, maxWidth:'none', whiteSpace:'nowrap', overflowX:'auto' } : A.lead}>{lead}</p> : null}
+        {eyebrow ? <div style={{ ...A.eyebrow, color: light ? 'rgba(255,255,255,.75)' : A.eyebrow.color }}>{eyebrow}</div> : null}
+        {titulo ? <h2 style={{ ...A.h2, color: light ? '#fff' : A.h2.color }}>{titulo}</h2> : null}
+        {lead ? <p style={{ ...(leadWide ? { ...A.lead, maxWidth:'none', whiteSpace:'nowrap', overflowX:'auto' } : A.lead), color: light ? 'rgba(255,255,255,.85)' : A.lead.color }}>{lead}</p> : null}
         <div style={{ marginTop:34 }}>{children}</div>
       </div>
     </section>
@@ -246,7 +248,7 @@ function EditorialLandingExport() {
   const TOPE = 25;
   const rows = encontrados.slice(0, TOPE);
   return (
-    <div id="top" style={{ background:'var(--bg-page)', backgroundAttachment:'fixed' }}>
+    <div id="top" style={{ background:'#fff' }}>
       <NavBar onOpen={setDrawer} onDonate={function(){ setDonar(true); }} lang={lang} setLang={setLang} forceSolid={t.portada !== 'Foto'} />
       {t.portada === 'Sobrio' ? <HeroSobrio lang={lang} onDonate={function(){ setDonar(true); }} onOpen={setDrawer} />
         : t.portada === 'Centrado' ? <HeroCentrado lang={lang} onDonate={function(){ setDonar(true); }} onOpen={setDrawer} />
@@ -279,7 +281,7 @@ function EditorialLandingExport() {
         </div>
       </Section>
 
-      <Section id="donar" tone="soft" titulo={u.donarTitulo}>
+      <Section id="donar" tone="coral" titulo={u.donarTitulo}>
         <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(240px,1fr))', gap:12 }}>
           <StepCard n={1} title={u.paso1t} html={u.paso1} />
           <StepCard n={2} title={u.paso2t} html={u.paso2} />
