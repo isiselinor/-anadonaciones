@@ -60,22 +60,14 @@ window.NEXOS_ENDPOINT = 'https://script.google.com/macros/s/AKfycbyKLVJVc4mT39F_
     };
   };
 
-  /* Carga vía JSONP y vuelve a renderizar. window.__nexosRender lo define cada página. */
+  /* Carga el JSON público y vuelve a renderizar. window.__nexosRender lo define cada página. */
   window.nexosCargar = function () {
     const url = window.NEXOS_ENDPOINT;
     if (!url) return;
-    const cb = 'nexosCb_' + Date.now();
-    window[cb] = function (data) {
-      try {
-        window.NEXOS_FIXTURE = window.nexosNormalizar(data);
-        if (typeof window.__nexosRender === 'function') window.__nexosRender();
-      } catch (err) { console.error('NEXOS: respuesta inesperada', err); }
-      delete window[cb];
-    };
-    const s = document.createElement('script');
-    s.src = url + (url.indexOf('?') > -1 ? '&' : '?') + 'callback=' + cb;
-    s.onerror = function () { console.error('NEXOS: no se pudo leer ' + url + ' — revisa que el deployment sea "Cualquiera con el enlace".'); };
-    document.head.appendChild(s);
+    fetch(url).then(function (r) { return r.json(); }).then(function (data) {
+      window.NEXOS_FIXTURE = window.nexosNormalizar(data);
+      if (typeof window.__nexosRender === 'function') window.__nexosRender();
+    }).catch(function (err) { console.error('NEXOS: no se pudo leer ' + url, err); });
   };
 
   document.addEventListener('DOMContentLoaded', window.nexosCargar);
