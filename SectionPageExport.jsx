@@ -53,6 +53,11 @@ function SectionPageExport({ id, onClose, onOpen, onDonate, lang }) {
         })}
       </div>
 
+      {id === 'quienes' ? (
+        <div style={{ maxWidth:720, margin:'28px auto 0', padding:'0 24px' }}>
+          <a href="https://somosnexos.substack.com" target="_blank" rel="noopener" style={{ display:'inline-flex', alignItems:'center', gap:8, background:'var(--nexos-coral)', color:'#fff', fontWeight:800, fontSize:15, padding:'13px 24px', borderRadius:999, textDecoration:'none' }}>{u.boletinQuienes} →</a>
+        </div>) : null}
+
       {v.datos ? (
         <div style={{ ...col, marginTop:36 }}>
           <div style={{ display:'flex', flexWrap:'wrap', gap:'18px 40px', padding:'20px 0', borderTop:'1px solid var(--line)', borderBottom:'1px solid var(--line)' }}>
@@ -106,6 +111,10 @@ function SectionPageExport({ id, onClose, onOpen, onDonate, lang }) {
               <span style={{ fontFamily:'var(--font-display)', fontWeight:700, fontSize:19, color:'var(--ink)', letterSpacing:'-.4px' }}>{d.ventanas[k].titulo}</span>
               <span style={{ color:'var(--accent)', fontWeight:800 }}>→</span></button>);
           })}
+          <a href="https://somosnexos.substack.com" target="_blank" rel="noopener"
+            style={{ display:'flex', justifyContent:'space-between', alignItems:'center', gap:16, borderTop:'1px solid var(--line)', padding:'18px 0', textDecoration:'none' }}>
+            <span style={{ fontFamily:'var(--font-display)', fontWeight:700, fontSize:19, color:'var(--ink)', letterSpacing:'-.4px' }}>{(d.nav.find(function(n){ return n.id === 'historias'; }) || {}).label}</span>
+            <span style={{ color:'var(--accent)', fontWeight:800 }}>↗</span></a>
         </div>
       </div>
     </div>

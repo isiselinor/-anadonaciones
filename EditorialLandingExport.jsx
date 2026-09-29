@@ -38,7 +38,7 @@ function NavBar({ onOpen, onDonate, lang, setLang, forceSolid }) {
         </a>
         <nav style={{ display:'flex', gap:20, marginLeft:'auto', alignItems:'center', flexWrap:'nowrap' }} className="navlinks">
           {d.nav.map(function(n){
-            return <a key={n.id} href={'#' + n.id} onClick={n.id === 'quienes' || n.id === 'aliados' || n.id === 'faq' ? function(e){ e.preventDefault(); onOpen(n.id); } : undefined}
+            return <a key={n.id} href={n.href || ('#' + n.id)} target={n.href ? '_blank' : undefined} rel={n.href ? 'noopener' : undefined} onClick={n.id === 'quienes' || n.id === 'aliados' || n.id === 'faq' ? function(e){ e.preventDefault(); onOpen(n.id); } : undefined}
               style={{ fontSize:13.5, fontWeight:600, textDecoration:'none', whiteSpace:'nowrap', color: solid ? 'var(--ink)' : 'rgba(255,255,255,.86)', borderBottom: ['quienes','aliados','faq'].indexOf(n.id) > -1 ? '1px dotted currentColor' : 'none', paddingBottom:2 }}>{n.label}</a>;
           })}
         </nav>
@@ -51,7 +51,7 @@ function NavBar({ onOpen, onDonate, lang, setLang, forceSolid }) {
           <div style={{ ...A.wrap, display:'grid', padding:'8px 24px 16px' }}>
             {d.nav.map(function(n){
               const isWin = ['quienes','aliados','faq'].indexOf(n.id) > -1;
-              return <a key={n.id} href={'#' + n.id} onClick={function(e){ if (isWin) { e.preventDefault(); onOpen(n.id); } setMenu(false); }}
+              return <a key={n.id} href={n.href || ('#' + n.id)} target={n.href ? '_blank' : undefined} rel={n.href ? 'noopener' : undefined} onClick={function(e){ if (isWin) { e.preventDefault(); onOpen(n.id); } setMenu(false); }}
                 style={{ padding:'14px 0', borderBottom:'1px solid var(--line)', fontSize:16, fontWeight:700, color:'var(--ink)', textDecoration:'none' }}>{n.label}</a>;
             })}
           </div>
@@ -99,7 +99,7 @@ function HeroSobrio({ onDonate, onOpen, lang }) {
           <Button variant="primary" onClick={onDonate} style={{ width:'auto', padding:'15px 28px', fontSize:16, whiteSpace:'nowrap' }}>{u.donarAhora}</Button>
           <button onClick={function(){ onOpen('quienes'); }} style={{ background:'none', border:'none', padding:0, color:'#fff', fontSize:15, fontWeight:700, cursor:'pointer', textDecoration:'underline' }}>{u.quienesLink}</button>
         </div>
-        <div style={{ fontSize:12, color:'rgba(255,255,255,.68)', margin:'26px 0 0' }}>{u.recaudado} ≈ US$ {x.totalUSD} · {u.ejecutado} ≈ US$ {x.totalEgresos} · {u.actualizado} {x.actualizado}</div>
+        <div style={{ fontSize:12, color:'rgba(255,255,255,.68)', margin:'26px 0 0' }}>{x ? (u.recaudado + ' ≈ US$ ' + x.totalUSD + ' · ' + u.ejecutado + ' ≈ US$ ' + x.totalEgresos + ' · ' + u.actualizado + ' ' + x.actualizado) : ''}</div>
       </div>
     </section>
   );
@@ -210,8 +210,11 @@ function Section({ id, eyebrow, titulo, lead, leadWide, children, tone }) {
   );
 }
 
+const NEXOS_EMPTY = { actualizado:'', totalUSD:'0,00', totalEgresos:'0,00', saldo:'0,00', totalDonaciones:0, notaTasas:'', porMoneda:[], metodos:[], movimientos:[], egresos:[], metodosDonacion:[], enlaceFacturas:'', enlaceFotos:'' };
+
 function EditorialLandingExport() {
-  const x = window.NEXOS_FIXTURE;
+  const loadingData = !window.NEXOS_FIXTURE;
+  const x = window.NEXOS_FIXTURE || NEXOS_EMPTY;
   const [lang, setLang] = React.useState(function(){ try { return localStorage.getItem('nexos.lang') === 'EN' ? 'EN' : 'ES'; } catch (e) { return 'ES'; } });
   React.useEffect(function(){ try { localStorage.setItem('nexos.lang', lang); } catch (e) {} document.documentElement.lang = lang === 'EN' ? 'en' : 'es'; }, [lang]);
   const d = window.nexosContent(lang); const u = d.ui;
@@ -270,15 +273,19 @@ function EditorialLandingExport() {
         <PhotoStrip onZoom={setZoom} lang={lang} />
       </Section>
 
-      <Section id="cifras" tone="line" titulo={u.cifrasTitulo} lead={x.notaTasas} leadWide>
-        <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(200px,1fr))', gap:14, marginBottom:14 }}>
-          <StatCard tone="income" label={u.totalRecaudado} value={'≈ US$ ' + x.totalUSD} />
-          <StatCard tone="expense" label={u.totalEgresos} value={'≈ US$ ' + x.totalEgresos} />
-          <StatCard tone="balance" label={u.saldo} value={'≈ US$ ' + x.saldo} />
-        </div>
-        <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(170px,1fr))', gap:14 }}>
-          {x.porMoneda.map(function(m){ return <CurrencyCard key={m.moneda} {...m} />; })}
-        </div>
+      <Section id="cifras" tone="line" titulo={u.cifrasTitulo} lead={loadingData ? '' : x.notaTasas} leadWide>
+        {loadingData
+          ? <div style={{ color:'var(--muted)', fontSize:14, padding:'8px 0 20px' }}>Cargando cifras en vivo…</div>
+          : <React.Fragment>
+              <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(200px,1fr))', gap:14, marginBottom:14 }}>
+                <StatCard tone="income" label={u.totalRecaudado} value={'≈ US$ ' + x.totalUSD} />
+                <StatCard tone="expense" label={u.totalEgresos} value={'≈ US$ ' + x.totalEgresos} />
+                <StatCard tone="balance" label={u.saldo} value={'≈ US$ ' + x.saldo} />
+              </div>
+              <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(170px,1fr))', gap:14 }}>
+                {x.porMoneda.map(function(m){ return <CurrencyCard key={m.moneda} {...m} />; })}
+              </div>
+            </React.Fragment>}
       </Section>
 
       <Section id="donar" tone="coral" titulo={u.donarTitulo}>
@@ -341,6 +348,20 @@ function EditorialLandingExport() {
           return <ExpenseCategory key={c.categoria} name={c.categoria} description={c.descripcion} total={c.total} pct={c.pct} items={c.items} />;
         })}
       </Section>
+
+      <section id="historias" style={{ background:'var(--nexos-blue)', overflow:'hidden' }}>
+        <div style={{ overflow:'hidden', borderBottom:'1px solid rgba(255,255,255,.2)', padding:'16px 0' }}>
+          <div className="nx-marquee" style={{ display:'flex', gap:40, whiteSpace:'nowrap', width:'max-content', fontSize:16, fontWeight:700, color:'#fff' }}>
+            {[0,1,2,3].map(function(k){ return u.boletinCinta.map(function(t, i){ return <React.Fragment key={k + '-' + i}><span>{t}</span><span style={{ color:'var(--nexos-coral)' }}>●</span></React.Fragment>; }); })}
+          </div>
+        </div>
+        <div style={{ ...A.wrap, padding:'clamp(48px,7vw,84px) 24px', display:'flex', flexDirection:'column', gap:16, alignItems:'flex-start' }}>
+          <div style={{ fontSize:11, fontWeight:800, letterSpacing:1.6, textTransform:'uppercase', color:'#fff' }}>{u.boletinEyebrow}</div>
+          <h2 style={{ ...A.h2, color:'#fff', margin:0, maxWidth:720, textWrap:'balance' }}>{u.boletinTitulo}</h2>
+          <p style={{ fontSize:16, lineHeight:1.7, color:'#fff', margin:0, maxWidth:560 }}>{u.boletinTexto}</p>
+          <a href="https://somosnexos.substack.com" target="_blank" rel="noopener" style={{ display:'inline-block', marginTop:8, background:'var(--nexos-coral)', color:'#fff', fontWeight:800, fontSize:15, padding:'14px 26px', borderRadius:999, textDecoration:'none' }}>{u.boletinBoton} →</a>
+        </div>
+      </section>
 
       <footer style={{ background:'var(--ink)', color:'rgba(255,255,255,.7)', padding:'54px 0 40px' }}>
         <div style={A.wrap}>

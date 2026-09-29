@@ -38,7 +38,12 @@ function SectionWindowExport({ id, onClose, onOpen, onDonate, variant, lang }) {
             {(id === 'quienes' && x.mision ? [x.mision].concat((v.cuerpo || []).slice(1)) : (v.cuerpo || [])).map(function(p, i){
               return <p key={i} style={{ fontSize:17, lineHeight:1.8, color:'var(--ink)', maxWidth:640, margin: i ? '20px 0 0' : 0 }} dangerouslySetInnerHTML={{ __html:p }} />;
             })}
-            {v.datos ? (
+            {id === 'quienes' ? (
+        <div style={{ maxWidth:720, margin:'28px auto 0', padding:'0 24px' }}>
+          <a href="https://somosnexos.substack.com" target="_blank" rel="noopener" style={{ display:'inline-flex', alignItems:'center', gap:8, background:'var(--nexos-coral)', color:'#fff', fontWeight:800, fontSize:15, padding:'13px 24px', borderRadius:999, textDecoration:'none' }}>{u.boletinQuienes} →</a>
+        </div>) : null}
+
+      {v.datos ? (
               <div style={{ marginTop:24 }}>
                 {v.datos.map(function(r){
                   return (<div key={r.k} style={{ display:'flex', justifyContent:'space-between', gap:14, padding:'12px 0', borderTop:'1px dashed var(--line)', fontSize:14 }}>
@@ -98,6 +103,7 @@ function SectionWindowExport({ id, onClose, onOpen, onDonate, variant, lang }) {
                 {otras.map(function(k){
                   return <button key={k} onClick={function(){ onOpen(k); }} style={{ background:'none', border:'none', padding:0, textAlign:'left', cursor:'pointer', fontSize:13, fontWeight:700, color:'var(--blue)' }}>{d.ventanas[k].titulo} →</button>;
                 })}
+                <a href="https://somosnexos.substack.com" target="_blank" rel="noopener" style={{ fontSize:13, fontWeight:700, color:'var(--blue)', textDecoration:'none' }}>{(d.nav.find(function(n){ return n.id === 'historias'; }) || {}).label} ↗</a>
               </div>
             </div>
           </aside>
