@@ -359,7 +359,7 @@ function EditorialLandingExport() {
           <div style={{ fontSize:11, fontWeight:800, letterSpacing:1.6, textTransform:'uppercase', color:'#fff' }}>{u.boletinEyebrow}</div>
           <h2 style={{ ...A.h2, color:'#fff', margin:0, maxWidth:720, textWrap:'balance' }}>{u.boletinTitulo}</h2>
           <p style={{ fontSize:16, lineHeight:1.7, color:'#fff', margin:0, maxWidth:560 }}>{u.boletinTexto}</p>
-          <a href="https://somosnexos.substack.com" target="_blank" rel="noopener" style={{ display:'inline-block', marginTop:8, background:'var(--nexos-coral)', color:'#fff', fontWeight:800, fontSize:15, padding:'14px 26px', borderRadius:999, textDecoration:'none' }}>{u.boletinBoton} →</a>
+          <a href="https://somosnexos.substack.com" target="_blank" rel="noopener" style={{ display:'inline-block', marginTop:8, background:'var(--nexos-coral)', color:'#fff', fontWeight:800, fontSize:15, padding:'14px 26px', borderRadius:999, textDecoration:'none' }}>{u.boletinBoton}</a>
         </div>
       </section>
 
