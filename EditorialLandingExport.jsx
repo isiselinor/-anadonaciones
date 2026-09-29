@@ -38,7 +38,7 @@ function NavBar({ onOpen, onDonate, lang, setLang, forceSolid }) {
         </a>
         <nav style={{ display:'flex', gap:20, marginLeft:'auto', alignItems:'center', flexWrap:'nowrap' }} className="navlinks">
           {d.nav.map(function(n){
-            return <a key={n.id} href={'#' + n.id} onClick={n.id === 'quienes' || n.id === 'aliados' || n.id === 'faq' ? function(e){ e.preventDefault(); onOpen(n.id); } : undefined}
+            return <a key={n.id} href={n.href || ('#' + n.id)} target={n.href ? '_blank' : undefined} rel={n.href ? 'noopener' : undefined} onClick={n.id === 'quienes' || n.id === 'aliados' || n.id === 'faq' ? function(e){ e.preventDefault(); onOpen(n.id); } : undefined}
               style={{ fontSize:13.5, fontWeight:600, textDecoration:'none', whiteSpace:'nowrap', color: solid ? 'var(--ink)' : 'rgba(255,255,255,.86)', borderBottom: ['quienes','aliados','faq'].indexOf(n.id) > -1 ? '1px dotted currentColor' : 'none', paddingBottom:2 }}>{n.label}</a>;
           })}
         </nav>
@@ -51,7 +51,7 @@ function NavBar({ onOpen, onDonate, lang, setLang, forceSolid }) {
           <div style={{ ...A.wrap, display:'grid', padding:'8px 24px 16px' }}>
             {d.nav.map(function(n){
               const isWin = ['quienes','aliados','faq'].indexOf(n.id) > -1;
-              return <a key={n.id} href={'#' + n.id} onClick={function(e){ if (isWin) { e.preventDefault(); onOpen(n.id); } setMenu(false); }}
+              return <a key={n.id} href={n.href || ('#' + n.id)} target={n.href ? '_blank' : undefined} rel={n.href ? 'noopener' : undefined} onClick={function(e){ if (isWin) { e.preventDefault(); onOpen(n.id); } setMenu(false); }}
                 style={{ padding:'14px 0', borderBottom:'1px solid var(--line)', fontSize:16, fontWeight:700, color:'var(--ink)', textDecoration:'none' }}>{n.label}</a>;
             })}
           </div>
@@ -348,6 +348,20 @@ function EditorialLandingExport() {
           return <ExpenseCategory key={c.categoria} name={c.categoria} description={c.descripcion} total={c.total} pct={c.pct} items={c.items} />;
         })}
       </Section>
+
+      <section id="historias" style={{ background:'var(--nexos-blue)', overflow:'hidden' }}>
+        <div style={{ overflow:'hidden', borderBottom:'1px solid rgba(255,255,255,.2)', padding:'16px 0' }}>
+          <div className="nx-marquee" style={{ display:'flex', gap:40, whiteSpace:'nowrap', width:'max-content', fontSize:16, fontWeight:700, color:'#fff' }}>
+            {[0,1,2,3].map(function(k){ return u.boletinCinta.map(function(t, i){ return <React.Fragment key={k + '-' + i}><span>{t}</span><span style={{ color:'var(--nexos-coral)' }}>●</span></React.Fragment>; }); })}
+          </div>
+        </div>
+        <div style={{ ...A.wrap, padding:'clamp(48px,7vw,84px) 24px', display:'flex', flexDirection:'column', gap:16, alignItems:'flex-start' }}>
+          <div style={{ fontSize:11, fontWeight:800, letterSpacing:1.6, textTransform:'uppercase', color:'#fff' }}>{u.boletinEyebrow}</div>
+          <h2 style={{ ...A.h2, color:'#fff', margin:0, maxWidth:720, textWrap:'balance' }}>{u.boletinTitulo}</h2>
+          <p style={{ fontSize:16, lineHeight:1.7, color:'#fff', margin:0, maxWidth:560 }}>{u.boletinTexto}</p>
+          <a href="https://somosnexos.substack.com" target="_blank" rel="noopener" style={{ display:'inline-block', marginTop:8, background:'var(--nexos-coral)', color:'#fff', fontWeight:800, fontSize:15, padding:'14px 26px', borderRadius:999, textDecoration:'none' }}>{u.boletinBoton}</a>
+        </div>
+      </section>
 
       <footer style={{ background:'var(--ink)', color:'rgba(255,255,255,.7)', padding:'54px 0 40px' }}>
         <div style={A.wrap}>

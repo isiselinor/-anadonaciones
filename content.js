@@ -8,7 +8,8 @@ const NEXOS_ES = {
     { id:'cifras', label:'La ayuda en números' },
     { id:'donar', label:'Cómo donar' },
     { id:'evidencia', label:'Transparencia' },
-    { id:'faq', label:'Preguntas' }
+    { id:'faq', label:'Preguntas' },
+    { id:'historias', label:'Historias', href:'https://somosnexos.substack.com' }
   ],
   hero: {
     eyebrow: 'Ayuda humanitaria · Venezuela',
@@ -103,6 +104,7 @@ const NEXOS_ES = {
     fotosPor: 'Fotos: nuestro equipo en terreno',
     anterior: 'Anterior', siguiente: 'Siguiente', ampliar: 'Ampliar foto',
     cifrasTitulo: 'La ayuda en números',
+    boletinEyebrow: 'En Substack', boletinTitulo: 'Lo que no cabe en una cifra, te lo contamos con una historia', boletinCinta: ['Historias desde el terreno','Voces de la comunidad','Reporte de cada aporte'], boletinTexto: 'Mantente al tanto de todo lo que estamos haciendo y los próximos pasos en nuestro Substack.', boletinBoton: 'Suscríbete', boletinQuienes: 'Lee nuestras historias en Substack',
     donarTitulo: 'Cómo donar en 3 pasos',
     paso1t: 'Elige método', paso1: 'Haz click en <b style="color:var(--accent)">Donar ahora</b> y selecciona la forma de pago que prefieras.',
     paso2t: 'Copia y transfiere', paso2: 'Copia los datos con <b style="color:var(--accent)">Copiar</b> y haz tu aporte desde tu banco.',
@@ -138,7 +140,8 @@ const NEXOS_EN = {
     { id:'cifras', label:'Aid in numbers' },
     { id:'donar', label:'How to donate' },
     { id:'evidencia', label:'Transparency' },
-    { id:'faq', label:'FAQ' }
+    { id:'faq', label:'FAQ' },
+    { id:'historias', label:'Stories', href:'https://somosnexos.substack.com' }
   ],
   hero: {
     eyebrow: 'Humanitarian aid · Venezuela',
@@ -227,6 +230,7 @@ const NEXOS_EN = {
     fotosPor: 'Photos: our team on the ground',
     anterior: 'Previous', siguiente: 'Next', ampliar: 'Enlarge photo',
     cifrasTitulo: 'Aid in numbers',
+    boletinEyebrow: 'On Substack', boletinTitulo: "What doesn't fit in a number, we tell you with a story", boletinCinta: ['Stories from the ground','Voices of the community','Where every contribution goes'], boletinTexto: 'Stay up to date with everything we are doing and our next steps on our Substack.', boletinBoton: 'Subscribe', boletinQuienes: 'Read our stories on Substack',
     donarTitulo: 'How to donate in 3 steps',
     paso1t: 'Choose a method', paso1: 'Click <b style="color:var(--accent)">Donate now</b> and select the payment method you prefer.',
     paso2t: 'Copy and transfer', paso2: 'Copy the details with <b style="color:var(--accent)">Copy</b> and send your contribution from your bank.',
