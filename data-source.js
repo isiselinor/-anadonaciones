@@ -58,7 +58,7 @@ window.NEXOS_FIXTURE = null;
       metodosDonacion: d.metodosDonacion || [],
       enlaceFacturas: d.enlaceFacturas || '',
       enlaceFotos: d.enlaceFotos || '',
-      proyectosRaw: Array.isArray(d.proyectos) ? d.proyectos : []
+      proyectosSheet: (d.proyectos && !Array.isArray(d.proyectos)) ? d.proyectos : null
     };
   };
 

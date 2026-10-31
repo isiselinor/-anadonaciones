@@ -10,45 +10,27 @@
  *         proyectos: leerProyectos_(),
  *  5. Implementar → Administrar implementaciones → lápiz → Versión: "Nueva versión" → Implementar.
  *
- * Lee dos pestañas:
- *  - "Proyectos":        una fila por proyecto (la fila 1 son los nombres de columna).
- *  - "Proyecto_detalle": varias filas por proyecto (cifras, etapas, fotos, gastos, kits, aportes, aliados).
- * Las columnas se buscan por su nombre en la fila 1, así que puedes moverlas de lugar.
+ * Del Sheet solo se leen montos y fotos (los textos están en la página):
+ *  - "Proyectos":        A=Proyecto | B=Meta (US$) | C=Recaudado (US$) | D=Etapa actual | E=Actualizado
+ *  - "Fotos_proyectos":  A=Proyecto | B=Galería | C=Pie de foto | D=Enlace de la foto | E=Pie en inglés (opcional)
+ * La fila 1 es el encabezado; los datos empiezan en la fila 2.
  */
 function leerProyectos_() {
   var ss = SpreadsheetApp.getActiveSpreadsheet();
-  var filas = leerTablaPorEncabezado_(ss.getSheetByName('Proyectos'));
-  var detalle = leerTablaPorEncabezado_(ss.getSheetByName('Proyecto_detalle'));
-  var porProyecto = {};
-  detalle.forEach(function (d) {
-    var id = String(d.proyecto || '').trim();
-    if (!id || !String(d.tipo || '').trim()) return;
-    (porProyecto[id] = porProyecto[id] || []).push(d);
-  });
-  return filas.filter(function (p) { return String(p.id || '').trim(); }).map(function (p) {
-    p.id = String(p.id).trim();
-    p.detalle = porProyecto[p.id] || [];
-    return p;
-  });
-}
-
-// Convierte una pestaña en una lista de objetos usando la fila 1 como nombres de campo.
-function leerTablaPorEncabezado_(hoja) {
-  if (!hoja || hoja.getLastRow() < 2) return [];
-  var vals = hoja.getDataRange().getValues();
-  var claves = vals[0].map(function (h) { return String(h || '').trim().toLowerCase(); });
   var tz = Session.getScriptTimeZone();
-  var out = [];
-  for (var i = 1; i < vals.length; i++) {
-    var fila = vals[i], o = {}, vacia = true;
-    for (var j = 0; j < claves.length; j++) {
-      if (!claves[j]) continue;
-      var v = fila[j];
-      if (v instanceof Date) v = Utilities.formatDate(v, tz, 'dd/MM/yyyy');
-      if (v !== '' && v !== null) vacia = false;
-      o[claves[j]] = v;
-    }
-    if (!vacia) out.push(o);
-  }
-  return out;
+  var celda = function (v) { return v instanceof Date ? Utilities.formatDate(v, tz, 'dd/MM/yyyy') : v; };
+  var filas = function (nombre, cols) {
+    var h = ss.getSheetByName(nombre);
+    if (!h || h.getLastRow() < 2) return [];
+    return h.getRange(2, 1, h.getLastRow() - 1, cols).getValues()
+      .filter(function (r) { return String(r[0] || '').trim(); });
+  };
+  return {
+    montos: filas('Proyectos', 5).map(function (r) {
+      return { proyecto: String(r[0]).trim(), meta: r[1], recaudado: r[2], etapa: r[3], actualizado: celda(r[4]) };
+    }),
+    fotos: filas('Fotos_proyectos', 5).map(function (r) {
+      return { proyecto: String(r[0]).trim(), galeria: String(r[1] || '').trim(), pie: String(r[2] || '').trim(), enlace: String(r[3] || '').trim(), pie_en: String(r[4] || '').trim() };
+    })
+  };
 }

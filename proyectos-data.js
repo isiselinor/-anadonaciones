@@ -1,28 +1,17 @@
 /* PROYECTOS de NEXOS
-   Los datos salen del Sheet, pestañas "Proyectos" y "Proyecto_detalle" (ver Proyectos.gs).
-   Si el Sheet todavía no las tiene, la página usa los datos de ejemplo de abajo,
-   que son los mismos que trae la plantilla para pegar en el Sheet.
+   Los TEXTOS de cada proyecto viven aquí, en este archivo (los edita Claude cuando se pidan).
+   Del Sheet solo vienen dos cosas, para que sean fáciles de actualizar:
 
-   Pestaña "Proyectos" (una fila por proyecto):
-     id | publicado | nombre | nombre_en | lema | lema_en | resumen | resumen_en | estado | estado_en |
-     ubicacion | fecha | meta | recaudado | actualizado | etapa_actual | foto |
-     historia | historia_en | destacado | destacado_en | nota_presupuesto | nota_presupuesto_en
+   Pestaña "Proyectos"        A: Proyecto | B: Meta (US$) | C: Recaudado (US$) | D: Etapa actual | E: Actualizado
+   Pestaña "Fotos_proyectos"  A: Proyecto | B: Galería | C: Pie de foto | D: Enlace de la foto | E: Pie en inglés (opcional)
 
-   Pestaña "Proyecto_detalle" (varias filas por proyecto; el orden de las filas es el orden en la página):
-     proyecto | tipo | grupo | titulo | texto | monto | lista | enlace | imagen | grupo_en | titulo_en | texto_en | lista_en
-     tipo = cifra | etapa | gasto | kit | foto | aporte | aliado | beneficiario
-       cifra        titulo = el número, texto = la frase
-       etapa        titulo, texto, grupo = quién, lista = lo que vas a ver (separado por ;)
-       gasto        titulo, texto, monto (número en US$), lista = detalle (separado por ;)
-       kit          titulo = familia, grupo = instrumentos, texto = qué incluye, monto = precio (ej. 135–385)
-       foto         grupo = pestaña de la galería (Los daños / Resultados), titulo = pie de foto, imagen = enlace
-       aporte       titulo, texto, grupo = texto del botón, enlace (escribe "donar" para abrir el botón Donar)
-       aliado / beneficiario   titulo = nombre, imagen = logo, enlace = web (opcional)
+   "Proyecto" es el nombre tal cual (ej. Volver a Sonar). Si el Sheet trae fotos de un proyecto,
+   reemplazan a las de este archivo; si no trae nada, se usan los datos de aquí.
 */
 (function () {
   const VS = 'proyectos/volver-a-sonar/';
 
-  window.NEXOS_PROYECTOS_EJEMPLO = [{
+  window.NEXOS_PROYECTOS = [{
     id: 'volver-a-sonar', publicado: 'sí',
     nombre: 'Volver a Sonar', nombre_en: 'Volver a Sonar',
     lema: 'La música también necesita reconstruirse', lema_en: 'Music needs rebuilding too',
@@ -122,7 +111,28 @@
   window.nexosProyectos = function (lang) {
     const en = lang === 'EN';
     const f = window.NEXOS_FIXTURE;
-    const raw = (f && Array.isArray(f.proyectosRaw) && f.proyectosRaw.length) ? f.proyectosRaw : window.NEXOS_PROYECTOS_EJEMPLO;
+    const hoja = (f && f.proyectosSheet) || {};
+    const slug = function (v) { return String(v || '').trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''); };
+    const raw = window.NEXOS_PROYECTOS.map(function (p) {
+      const q = Object.assign({}, p);
+      const m = (hoja.montos || []).filter(function (r) { return slug(r.proyecto) === p.id || slug(r.proyecto) === slug(p.nombre); })[0];
+      if (m) {
+        if (String(m.meta).trim() !== '') q.meta = m.meta;
+        if (String(m.recaudado).trim() !== '') q.recaudado = m.recaudado;
+        if (String(m.etapa).trim() !== '') q.etapa_actual = m.etapa;
+        if (String(m.actualizado).trim() !== '') q.actualizado = m.actualizado;
+      }
+      const fotos = (hoja.fotos || []).filter(function (r) { return (slug(r.proyecto) === p.id || slug(r.proyecto) === slug(p.nombre)) && String(r.enlace || '').trim(); });
+      if (fotos.length) {
+        const tabsEn = {};
+        (p.detalle || []).forEach(function (d) { if (d.tipo === 'foto' && d.grupo_en) tabsEn[slug(d.grupo)] = d.grupo_en; });
+        q.detalle = (p.detalle || []).filter(function (d) { return d.tipo !== 'foto'; }).concat(fotos.map(function (r) {
+          const g = String(r.galeria || '').trim();
+          return { tipo: 'foto', grupo: g, grupo_en: tabsEn[slug(g)] || '', titulo: String(r.pie || '').trim(), titulo_en: String(r.pie_en || '').trim(), imagen: r.enlace };
+        }));
+      }
+      return q;
+    });
     const t = function (o, k) { const v = en ? (o[k + '_en'] || o[k]) : o[k]; return String(v == null ? '' : v).trim(); };
     const lista = function (o) { return t(o, 'lista').split(';').map(function (s) { return s.trim(); }).filter(Boolean); };
     return raw.filter(function (p) { return p && p.id && si(p.publicado); }).map(function (p) {
