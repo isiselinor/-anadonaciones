@@ -239,6 +239,15 @@ function EditorialLandingExport() {
   }, [pal.join()]);
   const scrimBase = t.overlay === 'Coral' ? pal[0] : t.overlay === 'Negro' ? '#0c0c0e' : pal[2];
   const [drawer, setDrawer] = React.useState(null);
+  const [proyecto, setProyectoState] = React.useState(function(){ const h = (location.hash || '').match(/^#p-([\w-]+)$/); return h ? h[1] : null; });
+  const setProyecto = function(id){
+    setProyectoState(id);
+    try { history.replaceState(null, '', id ? '#p-' + id : location.pathname + location.search); } catch (e) {}
+  };
+  React.useEffect(function(){
+    function onHash(){ const h = (location.hash || '').match(/^#p-([\w-]+)$/); setProyectoState(h ? h[1] : null); }
+    window.addEventListener('hashchange', onHash); return function(){ window.removeEventListener('hashchange', onHash); };
+  }, []);
   const [donar, setDonar] = React.useState(false);
   const [zoom, setZoom] = React.useState(null);
   const [q, setQ] = React.useState(''); const [met, setMet] = React.useState('');
@@ -272,6 +281,8 @@ function EditorialLandingExport() {
         </div>
         <PhotoStrip onZoom={setZoom} lang={lang} />
       </Section>
+
+      <ProyectosSection lang={lang} onOpen={setProyecto} />
 
       <Section id="cifras" tone="line" titulo={u.cifrasTitulo} lead={loadingData ? '' : x.notaTasas} leadWide>
         {loadingData
@@ -388,6 +399,7 @@ function EditorialLandingExport() {
       {t.subventana === 'Página'
         ? <SectionPageExport lang={lang} id={drawer} onClose={function(){ setDrawer(null); }} onOpen={setDrawer} onDonate={function(){ setDonar(true); }} />
         : <SectionWindowExport lang={lang} variant={t.winHeader === 'Coral' ? 'grafica' : 'editorial'} id={drawer} onClose={function(){ setDrawer(null); }} onOpen={setDrawer} onDonate={function(){ setDonar(true); }} />}
+      <ProyectoPage lang={lang} id={proyecto} onClose={function(){ setProyecto(null); }} onDonate={function(){ setDonar(true); }} />
       <DonateModal open={donar} onClose={function(){ setDonar(false); }} notice={<span>{u.avisoModal[0]}<b style={{ color:'var(--accent)' }}>{u.avisoModal[1]}</b>{u.avisoModal[2]}</span>}>
         {x.metodosDonacion.map(function(m){ return <PaymentMethod key={m.metodo} name={m.metodo} fields={m.campos} />; })}
       </DonateModal>

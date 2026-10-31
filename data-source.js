@@ -57,7 +57,8 @@ window.NEXOS_FIXTURE = null;
       textos: normTextos(d.textos || d.config || d.secciones),
       metodosDonacion: d.metodosDonacion || [],
       enlaceFacturas: d.enlaceFacturas || '',
-      enlaceFotos: d.enlaceFotos || ''
+      enlaceFotos: d.enlaceFotos || '',
+      proyectosRaw: Array.isArray(d.proyectos) ? d.proyectos : []
     };
   };
 

@@ -5,6 +5,7 @@
 const NEXOS_ES = {
   nav: [
     { id:'quienes', label:'Quiénes somos' },
+    { id:'proyectos', label:'Proyectos' },
     { id:'cifras', label:'La ayuda en números' },
     { id:'donar', label:'Cómo donar' },
     { id:'evidencia', label:'Transparencia' },
@@ -137,6 +138,7 @@ const NEXOS_ES = {
 const NEXOS_EN = {
   nav: [
     { id:'quienes', label:'Who we are' },
+    { id:'proyectos', label:'Projects' },
     { id:'cifras', label:'Aid in numbers' },
     { id:'donar', label:'How to donate' },
     { id:'evidencia', label:'Transparency' },
