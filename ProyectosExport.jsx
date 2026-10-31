@@ -430,11 +430,17 @@ function ProyectoPage({ id, lang, onClose, onDonate }) {
                 const inner = (<React.Fragment>
                   {o.logo ? <img src={o.logo} alt="" style={{ width: 72, height: 72, objectFit: 'cover', borderRadius: 14, flex: 'none' }} />
                     : <span style={{ width: 72, height: 72, borderRadius: 14, flex: 'none', border: '1px solid var(--line)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'var(--font-display)', fontWeight: 800, fontSize: 24, color: 'var(--muted)' }}>{o.nombre.charAt(0)}</span>}
-                  <b style={{ fontSize: 17, lineHeight: 1.35, color: 'var(--ink)' }}>{o.nombre}</b>
                 </React.Fragment>);
-                return o.enlace
-                  ? <a key={i} href={o.enlace} target="_blank" rel="noopener" style={{ display: 'flex', alignItems: 'center', gap: 16, textDecoration: 'none' }}>{inner}</a>
-                  : <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 16 }}>{inner}</div>;
+                const nombre = o.enlace
+                  ? <a href={o.enlace} target="_blank" rel="noopener" style={{ fontSize: 17, lineHeight: 1.35, fontWeight: 700, color: 'var(--ink)', textDecoration: 'none' }}>{o.nombre} ↗</a>
+                  : <b style={{ fontSize: 17, lineHeight: 1.35, color: 'var(--ink)' }}>{o.nombre}</b>;
+                return (<div key={i} style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+                  {inner}
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 4, minWidth: 0 }}>
+                    {nombre}
+                    {o.instagram ? <a href={'https://www.instagram.com/' + o.instagram + '/'} target="_blank" rel="noopener" style={{ fontSize: 14, fontWeight: 700 }}>@{o.instagram}</a> : null}
+                  </div>
+                </div>);
               })}
             </div>);
           })}

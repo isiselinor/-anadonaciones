@@ -84,10 +84,10 @@
         texto: 'Por nuestros canales de siempre. Tu aporte aparece en Transparencia.', texto_en: 'Through our usual channels. Your donation shows up in Transparency.' },
       { tipo: 'aporte', titulo: 'Escucha “Falla / Boconó”', titulo_en: 'Listen to “Falla / Boconó”', grupo: 'Ir a Bandcamp', grupo_en: 'Go to Bandcamp', enlace: 'https://lavidaboheme.bandcamp.com',
         texto: 'Escucha a La Vida Boheme en Bandcamp y aporta desde ahí.', texto_en: 'Listen to La Vida Boheme on Bandcamp and give from there.' },
-      { tipo: 'aporte', titulo: 'Patrocina un músico', titulo_en: 'Sponsor a musician', grupo: 'Patrocinar', grupo_en: 'Sponsor', enlace: 'https://yosoylavidaboheme.com/',
+      { tipo: 'aporte', titulo: 'Patrocina un músico', titulo_en: 'Sponsor a musician', grupo: 'Patrocinar', grupo_en: 'Sponsor', enlace: '',
         texto: 'Cubre el kit de un músico desde la web de La Vida Boheme.', texto_en: 'Cover a musician’s kit from La Vida Boheme’s website.' },
 
-      { tipo: 'aliado', titulo: 'La Vida Boheme', imagen: '', enlace: 'https://yosoylavidaboheme.com/' },
+      { tipo: 'aliado', titulo: 'La Vida Boheme', imagen: '', enlace: 'https://yosoylavidaboheme.com/', instagram: 'lavidaboheme' },
       { tipo: 'beneficiario', titulo: 'Orquesta Sinfónica Gran Mariscal de Ayacucho', imagen: VS + 'logo-orquesta.png', enlace: '' }
     ]
   }];
@@ -160,8 +160,8 @@
         kits: de('kit').map(function (d) { return { titulo: t(d, 'titulo'), instrumentos: t(d, 'grupo'), texto: t(d, 'texto'), precio: String(d.monto == null ? '' : d.monto).trim() }; }),
         fotos: de('foto').map(function (d) { return { grupo: t(d, 'grupo') || (en ? 'Photos' : 'Fotos'), pie: t(d, 'titulo'), src: img(d.imagen) }; }).filter(function (x) { return x.src; }),
         aportes: de('aporte').map(function (d) { return { titulo: t(d, 'titulo'), texto: t(d, 'texto'), boton: t(d, 'grupo'), enlace: String(d.enlace || '').trim() }; }),
-        aliados: de('aliado').map(function (d) { return { nombre: t(d, 'titulo'), logo: img(d.imagen), enlace: String(d.enlace || '').trim() }; }),
-        beneficiarios: de('beneficiario').map(function (d) { return { nombre: t(d, 'titulo'), logo: img(d.imagen), enlace: String(d.enlace || '').trim() }; })
+        aliados: de('aliado').map(function (d) { return { nombre: t(d, 'titulo'), logo: img(d.imagen), enlace: String(d.enlace || '').trim(), instagram: String(d.instagram || '').trim().replace(/^@/, '') }; }),
+        beneficiarios: de('beneficiario').map(function (d) { return { nombre: t(d, 'titulo'), logo: img(d.imagen), enlace: String(d.enlace || '').trim(), instagram: String(d.instagram || '').trim().replace(/^@/, '') }; })
       };
     });
   };
