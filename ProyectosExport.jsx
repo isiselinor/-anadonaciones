@@ -23,7 +23,8 @@ const PR_UI = {
     cualquierMonto: 'Cualquier monto suma. No necesitas cubrir el kit completo.',
     kitsNota: 'Precios de referencia calculados con el listado de los músicos de la orquesta (medias de mercado).',
     aportarTit: '¿Cómo aportar?', enlacePronto: 'Enlace disponible pronto',
-    aliados: 'Aliados', beneficiarios: 'Beneficiarios', junto: 'Junto a'
+    aliados: 'Aliados', beneficiarios: 'Beneficiarios', junto: 'Junto a',
+    invertido: 'Ya invertido', verCompras: 'Ver en qué →', comprasTit: 'Lo que ya compramos', comprasSub: 'Cada compra sale de nuestra planilla de gastos y tiene su factura.', total: 'Total invertido', verFacturas: 'Ver facturas →'
   },
   EN: {
     eyebrow: 'Projects', titulo: 'What your help is building',
@@ -45,7 +46,8 @@ const PR_UI = {
     cualquierMonto: 'Any amount helps. You don’t need to cover a whole kit.',
     kitsNota: 'Reference prices based on the orchestra musicians’ own list (market averages).',
     aportarTit: 'How to give', enlacePronto: 'Link coming soon',
-    aliados: 'Partners', beneficiarios: 'Beneficiaries', junto: 'With'
+    aliados: 'Partners', beneficiarios: 'Beneficiaries', junto: 'With',
+    invertido: 'Already invested', verCompras: 'See what →', comprasTit: 'What we have already bought', comprasSub: 'Every purchase comes from our expense sheet and has its invoice.', total: 'Total invested', verFacturas: 'See invoices →'
   }
 };
 
@@ -213,6 +215,11 @@ function ProyectoPage({ id, lang, onClose, onDonate }) {
                 <div style={tile}><div style={{ fontSize: 12, color: 'var(--muted)' }}>{u.avance}</div><b style={{ fontSize: 20, fontVariantNumeric: 'tabular-nums' }}>{Math.round(pct)}%</b></div>
                 <div style={tile}><div style={{ fontSize: 12, color: 'var(--muted)' }}>{u.falta}</div><b style={{ fontSize: 20, color: 'var(--blue)', fontVariantNumeric: 'tabular-nums' }}>US$ {prFmt(Math.max(meta - rec, 0), lang)}</b></div>
               </div>
+              {p.gastado > 0 ? <a href="#compras" onClick={function (e) { e.preventDefault(); const el = document.getElementById('compras'); if (el) el.scrollIntoView({ behavior: 'smooth' }); }}
+                style={{ ...tile, display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 10, textDecoration: 'none', color: 'var(--ink)' }}>
+                <span><span style={{ fontSize: 12, color: 'var(--muted)', display: 'block' }}>{u.invertido}</span><b style={{ fontSize: 20, fontVariantNumeric: 'tabular-nums' }}>US$ {prFmt(p.gastado, lang)}</b></span>
+                <span style={{ fontSize: 13, fontWeight: 700, color: 'var(--blue)', whiteSpace: 'nowrap' }}>{u.verCompras}</span>
+              </a> : null}
               <button onClick={onDonate} style={PR.coral}>{u.donarProyecto}</button>
               <a href="#reporte" onClick={irABuscador} style={{ fontSize: 14, fontWeight: 700 }}>{u.buscaNombre}</a>
             </div>) : null}
@@ -318,6 +325,25 @@ function ProyectoPage({ id, lang, onClose, onDonate }) {
                 <button aria-label={u.siguiente} onClick={function () { setLb((lb + 1) % fotosTab.length); }} style={PR.pill(false)}>→</button>
               </div>
             </div>) : null}
+        </section>) : null}
+
+      {/* compras ya hechas (automático desde Gastos) */}
+      {p.compras.length ? (
+        <section id="compras" style={{ ...PR.wrap, padding: '12px 24px clamp(40px,6vw,56px)', display: 'flex', flexDirection: 'column', gap: 18 }}>
+          <div><h2 style={PR.h2}>{u.comprasTit}</h2><p style={PR.sub}>{u.comprasSub}</p></div>
+          <div style={{ ...PR.card, padding: '6px 26px' }}>
+            {p.compras.map(function (c, i) {
+              return (<div key={i} style={{ display: 'flex', justifyContent: 'space-between', gap: 16, padding: '14px 0', borderBottom: '1px solid var(--line)', fontSize: 15 }}>
+                <span style={{ minWidth: 0 }}>{c.concepto}</span>
+                <b style={{ color: 'var(--blue)', fontVariantNumeric: 'tabular-nums', whiteSpace: 'nowrap' }}>≈ US$ {prFmt(c.monto, lang)}</b>
+              </div>);
+            })}
+            <div style={{ display: 'flex', justifyContent: 'space-between', gap: 16, padding: '16px 0', fontSize: 16 }}>
+              <b>{u.total}</b><b style={{ color: 'var(--blue)', fontVariantNumeric: 'tabular-nums' }}>≈ US$ {prFmt(p.gastado, lang)}</b>
+            </div>
+          </div>
+          {window.NEXOS_FIXTURE && window.NEXOS_FIXTURE.enlaceFacturas
+            ? <a href={window.NEXOS_FIXTURE.enlaceFacturas} target="_blank" rel="noopener" style={{ fontSize: 14, fontWeight: 700 }}>{u.verFacturas}</a> : null}
         </section>) : null}
 
       {/* reparto */}

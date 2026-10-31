@@ -2,7 +2,8 @@
    Los TEXTOS de cada proyecto viven aquí, en este archivo (los edita Claude cuando se pidan).
    Del Sheet solo vienen dos cosas, para que sean fáciles de actualizar:
 
-   Pestaña "Proyectos"        A: Proyecto | B: Meta (US$) | C: Recaudado (US$) | D: Etapa actual | E: Actualizado
+   Pestaña "Proyectos"        A: Proyecto | B: Meta (US$) | C: Recaudado (US$) | D: Etapa actual | E: Actualizado | F: Categoría en Gastos
+                              (lo invertido se suma solo desde la pestaña Gastos con esa categoría)
    Pestaña "Fotos_proyectos"  A: Proyecto | B: Galería | C: Pie de foto | D: Enlace de la foto | E: Pie en inglés (opcional)
 
    "Proyecto" es el nombre tal cual (ej. Volver a Sonar). En "Proyectos" cada actualización puede ser una fila nueva:
@@ -122,7 +123,11 @@
         if (String(m.recaudado).trim() !== '') q.recaudado = m.recaudado;
         if (String(m.etapa).trim() !== '') q.etapa_actual = m.etapa;
         if (String(m.actualizado).trim() !== '') q.actualizado = m.actualizado;
+        if (String(m.categoria || '').trim() !== '') q.categoria_gastos = String(m.categoria).trim();
       });
+      // Gasto automático desde la pestaña Gastos (categoría indicada en la columna F de "Proyectos").
+      const g = q.categoria_gastos && hoja.gastos ? hoja.gastos[q.categoria_gastos.toLowerCase()] : null;
+      if (g) { q.gastado = g.total; q.compras = g.items || []; }
       const fotos = (hoja.fotos || []).filter(function (r) { return (slug(r.proyecto) === p.id || slug(r.proyecto) === slug(p.nombre)) && String(r.enlace || '').trim(); });
       if (fotos.length) {
         const tabsEn = {};
@@ -145,6 +150,7 @@
         ubicacion: String(p.ubicacion || '').trim(), fecha: String(p.fecha || '').trim(),
         meta: num(p.meta), recaudado: num(p.recaudado), actualizado: String(p.actualizado || '').trim(),
         etapaActual: Math.max(1, parseInt(p.etapa_actual, 10) || 1),
+        gastado: num(p.gastado), compras: (p.compras || []).map(function (c) { return { concepto: String(c.concepto || '').trim(), monto: num(c.monto) }; }),
         foto: img(p.foto),
         historia: t(p, 'historia').split(/\n\s*\n/).map(function (s) { return s.trim(); }).filter(Boolean),
         destacado: t(p, 'destacado'), notaPresupuesto: t(p, 'nota_presupuesto'),
