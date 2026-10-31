@@ -87,7 +87,7 @@
       { tipo: 'aporte', titulo: 'Patrocina un músico', titulo_en: 'Sponsor a musician', grupo: 'Patrocinar', grupo_en: 'Sponsor', enlace: '',
         texto: 'Cubre el kit de un músico desde la web de La Vida Boheme.', texto_en: 'Cover a musician’s kit from La Vida Boheme’s website.' },
 
-      { tipo: 'aliado', titulo: 'La Vida Boheme', imagen: '', enlace: '' },
+      { tipo: 'aliado', titulo: 'La Vida Boheme', imagen: '', enlace: 'https://lavidaboheme.com' },
       { tipo: 'beneficiario', titulo: 'Orquesta Sinfónica Gran Mariscal de Ayacucho', imagen: VS + 'logo-orquesta.png', enlace: '' }
     ]
   }];
