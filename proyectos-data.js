@@ -84,10 +84,10 @@
         texto: 'Por nuestros canales de siempre. Tu aporte aparece en Transparencia.', texto_en: 'Through our usual channels. Your donation shows up in Transparency.' },
       { tipo: 'aporte', titulo: 'Escucha “Falla / Boconó”', titulo_en: 'Listen to “Falla / Boconó”', grupo: 'Ir a Bandcamp', grupo_en: 'Go to Bandcamp', enlace: 'https://lavidaboheme.bandcamp.com',
         texto: 'Escucha a La Vida Boheme en Bandcamp y aporta desde ahí.', texto_en: 'Listen to La Vida Boheme on Bandcamp and give from there.' },
-      { tipo: 'aporte', titulo: 'Patrocina un músico', titulo_en: 'Sponsor a musician', grupo: 'Patrocinar', grupo_en: 'Sponsor', enlace: '',
+      { tipo: 'aporte', titulo: 'Patrocina un músico', titulo_en: 'Sponsor a musician', grupo: 'Patrocinar', grupo_en: 'Sponsor', enlace: 'https://yosoylavidaboheme.com/',
         texto: 'Cubre el kit de un músico desde la web de La Vida Boheme.', texto_en: 'Cover a musician’s kit from La Vida Boheme’s website.' },
 
-      { tipo: 'aliado', titulo: 'La Vida Boheme', imagen: '', enlace: 'https://lavidaboheme.com' },
+      { tipo: 'aliado', titulo: 'La Vida Boheme', imagen: '', enlace: 'https://yosoylavidaboheme.com/' },
       { tipo: 'beneficiario', titulo: 'Orquesta Sinfónica Gran Mariscal de Ayacucho', imagen: VS + 'logo-orquesta.png', enlace: '' }
     ]
   }];
