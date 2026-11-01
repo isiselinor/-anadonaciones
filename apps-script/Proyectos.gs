@@ -9,11 +9,11 @@
  *           try { actualizarResumenProyectos(); } catch (e) {}
  *  3. Implementar → Administrar implementaciones → lápiz → Versión: "Nueva versión" → Implementar.
  *
- * Cómo se identifica un proyecto: por su CATEGORÍA, con el mismo nombre que el proyecto
- * (ej. "Volver a Sonar").
- *  - Gastos: columna F (Categoría), como siempre.
- *  - Movimientos: columna G (opcional). Vacía = ingreso general.
- *  - La lista de categorías vive en la pestaña "Categorias".
+ * Cómo se identifica un proyecto:
+ *  - Movimientos, columna G "Proyecto" (opcional): menú con la lista de proyectos. Vacía = donación general.
+ *    Para sumar un proyecto nuevo a la lista: Datos → Validación de datos en la columna G.
+ *  - Gastos: el equipo usa la categoría que considere; si una categoría se llama igual que el
+ *    proyecto (ej. "Volver a Sonar"), esos gastos se cuentan como egresos del proyecto.
  * Lo público sigue calculándose de forma global. Lo invertido de cada proyecto ya viaja en
  * egresosPorCategoria; esta función solo envía las fotos.
  */
@@ -40,23 +40,21 @@ var RESUMEN_PROY_HOJA = 'Resumen proyectos';
 function actualizarResumenProyectos() {
   var ss = SpreadsheetApp.getActiveSpreadsheet();
   var hist = leerTasasHistorial_();
-  var SIN = 'Sin categoría (ingreso general)';
+  var SIN = 'Sin proyecto (donación general)';
 
   var orden = [], res = {};
   var asegura = function (c) {
     if (!res[c]) { res[c] = { count: 0, usd: 0, porMoneda: {}, egresos: 0 }; orden.push(c); }
     return res[c];
   };
-  // Orden: el de la pestaña Categorias
-  var hc = ss.getSheetByName('Categorias');
-  if (hc && hc.getLastRow() >= 2) {
-    hc.getRange(2, 1, hc.getLastRow() - 1, 1).getValues().forEach(function (r) {
-      var c = String(r[0] || '').trim(); if (c) asegura(c);
-    });
-  }
+  // Lista de proyectos: la misma del menú desplegable de la columna G de Movimientos.
+  var hm = getHojaMovim_();
+  try {
+    var regla = hm.getRange(MOVIM.filaInicio, 7).getDataValidation();
+    if (regla) (regla.getCriteriaValues()[0] || []).forEach(function (p) { p = String(p || '').trim(); if (p) asegura(p); });
+  } catch (err) {}
 
   // Ingresos marcados (Movimientos A:G)
-  var hm = getHojaMovim_();
   var ult = hm.getLastRow();
   if (ult >= MOVIM.filaInicio) {
     hm.getRange(MOVIM.filaInicio, 1, ult - MOVIM.filaInicio + 1, 7).getValues().forEach(function (r) {
@@ -75,31 +73,30 @@ function actualizarResumenProyectos() {
     });
   }
 
-  // Egresos por categoría (Gastos)
-  leerEgresos_(hist).forEach(function (e) { asegura(String(e.categoria || '').trim() || CAT_DEFAULT).egresos += e.monto; });
+  // Egresos del proyecto: gastos cuya categoría en Gastos tiene el mismo nombre que el proyecto.
+  leerEgresos_(hist).forEach(function (e) { var c = String(e.categoria || '').trim(); if (res[c] && c !== SIN) res[c].egresos += e.monto; });
 
   // Armar la pestaña
   var filas = [], negritas = [];
   var vacia = function () { filas.push(['', '', '', '', '']); };
   var enc = function (a) { filas.push(a); negritas.push(filas.length); };
-  enc(['RESUMEN INTERNO POR PROYECTO / CATEGORÍA · se genera solo · no se publica', '', '', '', '']);
+  enc(['RESUMEN INTERNO POR PROYECTO · se genera solo · no se publica', '', '', '', '']);
   filas.push(['Actualizado ' + new Date().toLocaleString('es-AR') + ' · US$ con la misma tasa que usa el resumen general', '', '', '', '']);
-  filas.push(['Ingresos marcados = donaciones con categoría en la columna G de Movimientos.', '', '', '', '']);
+  filas.push(['Donaciones marcadas = columna G de Movimientos. Egresos = gastos con la categoría del mismo nombre en Gastos.', '', '', '', '']);
   vacia();
-  enc(['Categoría / proyecto', 'Donaciones marcadas', 'Ingresos marcados (US$)', 'Egresos (US$)', 'Diferencia (US$)']);
+  enc(['Proyecto', 'Donaciones marcadas', 'Ingresos marcados (US$)', 'Egresos (US$)', 'Diferencia (US$)']);
   var tI = 0, tE = 0, tC = 0;
   orden.forEach(function (c) {
     var x = res[c];
-    if (!x.count && !x.egresos) return;
     filas.push([c, x.count, redondear2_(x.usd), c === SIN ? '' : redondear2_(x.egresos), x.count && c !== SIN ? redondear2_(x.usd - x.egresos) : '']);
     tI += x.usd; tE += x.egresos; tC += x.count;
   });
   enc(['TOTAL', tC, redondear2_(tI), redondear2_(tE), '']);
 
-  // Desglose por moneda solo de las categorías de proyecto (lo general ya está en el Resumen)
+  // Desglose por moneda solo de los proyectos (lo general ya está en el Resumen)
   var marcadas = orden.filter(function (c) { return c !== SIN && res[c].count > 0; });
   if (marcadas.length) { vacia();
-  enc(['Ingresos por moneda · Categoría', 'Moneda', 'Donaciones', 'Monto en su moneda', 'Equivalente (US$)']);
+  enc(['Ingresos por moneda · Proyecto', 'Moneda', 'Donaciones', 'Monto en su moneda', 'Equivalente (US$)']);
   marcadas.forEach(function (c) {
     Object.keys(res[c].porMoneda).forEach(function (m) { var y = res[c].porMoneda[m]; filas.push([c, m, y.count, redondear2_(y.monto), redondear2_(y.usd)]); });
   }); }
