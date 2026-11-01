@@ -1,14 +1,10 @@
 /* PROYECTOS de NEXOS
-   Los TEXTOS de cada proyecto viven aquí, en este archivo (los edita Claude cuando se pidan).
-   Del Sheet solo vienen dos cosas, para que sean fáciles de actualizar:
-
-   Pestaña "Proyectos"        A: Proyecto | B: Meta (US$) | C: Recaudado (US$) | D: Etapa actual | E: Actualizado | F: Categoría en Gastos
-                              (lo invertido se suma solo desde la pestaña Gastos con esa categoría)
-   Pestaña "Fotos_proyectos"  A: Proyecto | B: Galería | C: Pie de foto | D: Enlace de la foto | E: Pie en inglés (opcional)
-
-   "Proyecto" es el nombre tal cual (ej. Volver a Sonar). En "Proyectos" cada actualización puede ser una fila nueva:
-   la página usa la última fila de cada proyecto (si una celda queda vacía, toma el valor de la fila anterior). Si el Sheet trae fotos de un proyecto,
-   reemplazan a las de este archivo; si no trae nada, se usan los datos de aquí.
+   Los TEXTOS y las ETAPAS EN CURSO de cada proyecto viven aquí, en este archivo (los edita Claude cuando se pidan).
+   Del Sheet vienen solos:
+   - Lo invertido: la categoría del proyecto en la pestaña Gastos (mismo nombre que el proyecto, ej. "Volver a Sonar").
+   - La fecha: la última actualización de los datos.
+   - Las fotos: pestaña "Fotos_proyectos"  A: Proyecto | B: Galería | C: Pie de foto | D: Enlace de la foto | E: Pie en inglés (opcional)
+     Si el Sheet trae fotos de un proyecto, reemplazan a las de este archivo.
 */
 (function () {
   const VS = 'proyectos/volver-a-sonar/';
@@ -20,7 +16,8 @@
     resumen: 'Nexos y La Vida Boheme nos unimos para apoyar a los músicos de la Orquesta Sinfónica Gran Mariscal de Ayacucho afectados por los terremotos de junio de 2026 en Venezuela.',
     resumen_en: 'Nexos and La Vida Boheme joined forces to support the musicians of the Gran Mariscal de Ayacucho Symphony Orchestra affected by the June 2026 earthquakes in Venezuela.',
     estado: 'En curso', estado_en: 'In progress',
-    ubicacion: 'Caracas', fecha: '', meta: 25000, recaudado: 0, gastado: 2779, actualizado: '', etapa_actual: '2, 3',
+    ubicacion: 'Caracas', fecha: '', categoria: 'Volver a Sonar', meta: 25000, gastado: 2779, actualizado: '',
+    etapa_actual: '2, 3', // etapas en curso: se cambian aquí cuando el proyecto avanza
     foto: VS + 'arpa-luthier.jpg',
     historia: 'La sede de la orquesta ocupa un piso alto de la Torre Polar, en Plaza Venezuela. La víspera del sismo dejaron todo listo para ensayar. Cuando la tierra se movió, los contrabajos y la percusión fueron los primeros en caer.',
     historia_en: 'The orchestra is based on a high floor of Torre Polar, in Plaza Venezuela. The day before the earthquake they left everything ready to rehearse. When the ground shook, the double basses and the percussion were the first to fall.',
@@ -117,17 +114,12 @@
     const slug = function (v) { return String(v || '').trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''); };
     const raw = window.NEXOS_PROYECTOS.map(function (p) {
       const q = Object.assign({}, p);
-      // Historial: cada fila del proyecto es una actualización; manda la última (las celdas vacías heredan la fila anterior).
-      (hoja.montos || []).filter(function (r) { return slug(r.proyecto) === p.id || slug(r.proyecto) === slug(p.nombre); }).forEach(function (m) {
-        if (String(m.meta).trim() !== '') q.meta = m.meta;
-        if (String(m.recaudado).trim() !== '') q.recaudado = m.recaudado;
-        if (String(m.etapa).trim() !== '') q.etapa_actual = m.etapa;
-        if (String(m.actualizado).trim() !== '') q.actualizado = m.actualizado;
-        if (String(m.categoria || '').trim() !== '') q.categoria_gastos = String(m.categoria).trim();
-      });
-      // Gasto automático desde la pestaña Gastos (categoría indicada en la columna F de "Proyectos").
-      const g = q.categoria_gastos && hoja.gastos ? hoja.gastos[q.categoria_gastos.toLowerCase()] : null;
-      if (g) { q.gastado = g.total; q.compras = g.items || []; }
+      // Lo invertido: categoría del proyecto en la pestaña Gastos (mismo nombre que el proyecto).
+      const cat = slug(p.categoria || p.nombre);
+      const eg = ((f && f.egresosRaw) || []).filter(function (c) { return slug(c.categoria) === cat; })[0];
+      if (eg) { q.gastado = eg.total; q.compras = eg.items || []; }
+      // Fecha automática: la última actualización de los datos.
+      if (f && f.actualizado) q.actualizado = String(f.actualizado).split(',')[0].trim();
       const fotos = (hoja.fotos || []).filter(function (r) { return (slug(r.proyecto) === p.id || slug(r.proyecto) === slug(p.nombre)) && String(r.enlace || '').trim(); });
       if (fotos.length) {
         const tabsEn = {};

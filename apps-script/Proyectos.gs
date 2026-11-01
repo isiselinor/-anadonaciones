@@ -1,67 +1,39 @@
 /**
- * PROYECTOS de NEXOS — archivo nuevo para el Apps Script del Sheet.
+ * PROYECTOS de NEXOS — archivo "Proyectos" del Apps Script del Sheet.
  *
- * Cómo instalarlo (una sola vez):
- *  1. En el Sheet: Extensiones → Apps Script.
- *  2. Botón "+" junto a "Archivos" → Secuencia de comandos → nómbralo "Proyectos".
- *  3. Pega todo este archivo y guarda.
- *  4. En Code.gs, dentro de getDatosPublicos(), en la lista del "return { … }",
- *     agrega esta línea justo debajo de  textos: leerTextosConfig_(),
- *         proyectos: leerProyectos_(),
- *  5. Implementar → Administrar implementaciones → lápiz → Versión: "Nueva versión" → Implementar.
+ * Instalación (una sola vez):
+ *  1. Extensiones → Apps Script → archivo "Proyectos": borra todo y pega este archivo. Guarda.
+ *  2. En HOJA_DATOS.gs:
+ *     - dentro de getDatosPublicos(), en el "return { … }", debe estar la línea:   proyectos: leerProyectos_(),
+ *     - justo debajo de  function actualizarTodo() {  debe estar la línea:
+ *           try { actualizarResumenProyectos(); } catch (e) {}
+ *  3. Implementar → Administrar implementaciones → lápiz → Versión: "Nueva versión" → Implementar.
  *
- * Del Sheet solo se leen montos y fotos (los textos están en la página):
- *  - "Proyectos":        A=Proyecto | B=Meta (US$) | C=Recaudado (US$) | D=Etapa actual | E=Actualizado | F=Categoría en Gastos
- *  - "Fotos_proyectos":  A=Proyecto | B=Galería | C=Pie de foto | D=Enlace de la foto | E=Pie en inglés (opcional)
- * La fila 1 es el encabezado; los datos empiezan en la fila 2.
+ * Cómo se identifica un proyecto: por su CATEGORÍA, con el mismo nombre que el proyecto
+ * (ej. "Volver a Sonar").
+ *  - Gastos: columna F (Categoría), como siempre.
+ *  - Movimientos: columna G (opcional). Vacía = ingreso general.
+ *  - La lista de categorías vive en la pestaña "Categorias".
+ * Lo público sigue calculándose de forma global. Lo invertido de cada proyecto ya viaja en
+ * egresosPorCategoria; esta función solo envía las fotos.
  */
 function leerProyectos_() {
   var ss = SpreadsheetApp.getActiveSpreadsheet();
-  var tz = Session.getScriptTimeZone();
-  var celda = function (v) { return v instanceof Date ? Utilities.formatDate(v, tz, 'dd/MM/yyyy') : v; };
-  var filas = function (nombre, cols) {
-    var h = ss.getSheetByName(nombre);
-    if (!h || h.getLastRow() < 2) return [];
-    return h.getRange(2, 1, h.getLastRow() - 1, cols).getValues()
-      .filter(function (r) { return String(r[0] || '').trim(); });
-  };
-  var montos = filas('Proyectos', 6).map(function (r) {
-    return { proyecto: String(r[0]).trim(), meta: r[1], recaudado: r[2], etapa: r[3], actualizado: celda(r[4]), categoria: String(r[5] || '').trim() };
-  });
-
-  // Gasto automático: suma de la pestaña Gastos para la categoría de cada proyecto (columna F de "Proyectos"),
-  // convertida a US$ con la tasa de la fecha de cada gasto (misma lógica que el resto de egresos).
-  var gastos = {};
-  montos.forEach(function (m) { if (m.categoria) gastos[m.categoria.toLowerCase()] = { total: 0, items: [] }; });
-  if (Object.keys(gastos).length) {
-    try {
-      leerEgresos_(leerTasasHistorial_()).forEach(function (e) {
-        var g = gastos[String(e.categoria || '').trim().toLowerCase()];
-        if (!g) return;
-        g.total = redondear2_(g.total + e.monto);
-        g.items.push({ concepto: e.concepto, monto: e.monto });
+  var h = ss.getSheetByName('Fotos_proyectos');
+  var fotos = [];
+  if (h && h.getLastRow() >= 2) {
+    fotos = h.getRange(2, 1, h.getLastRow() - 1, 5).getValues()
+      .filter(function (r) { return String(r[0] || '').trim(); })
+      .map(function (r) {
+        return { proyecto: String(r[0]).trim(), galeria: String(r[1] || '').trim(), pie: String(r[2] || '').trim(), enlace: String(r[3] || '').trim(), pie_en: String(r[4] || '').trim() };
       });
-    } catch (err) { /* si falla la lectura de gastos, la página sigue funcionando sin este dato */ }
   }
-
-  return {
-    montos: montos,
-    gastos: gastos,
-    fotos: filas('Fotos_proyectos', 5).map(function (r) {
-      return { proyecto: String(r[0]).trim(), galeria: String(r[1] || '').trim(), pie: String(r[2] || '').trim(), enlace: String(r[3] || '').trim(), pie_en: String(r[4] || '').trim() };
-    })
-  };
+  return { fotos: fotos };
 }
 
 /* ==================================================================
- * RESUMEN INTERNO POR PROYECTO (solo para el equipo, NO se publica)
- * ------------------------------------------------------------------
- *  - Ingresos: columna G "Proyecto" de la pestaña Movimientos (opcional).
- *    Vacía = ingreso general. El sitio sigue calculando todo de forma global.
- *  - Egresos: la "Categoría en Gastos" de cada proyecto (columna F de "Proyectos"),
- *    la misma que ya usa la página para "Ya invertido".
- *  - Escribe la pestaña "Resumen proyectos". Se actualiza junto con el Resumen general
- *    (ver la línea que se agrega en actualizarTodo) o desde Extensiones → Macros si hiciera falta.
+ * RESUMEN INTERNO POR PROYECTO / CATEGORÍA (solo para el equipo, NO se publica)
+ * Escribe la pestaña "Resumen proyectos". Se actualiza junto con el Resumen general.
  * ================================================================== */
 var RESUMEN_PROY_HOJA = 'Resumen proyectos';
 
@@ -69,23 +41,22 @@ function actualizarResumenProyectos() {
   var ss = SpreadsheetApp.getActiveSpreadsheet();
   var hist = leerTasasHistorial_();
   var tz = Session.getScriptTimeZone();
+  var SIN = 'Sin categoría (ingreso general)';
 
-  // Proyectos y su categoría de gastos (la última fila con dato manda, como en la página)
-  var proyectos = [], catDe = {};
-  var hp = ss.getSheetByName('Proyectos');
-  if (hp && hp.getLastRow() >= 2) {
-    hp.getRange(2, 1, hp.getLastRow() - 1, 6).getValues().forEach(function (r) {
-      var nom = String(r[0] || '').trim();
-      if (!nom) return;
-      if (proyectos.indexOf(nom) === -1) proyectos.push(nom);
-      if (String(r[5] || '').trim()) catDe[nom] = String(r[5]).trim().toLowerCase();
+  var orden = [], res = {};
+  var asegura = function (c) {
+    if (!res[c]) { res[c] = { count: 0, usd: 0, porMes: {}, porMoneda: {}, egresos: 0 }; orden.push(c); }
+    return res[c];
+  };
+  // Orden: el de la pestaña Categorias
+  var hc = ss.getSheetByName('Categorias');
+  if (hc && hc.getLastRow() >= 2) {
+    hc.getRange(2, 1, hc.getLastRow() - 1, 1).getValues().forEach(function (r) {
+      var c = String(r[0] || '').trim(); if (c) asegura(c);
     });
   }
-  var SIN = 'Sin proyecto (general)';
-  var base = function () { return { count: 0, usd: 0, porMes: {}, porMoneda: {}, egresos: 0, items: [] }; };
-  var res = {}; proyectos.concat([SIN]).forEach(function (p) { res[p] = base(); });
 
-  // Ingresos (Movimientos A:G, misma lectura que el resumen general + columna G)
+  // Ingresos marcados (Movimientos A:G)
   var hm = getHojaMovim_();
   var ult = hm.getLastRow();
   if (ult >= MOVIM.filaInicio) {
@@ -98,9 +69,7 @@ function actualizarResumenProyectos() {
       if (!mc) return;
       var fecha = r[MOVIM.colFecha - 1] instanceof Date ? r[MOVIM.colFecha - 1] : null;
       var usd = aUSD_(mc.moneda, monto, tasaEn_(hist, fecha));
-      var p = String(r[6] || '').trim() || SIN;
-      if (!res[p]) res[p] = base();
-      var x = res[p];
+      var x = asegura(String(r[6] || '').trim() || SIN);
       x.count++; x.usd += usd;
       var mes = fecha ? Utilities.formatDate(fecha, tz, 'yyyy-MM') : 'Sin fecha';
       x.porMes[mes] = x.porMes[mes] || { count: 0, usd: 0 };
@@ -110,54 +79,42 @@ function actualizarResumenProyectos() {
     });
   }
 
-  // Egresos por categoría del proyecto
-  var proyDeCat = {}; Object.keys(catDe).forEach(function (p) { proyDeCat[catDe[p]] = p; });
-  leerEgresos_(hist).forEach(function (e) {
-    var p = proyDeCat[String(e.categoria || '').trim().toLowerCase()];
-    if (!p) return;
-    res[p].egresos += e.monto; res[p].items.push([e.concepto, redondear2_(e.monto)]);
-  });
+  // Egresos por categoría (Gastos)
+  leerEgresos_(hist).forEach(function (e) { asegura(String(e.categoria || '').trim() || CAT_DEFAULT).egresos += e.monto; });
 
-  // Escribir la pestaña
-  var h = ss.getSheetByName(RESUMEN_PROY_HOJA) || ss.insertSheet(RESUMEN_PROY_HOJA);
-  h.clear();
+  // Armar la pestaña
   var filas = [], negritas = [];
-  var titulo = function (t) { filas.push([t, '', '', '', '']); negritas.push(filas.length); };
+  var vacia = function () { filas.push(['', '', '', '', '']); };
   var enc = function (a) { filas.push(a); negritas.push(filas.length); };
-
-  filas.push(['RESUMEN INTERNO POR PROYECTO — no se publica en la página', '', '', '', '']); negritas.push(1);
-  filas.push(['Actualizado: ' + new Date().toLocaleString('es-AR') + ' · Montos en US$ con la tasa de la fecha de cada movimiento', '', '', '', '']);
-  filas.push(['', '', '', '', '']);
-  enc(['Proyecto', 'Donaciones (cant.)', 'Ingresos (US$)', 'Egresos (US$)', 'Diferencia (US$)']);
+  enc(['RESUMEN INTERNO POR PROYECTO / CATEGORÍA · se genera solo · no se publica', '', '', '', '']);
+  filas.push(['Actualizado ' + new Date().toLocaleString('es-AR') + ' · US$ con la tasa de la fecha de cada movimiento', '', '', '', '']);
+  filas.push(['Ingresos marcados = donaciones con categoría en la columna G de Movimientos.', '', '', '', '']);
+  vacia();
+  enc(['Categoría / proyecto', 'Donaciones marcadas', 'Ingresos marcados (US$)', 'Egresos (US$)', 'Diferencia (US$)']);
   var tI = 0, tE = 0, tC = 0;
-  Object.keys(res).forEach(function (p) {
-    var x = res[p];
-    filas.push([p, x.count, redondear2_(x.usd), p === SIN ? '' : redondear2_(x.egresos), p === SIN ? '' : redondear2_(x.usd - x.egresos)]);
+  orden.forEach(function (c) {
+    var x = res[c];
+    if (!x.count && !x.egresos) return;
+    filas.push([c, x.count, redondear2_(x.usd), c === SIN ? '' : redondear2_(x.egresos), x.count && c !== SIN ? redondear2_(x.usd - x.egresos) : '']);
     tI += x.usd; tE += x.egresos; tC += x.count;
   });
   enc(['TOTAL', tC, redondear2_(tI), redondear2_(tE), '']);
 
-  filas.push(['', '', '', '', '']);
-  titulo('INGRESOS POR MES');
-  enc(['Proyecto', 'Mes', 'Donaciones (cant.)', 'Ingresos (US$)', '']);
-  Object.keys(res).forEach(function (p) {
-    Object.keys(res[p].porMes).sort().forEach(function (m) { filas.push([p, m, res[p].porMes[m].count, redondear2_(res[p].porMes[m].usd), '']); });
+  var marcadas = orden.filter(function (c) { return res[c].count > 0; });
+  vacia();
+  enc(['Ingresos por mes · Categoría', 'Mes', 'Donaciones', 'Ingresos (US$)', '']);
+  marcadas.forEach(function (c) {
+    Object.keys(res[c].porMes).sort().forEach(function (m) { filas.push([c, m, res[c].porMes[m].count, redondear2_(res[c].porMes[m].usd), '']); });
+  });
+  vacia();
+  enc(['Ingresos por moneda · Categoría', 'Moneda', 'Donaciones', 'Monto en su moneda', 'Equivalente (US$)']);
+  marcadas.forEach(function (c) {
+    Object.keys(res[c].porMoneda).forEach(function (m) { var y = res[c].porMoneda[m]; filas.push([c, m, y.count, redondear2_(y.monto), redondear2_(y.usd)]); });
   });
 
-  filas.push(['', '', '', '', '']);
-  titulo('INGRESOS POR MONEDA');
-  enc(['Proyecto', 'Moneda', 'Donaciones (cant.)', 'Monto en su moneda', 'Equivalente (US$)']);
-  Object.keys(res).forEach(function (p) {
-    Object.keys(res[p].porMoneda).forEach(function (m) { var y = res[p].porMoneda[m]; filas.push([p, m, y.count, redondear2_(y.monto), redondear2_(y.usd)]); });
-  });
-
-  filas.push(['', '', '', '', '']);
-  titulo('EGRESOS POR PROYECTO (según su categoría en Gastos)');
-  enc(['Proyecto', 'Concepto', 'Egreso (US$)', '', '']);
-  proyectos.forEach(function (p) { res[p].items.forEach(function (it) { filas.push([p, it[0], it[1], '', '']); }); });
-
+  var h = ss.getSheetByName(RESUMEN_PROY_HOJA) || ss.insertSheet(RESUMEN_PROY_HOJA);
+  h.clear();
   h.getRange(1, 1, filas.length, 5).setValues(filas);
   negritas.forEach(function (n) { h.getRange(n, 1, 1, 5).setFontWeight('bold').setBackground('#f7e3dc'); });
-  h.getRange(1, 1).setFontSize(12);
-  h.setColumnWidth(1, 260); h.setColumnWidths(2, 4, 160);
+  h.setColumnWidth(1, 280); h.setColumnWidths(2, 4, 170);
 }
