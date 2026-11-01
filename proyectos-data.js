@@ -20,7 +20,7 @@
     resumen: 'Nexos y La Vida Boheme nos unimos para apoyar a los músicos de la Orquesta Sinfónica Gran Mariscal de Ayacucho afectados por los terremotos de junio de 2026 en Venezuela.',
     resumen_en: 'Nexos and La Vida Boheme joined forces to support the musicians of the Gran Mariscal de Ayacucho Symphony Orchestra affected by the June 2026 earthquakes in Venezuela.',
     estado: 'En curso', estado_en: 'In progress',
-    ubicacion: 'Caracas', fecha: '', meta: 25000, recaudado: 0, actualizado: '', etapa_actual: 2,
+    ubicacion: 'Caracas', fecha: '', meta: 25000, recaudado: 0, gastado: 2779, actualizado: '', etapa_actual: '2, 3',
     foto: VS + 'arpa-luthier.jpg',
     historia: 'La sede de la orquesta ocupa un piso alto de la Torre Polar, en Plaza Venezuela. La víspera del sismo dejaron todo listo para ensayar. Cuando la tierra se movió, los contrabajos y la percusión fueron los primeros en caer.',
     historia_en: 'The orchestra is based on a high floor of Torre Polar, in Plaza Venezuela. The day before the earthquake they left everything ready to rehearse. When the ground shook, the double basses and the percussion were the first to fall.',
@@ -80,14 +80,14 @@
       { tipo: 'kit', titulo: 'Percusión', titulo_en: 'Percussion', grupo: 'baterías · timpani · láminas', grupo_en: 'drums · timpani · mallets', monto: '98',
         texto: 'Par de baquetas de concierto, par de mazos y llave de afinación.', texto_en: 'Pair of concert sticks, pair of mallets and tuning key.' },
 
-      { tipo: 'aporte', titulo: 'Dona directo a NEXOS', titulo_en: 'Donate directly to NEXOS', grupo: 'Donar ahora', grupo_en: 'Donate now', enlace: 'donar',
+      { tipo: 'aporte', titulo: 'Dona a NEXOS', titulo_en: 'Donate to NEXOS', grupo: 'Donar', grupo_en: 'Donate', enlace: 'donar',
         texto: 'Por nuestros canales de siempre. Tu aporte aparece en Transparencia.', texto_en: 'Through our usual channels. Your donation shows up in Transparency.' },
-      { tipo: 'aporte', titulo: 'Escucha “Falla / Boconó”', titulo_en: 'Listen to “Falla / Boconó”', grupo: 'Ir a Bandcamp', grupo_en: 'Go to Bandcamp', enlace: 'https://lavidaboheme.bandcamp.com',
-        texto: 'Escucha a La Vida Boheme en Bandcamp y aporta desde ahí.', texto_en: 'Listen to La Vida Boheme on Bandcamp and give from there.' },
+      { tipo: 'aporte', titulo: 'Compra y escucha “Falla / Boconó”', titulo_en: 'Buy and listen to “Falla / Boconó”', grupo: 'Ir a Bandcamp', grupo_en: 'Go to Bandcamp', enlace: '',
+        texto: 'La canción de La Vida Boheme, en Bandcamp.', texto_en: 'La Vida Boheme’s song, on Bandcamp.' },
       { tipo: 'aporte', titulo: 'Patrocina un músico', titulo_en: 'Sponsor a musician', grupo: 'Patrocinar', grupo_en: 'Sponsor', enlace: '',
-        texto: 'Cubre el kit de un músico desde la web de La Vida Boheme.', texto_en: 'Cover a musician’s kit from La Vida Boheme’s website.' },
+        texto: 'Cubre las necesidades inmediatas de un músico para que pueda seguir tocando.', texto_en: 'Cover a musician’s immediate needs so they can keep playing.' },
 
-      { tipo: 'aliado', titulo: 'La Vida Boheme', imagen: '', enlace: 'https://yosoylavidaboheme.com/', instagram: 'lavidaboheme' },
+      { tipo: 'aliado', titulo: 'La Vida Boheme', imagen: VS + 'logo-la-vida-boheme.png', enlace: 'https://yosoylavidaboheme.com/', instagram: 'lavidaboheme' },
       { tipo: 'beneficiario', titulo: 'Orquesta Sinfónica Gran Mariscal de Ayacucho', imagen: VS + 'logo-orquesta.png', enlace: '' }
     ]
   }];
@@ -149,7 +149,7 @@
         nombre: t(p, 'nombre'), lema: t(p, 'lema'), resumen: t(p, 'resumen'), estado: t(p, 'estado'),
         ubicacion: String(p.ubicacion || '').trim(), fecha: String(p.fecha || '').trim(),
         meta: num(p.meta), recaudado: num(p.recaudado), actualizado: String(p.actualizado || '').trim(),
-        etapaActual: Math.max(1, parseInt(p.etapa_actual, 10) || 1),
+        etapasActivas: (String(p.etapa_actual == null ? '' : p.etapa_actual).match(/\d+/g) || ['1']).map(function (n) { return parseInt(n, 10); }),
         gastado: num(p.gastado), compras: (p.compras || []).map(function (c) { return { concepto: String(c.concepto || '').trim(), monto: num(c.monto) }; }),
         foto: img(p.foto),
         historia: t(p, 'historia').split(/\n\s*\n/).map(function (s) { return s.trim(); }).filter(Boolean),
