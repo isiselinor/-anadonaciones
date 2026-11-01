@@ -40,12 +40,11 @@ var RESUMEN_PROY_HOJA = 'Resumen proyectos';
 function actualizarResumenProyectos() {
   var ss = SpreadsheetApp.getActiveSpreadsheet();
   var hist = leerTasasHistorial_();
-  var tz = Session.getScriptTimeZone();
   var SIN = 'Sin categoría (ingreso general)';
 
   var orden = [], res = {};
   var asegura = function (c) {
-    if (!res[c]) { res[c] = { count: 0, usd: 0, porMes: {}, porMoneda: {}, egresos: 0 }; orden.push(c); }
+    if (!res[c]) { res[c] = { count: 0, usd: 0, porMoneda: {}, egresos: 0 }; orden.push(c); }
     return res[c];
   };
   // Orden: el de la pestaña Categorias
@@ -67,13 +66,10 @@ function actualizarResumenProyectos() {
       if (monto === null || monto === 0) return;
       var mc = monedaCanon_(r[MOVIM.colMoneda - 1]);
       if (!mc) return;
-      var fecha = r[MOVIM.colFecha - 1] instanceof Date ? r[MOVIM.colFecha - 1] : null;
+      var fecha = r[MOVIM.colFecha - 1] instanceof Date ? r[MOVIM.colFecha - 1] : null; // fecha de la tasa a aplicar
       var usd = aUSD_(mc.moneda, monto, tasaEn_(hist, fecha));
       var x = asegura(String(r[6] || '').trim() || SIN);
       x.count++; x.usd += usd;
-      var mes = fecha ? Utilities.formatDate(fecha, tz, 'yyyy-MM') : 'Sin fecha';
-      x.porMes[mes] = x.porMes[mes] || { count: 0, usd: 0 };
-      x.porMes[mes].count++; x.porMes[mes].usd += usd;
       x.porMoneda[mc.moneda] = x.porMoneda[mc.moneda] || { count: 0, monto: 0, usd: 0 };
       x.porMoneda[mc.moneda].count++; x.porMoneda[mc.moneda].monto += monto; x.porMoneda[mc.moneda].usd += usd;
     });
@@ -87,7 +83,7 @@ function actualizarResumenProyectos() {
   var vacia = function () { filas.push(['', '', '', '', '']); };
   var enc = function (a) { filas.push(a); negritas.push(filas.length); };
   enc(['RESUMEN INTERNO POR PROYECTO / CATEGORÍA · se genera solo · no se publica', '', '', '', '']);
-  filas.push(['Actualizado ' + new Date().toLocaleString('es-AR') + ' · US$ con la tasa de la fecha de cada movimiento', '', '', '', '']);
+  filas.push(['Actualizado ' + new Date().toLocaleString('es-AR') + ' · US$ con la misma tasa que usa el resumen general', '', '', '', '']);
   filas.push(['Ingresos marcados = donaciones con categoría en la columna G de Movimientos.', '', '', '', '']);
   vacia();
   enc(['Categoría / proyecto', 'Donaciones marcadas', 'Ingresos marcados (US$)', 'Egresos (US$)', 'Diferencia (US$)']);
@@ -100,17 +96,13 @@ function actualizarResumenProyectos() {
   });
   enc(['TOTAL', tC, redondear2_(tI), redondear2_(tE), '']);
 
-  var marcadas = orden.filter(function (c) { return res[c].count > 0; });
-  vacia();
-  enc(['Ingresos por mes · Categoría', 'Mes', 'Donaciones', 'Ingresos (US$)', '']);
-  marcadas.forEach(function (c) {
-    Object.keys(res[c].porMes).sort().forEach(function (m) { filas.push([c, m, res[c].porMes[m].count, redondear2_(res[c].porMes[m].usd), '']); });
-  });
-  vacia();
+  // Desglose por moneda solo de las categorías de proyecto (lo general ya está en el Resumen)
+  var marcadas = orden.filter(function (c) { return c !== SIN && res[c].count > 0; });
+  if (marcadas.length) { vacia();
   enc(['Ingresos por moneda · Categoría', 'Moneda', 'Donaciones', 'Monto en su moneda', 'Equivalente (US$)']);
   marcadas.forEach(function (c) {
     Object.keys(res[c].porMoneda).forEach(function (m) { var y = res[c].porMoneda[m]; filas.push([c, m, y.count, redondear2_(y.monto), redondear2_(y.usd)]); });
-  });
+  }); }
 
   var h = ss.getSheetByName(RESUMEN_PROY_HOJA) || ss.insertSheet(RESUMEN_PROY_HOJA);
   h.clear();
