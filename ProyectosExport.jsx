@@ -175,7 +175,8 @@ function ProyectoPage({ id, lang, onClose, onDonate }) {
 
   const irABuscador = function (e) {
     e.preventDefault(); onClose();
-    setTimeout(function () { const el = document.getElementById('reporte'); if (el) el.scrollIntoView({ behavior: 'smooth' }); }, 60);
+    location.hash = 'transparencia';
+    setTimeout(function () { const el = document.getElementById('reporte'); if (el) el.scrollIntoView({ behavior: 'smooth' }); }, 150);
   };
   const tile = { background: 'color-mix(in oklab, var(--blue) 6%, white)', borderRadius: 12, padding: '12px 14px' };
 

@@ -4,13 +4,10 @@
 
 const NEXOS_ES = {
   nav: [
-    { id:'quienes', label:'Quiénes somos' },
+    { id:'inicio', label:'Inicio' },
     { id:'proyectos', label:'Proyectos' },
-    { id:'cifras', label:'La ayuda en números' },
-    { id:'donar', label:'Cómo donar' },
-    { id:'evidencia', label:'Transparencia' },
-    { id:'faq', label:'Preguntas' },
-    { id:'historias', label:'Historias', href:'https://somosnexos.substack.com' }
+    { id:'transparencia', label:'Transparencia' },
+    { id:'nosotros', label:'Nosotros' }
   ],
   hero: {
     eyebrow: 'Ayuda humanitaria · Venezuela',
@@ -137,13 +134,10 @@ const NEXOS_ES = {
 
 const NEXOS_EN = {
   nav: [
-    { id:'quienes', label:'Who we are' },
+    { id:'inicio', label:'Home' },
     { id:'proyectos', label:'Projects' },
-    { id:'cifras', label:'Aid in numbers' },
-    { id:'donar', label:'How to donate' },
-    { id:'evidencia', label:'Transparency' },
-    { id:'faq', label:'FAQ' },
-    { id:'historias', label:'Stories', href:'https://somosnexos.substack.com' }
+    { id:'transparencia', label:'Transparency' },
+    { id:'nosotros', label:'About us' }
   ],
   hero: {
     eyebrow: 'Humanitarian aid · Venezuela',
