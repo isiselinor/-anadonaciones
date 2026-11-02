@@ -23,8 +23,8 @@ function SectionWindowExport({ id, onClose, onOpen, onDonate, variant, lang }) {
 
   return (
     <div className="sw-scrim" onClick={function(e){ if (e.target === e.currentTarget) onClose(); }}
-      style={{ position:'fixed', inset:0, zIndex:50, background:'rgba(28,35,64,.55)', backdropFilter:'blur(10px) saturate(140%)', WebkitBackdropFilter:'blur(10px) saturate(140%)', display:'flex', alignItems:'flex-start', justifyContent:'center', padding:'clamp(10px,2.5vh,30px) 16px', overflow:'auto' }}>
-      <div className="sw-panel" style={{ width:'min(1240px,100%)', minHeight:'min(880px, 92vh)', display:'flex', flexDirection:'column', background:'#fff', borderRadius:24, overflow:'hidden', boxShadow:'0 40px 100px rgba(28,35,64,.42)' }}>
+      style={{ position:'fixed', inset:0, zIndex:50, background:'rgba(17,37,50,.55)', backdropFilter:'blur(10px) saturate(140%)', WebkitBackdropFilter:'blur(10px) saturate(140%)', display:'flex', alignItems:'flex-start', justifyContent:'center', padding:'clamp(10px,2.5vh,30px) 16px', overflow:'auto' }}>
+      <div className="sw-panel" style={{ width:'min(1240px,100%)', minHeight:'min(880px, 92vh)', display:'flex', flexDirection:'column', background:'#fff', borderRadius:24, overflow:'hidden', boxShadow:'0 40px 100px rgba(17,37,50,.42)' }}>
         <div style={{ background:headBg, color:'#fff', padding:'30px 40px', display:'flex', justifyContent:'space-between', alignItems:'flex-start', gap:16 }}>
           <div>
             <div style={{ fontSize:11, fontWeight:800, letterSpacing:1.6, textTransform:'uppercase', color: dark ? 'rgba(255,255,255,.8)' : 'var(--blue-lt)' }}>{v.eyebrow}</div>

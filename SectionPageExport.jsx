@@ -37,10 +37,10 @@ function SectionPageExport({ id, onClose, onOpen, onDonate, lang }) {
       {v.foto ? (
         <div style={{ position:'relative', height:'clamp(240px,38vh,380px)' }}>
           <img src={v.foto} alt="" style={{ position:'absolute', inset:0, width:'100%', height:'100%', objectFit:'cover' }} />
-          <div style={{ position:'absolute', inset:0, background:'linear-gradient(180deg, rgba(28,35,64,.28), rgba(28,35,64,.82))' }}></div>
+          <div style={{ position:'absolute', inset:0, background:'linear-gradient(180deg, rgba(17,37,50,.28), rgba(17,37,50,.82))' }}></div>
           <div style={{ position:'absolute', left:0, right:0, bottom:0, padding:'0 0 28px' }}>
             <div style={col}>
-              <div style={{ fontSize:11, fontWeight:800, letterSpacing:1.6, textTransform:'uppercase', color:'#ffb3a3' }}>{v.eyebrow}</div>
+              <div style={{ fontSize:11, fontWeight:800, letterSpacing:1.6, textTransform:'uppercase', color:'#F4B044' }}>{v.eyebrow}</div>
               <h1 style={{ fontFamily:'var(--font-display)', fontWeight:800, letterSpacing:'-1.8px', fontSize:'clamp(32px,5vw,58px)', color:'#fff', margin:'10px 0 0', lineHeight:1.02 }}>{v.titulo}</h1>
               <div style={{ fontSize:11.5, color:'rgba(255,255,255,.7)', marginTop:10 }}>{u.fotoPor}{d.credito}</div>
             </div>

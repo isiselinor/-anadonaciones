@@ -69,12 +69,12 @@ const PR = {
 };
 const PR_ST = {
   hecho: { bg: 'var(--ink)', fg: '#fff' },
-  curso: { bg: 'color-mix(in oklab, var(--blue) 12%, white)', fg: 'var(--blue)' },
+  curso: { bg: 'color-mix(in oklab, var(--blue-lt) 30%, white)', fg: 'var(--blue)' },
   prox: { bg: '#eef0f5', fg: '#4a5170' }
 };
 
 function PrBar({ pct, h, color }) {
-  return (<div style={{ height: h || 10, borderRadius: 999, background: 'color-mix(in oklab, var(--blue) 12%, white)', overflow: 'hidden' }}>
+  return (<div style={{ height: h || 10, borderRadius: 999, background: 'color-mix(in oklab, var(--blue-lt) 30%, white)', overflow: 'hidden' }}>
     <div style={{ height: '100%', width: Math.max(0, Math.min(100, pct)) + '%', background: color || 'var(--blue)', borderRadius: 999, transition: 'width .4s' }}></div>
   </div>);
 }
@@ -87,7 +87,7 @@ function ProyectosSection({ lang, onOpen }) {
   return (
     <section id="proyectos" style={{ padding: 'clamp(56px,8vw,96px) 0', background: 'var(--soft)' }}>
       <div style={PR.wrap}>
-        <div style={{ ...PR.eyebrow, color: 'var(--accent)' }}>{u.eyebrow}</div>
+        <div style={{ ...PR.eyebrow, color: 'var(--accent-text)' }}>{u.eyebrow}</div>
         <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(28px,4vw,44px)', fontWeight: 700, letterSpacing: '-1px', lineHeight: 1.05, margin: '10px 0 0', color: 'var(--ink)' }}>{u.titulo}</h2>
         <p style={{ fontSize: 17, lineHeight: 1.7, color: 'var(--muted)', maxWidth: 620, margin: '14px 0 0' }}>{u.lead}</p>
         <div style={{ marginTop: 34, display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(300px,1fr))', gap: 20 }}>
@@ -110,7 +110,7 @@ function ProyectosSection({ lang, onOpen }) {
                       <span style={{ color: 'var(--muted)' }}>{Math.round(pct)}%</span>
                     </div>
                   </React.Fragment> : null}
-                  <span style={{ marginTop: 'auto', paddingTop: 4, color: 'var(--accent)', fontWeight: 800, fontSize: 14 }}>{u.verProyecto}</span>
+                  <span style={{ marginTop: 'auto', paddingTop: 4, color: 'var(--accent-text)', fontWeight: 800, fontSize: 14 }}>{u.verProyecto}</span>
                 </div>
               </a>);
           })}
@@ -176,7 +176,7 @@ function ProyectoPage({ id, lang, onClose, onDonate }) {
     location.hash = 'transparencia';
     setTimeout(function () { const el = document.getElementById('reporte'); if (el) el.scrollIntoView({ behavior: 'smooth' }); }, 150);
   };
-  const tile = { background: 'color-mix(in oklab, var(--blue) 6%, white)', borderRadius: 12, padding: '12px 14px' };
+  const tile = { background: 'color-mix(in oklab, var(--blue-lt) 16%, white)', borderRadius: 12, padding: '12px 14px' };
 
   return (
     <div className="sp-root" ref={scroller} aria-label={p.nombre} style={{ background: '#fff' }}>
@@ -197,7 +197,7 @@ function ProyectoPage({ id, lang, onClose, onDonate }) {
             {p.resumen ? <p style={{ margin: 0, fontSize: 16, lineHeight: 1.65, maxWidth: 600, color: 'var(--ink)' }}>{p.resumen}</p> : null}
           </div>
           {pres ? (
-            <div style={{ flex: '1 1 320px', minWidth: 0, background: '#fff', borderRadius: 22, padding: 24, display: 'flex', flexDirection: 'column', gap: 14, boxShadow: '0 10px 30px rgba(28,35,64,.08)' }}>
+            <div style={{ flex: '1 1 320px', minWidth: 0, background: '#fff', borderRadius: 22, padding: 24, display: 'flex', flexDirection: 'column', gap: 14, boxShadow: '0 10px 30px rgba(17,37,50,.08)' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', gap: 10, alignItems: 'center', flexWrap: 'wrap' }}>
                 {p.estado ? <span style={{ ...PR.chip, background: PR_ST.curso.bg, color: PR_ST.curso.fg }}>{p.estado}</span> : <span></span>}
                 {p.actualizado ? <span style={{ fontSize: 12, color: 'var(--muted)' }}>{u.actualizado} {p.actualizado}</span> : null}
@@ -221,12 +221,12 @@ function ProyectoPage({ id, lang, onClose, onDonate }) {
           <div style={{ flex: '1 1 380px', minWidth: 0, display: 'flex', flexDirection: 'column', gap: 16 }}>
             <span style={PR.eyebrow}>{u.loQuePaso}</span>
             {p.historia.map(function (t, i) { return <p key={i} style={{ margin: 0, fontSize: 19, lineHeight: 1.7, color: 'var(--ink)' }}>{t}</p>; })}
-            {p.destacado ? <p style={{ margin: 0, fontSize: 16, lineHeight: 1.65, fontWeight: 700, color: 'var(--accent)' }}>{p.destacado}</p> : null}
+            {p.destacado ? <p style={{ margin: 0, fontSize: 16, lineHeight: 1.65, fontWeight: 700, color: 'var(--accent-text)' }}>{p.destacado}</p> : null}
           </div>
           {p.cifras.length ? (
             <div style={{ flex: '1 1 440px', minWidth: 0, display: 'grid', gridTemplateColumns: 'repeat(2,minmax(0,1fr))', gap: 12 }}>
               {p.cifras.map(function (c, i) {
-                return (<div key={i} style={{ background: 'color-mix(in oklab, var(--blue) 6%, white)', borderRadius: 18, padding: 22, display: 'flex', flexDirection: 'column', gap: 10, minWidth: 0 }}>
+                return (<div key={i} style={{ background: 'color-mix(in oklab, var(--blue-lt) 16%, white)', borderRadius: 18, padding: 22, display: 'flex', flexDirection: 'column', gap: 10, minWidth: 0 }}>
                   <b style={{ fontSize: 46, lineHeight: 1, fontWeight: 800, color: 'var(--blue)', fontVariantNumeric: 'tabular-nums' }}>{c.n}</b>
                   <span style={{ fontSize: 14, lineHeight: 1.45, color: 'var(--ink)' }}>{c.texto}</span>
                 </div>);
@@ -249,7 +249,7 @@ function ProyectoPage({ id, lang, onClose, onDonate }) {
                     style={{ flex: '1 1 0', minWidth: 120, border: 0, background: 'none', padding: 0, fontFamily: 'inherit', color: 'var(--ink)', cursor: 'pointer', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 10, textAlign: 'center', position: 'relative' }}>
                     <span style={{ width: 52, height: 52, borderRadius: 999, display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: 18, boxSizing: 'border-box',
                       background: st === 'hecho' ? 'var(--ink)' : st === 'curso' ? 'var(--blue)' : '#fff', color: st === 'prox' ? 'var(--muted)' : '#fff',
-                      border: st === 'prox' ? '2px solid var(--line)' : '0', boxShadow: on ? '0 0 0 5px var(--peach)' : 'none' }}>{i + 1}</span>
+                      border: st === 'prox' ? '2px solid var(--line)' : '0', boxShadow: on ? '0 0 0 5px var(--amber)' : 'none' }}>{i + 1}</span>
                     <b style={{ fontSize: 15 }}>{e.titulo}</b>
                     <span style={{ fontSize: 12, fontWeight: 700, color: st === 'curso' ? 'var(--blue)' : 'var(--muted)' }}>{etapaInfo(i)[1]}</span>
                   </button>);
@@ -297,7 +297,7 @@ function ProyectoPage({ id, lang, onClose, onDonate }) {
             </div>)}
           {lb !== null && fotosTab[lb] ? (
             <div className="lb-root" role="dialog" aria-modal="true" onClick={function (e) { if (e.target === e.currentTarget) setLb(null); }}
-              style={{ position: 'fixed', inset: 0, zIndex: 60, background: 'rgba(28,35,64,.9)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 14, padding: 24 }}>
+              style={{ position: 'fixed', inset: 0, zIndex: 60, background: 'rgba(17,37,50,.9)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 14, padding: 24 }}>
               <img className="lb-img" src={fotosTab[lb].src} alt={fotosTab[lb].pie} style={{ maxWidth: '100%', maxHeight: '74vh', objectFit: 'contain', borderRadius: 12 }} />
               <span style={{ color: '#fff', fontSize: 15, textAlign: 'center' }}>{fotosTab[lb].pie} · {lb + 1} / {fotosTab.length}</span>
               <div style={{ display: 'flex', gap: 10 }}>

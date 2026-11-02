@@ -5,27 +5,29 @@
 
 :root{
 /* ---- Brand core (sampled from the official NEXOS logo) ---- */
---nexos-coral:#fb6a4e;
---nexos-blue:#125edb;
+--nexos-coral:#E0680E;
+--nexos-blue:#112532;
 --nexos-white:#ffffff;
 
 /* ---- Product palette (exact values shipped in the donations site) ---- */
---accent:#e85d45;
---blue:#2b4fd1;
---blue-lt:#7e9ce8;
---peach:#f7e3dc;
---line:#ecedf3;
---ink:#1c2340;
---muted:#7a8194;
+--accent:#E0680E;
+--blue:#112532;
+--blue-lt:#88A5B7;
+--peach:#FDF1DE;
+--amber:#F4B044;
+--accent-text:#B8530A; /* naranja oscuro para textos chicos: contraste AA sobre blanco */
+--line:#E4E9ED;
+--ink:#112532;
+--muted:#5B6B78;
 --white:#ffffff;
---soft:#fafbfd;
+--soft:#F7F9FA;
 
 /* ---- Alphas ---- */
---overlay-scrim:rgba(28,35,64,.5);
---row-hover:rgba(232,93,69,.06);
---accent-glow-10:rgba(232,93,69,.10);
---blue-glow-08:rgba(43,79,209,.08);
---ig-hover:#f4f6fe;
+--overlay-scrim:rgba(17,37,50,.5);
+--row-hover:rgba(224,104,14,.06);
+--accent-glow-10:rgba(224,104,14,.10);
+--blue-glow-08:rgba(17,37,50,.08);
+--ig-hover:#EEF2F5;
 
 /* ---- Semantic aliases ---- */
 --surface-page:var(--white);
@@ -137,10 +139,10 @@
 }
 
 :root{
---shadow-card:0 10px 30px rgba(28,35,64,.07);
---shadow-cta:0 14px 30px rgba(232,93,69,.32);
---shadow-float:0 12px 28px rgba(232,93,69,.42);
---shadow-modal:0 24px 60px rgba(28,35,64,.22);
+--shadow-card:0 10px 30px rgba(17,37,50,.07);
+--shadow-cta:0 14px 30px rgba(224,104,14,.32);
+--shadow-float:0 12px 28px rgba(224,104,14,.42);
+--shadow-modal:0 24px 60px rgba(17,37,50,.22);
 --border-card:1px solid var(--line);
 --border-stat-top:3px;
 --border-outline-strong:1.5px;
@@ -157,7 +159,7 @@
 }
 
 :root{
---bg-page:radial-gradient(1200px 700px at 100% 0%, rgba(232,93,69,.16), transparent 62%),radial-gradient(1300px 800px at 0% 10%, rgba(43,79,209,.20), transparent 60%),radial-gradient(1000px 600px at 50% 90%, rgba(43,79,209,.10), transparent 65%),var(--white);
+--bg-page:radial-gradient(1200px 700px at 100% 0%, rgba(224,104,14,.16), transparent 62%),radial-gradient(1300px 800px at 0% 10%, rgba(17,37,50,.20), transparent 60%),radial-gradient(1000px 600px at 50% 90%, rgba(17,37,50,.10), transparent 65%),var(--white);
 --bg-page-attachment:fixed;
 }
 
