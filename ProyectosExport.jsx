@@ -6,7 +6,7 @@ const PR_UI = {
   ES: {
     eyebrow: 'Proyectos', titulo: 'Lo que tu ayuda está construyendo',
     lead: 'Cada proyecto muestra cuánto necesita, cuánto llevamos y en qué se usa cada dólar.',
-    verProyecto: 'Ver proyecto →', de: 'de', meta: 'meta', volver: '← Volver',
+    verProyecto: 'Ver proyecto →', todos: '← Todos los proyectos', de: 'de', meta: 'meta', volver: '← Volver',
     llevamos: 'Llevamos recaudado', deMeta: 'de una meta de', avance: 'Avance', falta: 'Falta',
     actualizado: 'Actualizado', donarProyecto: 'Donar a este proyecto', buscaNombre: '¿Ya donaste? Busca tu nombre →',
     estRecien: 'Recién empezamos', estAbierta: 'Recaudación abierta', estMeta: 'Meta alcanzada',
@@ -29,7 +29,7 @@ const PR_UI = {
   EN: {
     eyebrow: 'Projects', titulo: 'What your help is building',
     lead: 'Each project shows what it needs, how far we are and where every dollar goes.',
-    verProyecto: 'See project →', de: 'of', meta: 'goal', volver: '← Back',
+    verProyecto: 'See project →', todos: '← All projects', de: 'of', meta: 'goal', volver: '← Back',
     llevamos: 'Raised so far', deMeta: 'of a goal of', avance: 'Progress', falta: 'To go',
     actualizado: 'Updated', donarProyecto: 'Donate to this project', buscaNombre: 'Already donated? Find your name →',
     estRecien: 'Just getting started', estAbierta: 'Fundraising open', estMeta: 'Goal reached',
@@ -135,10 +135,8 @@ function ProyectoPage({ id, lang, onClose, onDonate }) {
     setFase(null); setGtab(0); setLb(null); setKit(0);
     function k(e) { if (e.key === 'Escape') { if (lb !== null) setLb(null); else onClose(); } }
     document.addEventListener('keydown', k);
-    const prev = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
-    if (scroller.current) scroller.current.scrollTop = 0;
-    return function () { document.removeEventListener('keydown', k); document.body.style.overflow = prev; };
+    window.scrollTo(0, 0);
+    return function () { document.removeEventListener('keydown', k); };
   }, [id]);
 
   if (!id) return null;
@@ -174,23 +172,18 @@ function ProyectoPage({ id, lang, onClose, onDonate }) {
   const fotosTab = p.fotos.filter(function (f) { return f.grupo === grupos[gi]; });
 
   const irABuscador = function (e) {
-    e.preventDefault(); onClose();
+    e.preventDefault();
     location.hash = 'transparencia';
     setTimeout(function () { const el = document.getElementById('reporte'); if (el) el.scrollIntoView({ behavior: 'smooth' }); }, 150);
   };
   const tile = { background: 'color-mix(in oklab, var(--blue) 6%, white)', borderRadius: 12, padding: '12px 14px' };
 
   return (
-    <div className="sp-root" ref={scroller} role="dialog" aria-modal="true" aria-label={p.nombre}
-      style={{ position: 'fixed', inset: 0, zIndex: 35, background: '#fff', overflow: 'auto' }}>
-      {/* barra superior */}
-      <div style={{ position: 'sticky', top: 0, zIndex: 3, background: 'rgba(255,255,255,.94)', backdropFilter: 'blur(12px)', borderBottom: '1px solid var(--line)' }}>
-        <div style={{ ...PR.wrap, height: 60, display: 'flex', alignItems: 'center', gap: 14 }}>
-          <a href="#top" onClick={function (e) { e.preventDefault(); onClose(); }} style={{ display: 'flex', alignItems: 'center', gap: 12, textDecoration: 'none', minWidth: 0 }}>
-            <img src="logo-nexos-mark.png" alt="NEXOS" style={{ height: 26 }} />
-            <span style={{ fontSize: 13, fontWeight: 700, color: 'var(--muted)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{p.nombre}</span>
-          </a>
-          <button onClick={onClose} style={{ marginLeft: 'auto', background: 'none', border: '1px solid var(--line)', borderRadius: 999, padding: '8px 16px', fontSize: 13, fontWeight: 700, color: 'var(--ink)', cursor: 'pointer', whiteSpace: 'nowrap' }}>{u.volver}</button>
+    <div className="sp-root" ref={scroller} aria-label={p.nombre} style={{ background: '#fff' }}>
+      {/* volver a la lista (el menú principal queda arriba) */}
+      <div style={{ background: 'var(--peach)' }}>
+        <div style={{ ...PR.wrap, paddingTop: 18 }}>
+          <a href="#proyectos" style={{ fontSize: 14, fontWeight: 700, color: 'var(--blue)' }}>{u.todos}</a>
         </div>
       </div>
 
@@ -433,12 +426,6 @@ function ProyectoPage({ id, lang, onClose, onDonate }) {
             ? <a href={window.NEXOS_FIXTURE.enlaceFacturas} target="_blank" rel="noopener" style={{ fontSize: 14, fontWeight: 700 }}>{u.verFacturas}</a> : null}
         </section>) : null}
 
-      <footer style={{ background: 'var(--ink)', color: 'rgba(255,255,255,.75)' }}>
-        <div style={{ ...PR.wrap, padding: '28px 24px', display: 'flex', flexWrap: 'wrap', gap: 16, alignItems: 'center', justifyContent: 'space-between', fontSize: 14 }}>
-          <span>NEXOS · @somos.nexosve</span>
-          <button onClick={onDonate} style={PR.coral}>{u.donar}</button>
-        </div>
-      </footer>
     </div>
   );
 }

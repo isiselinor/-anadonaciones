@@ -272,7 +272,9 @@ function EditorialLandingExport() {
   return (
     <div id="top" style={{ background:'#fff' }}>
       <NavBar onOpen={setDrawer} onDonate={function(){ setDonar(true); }} lang={lang} setLang={setLang} forceSolid={t.portada !== 'Foto'} />
-      {pagina === 'inicio' ? (<React.Fragment>
+      {proyecto ? <ProyectoPage lang={lang} id={proyecto} onClose={function(){ setProyecto(null); }} onDonate={function(){ setDonar(true); }} /> : null}
+
+      {!proyecto && pagina === 'inicio' ? (<React.Fragment>
       <section style={{ background:'var(--peach)' }}>
         <div style={{ ...A.wrap, paddingTop:'clamp(56px,9vw,104px)', paddingBottom:'clamp(44px,6vw,72px)' }}>
           <div style={A.eyebrow}>{d.hero.eyebrow}</div>
@@ -343,9 +345,9 @@ function EditorialLandingExport() {
 
       </React.Fragment>) : null}
 
-      {pagina === 'proyectos' ? <ProyectosSection lang={lang} onOpen={setProyecto} /> : null}
+      {!proyecto && pagina === 'proyectos' ? <ProyectosSection lang={lang} onOpen={setProyecto} /> : null}
 
-      {pagina === 'transparencia' ? (<React.Fragment>
+      {!proyecto && pagina === 'transparencia' ? (<React.Fragment>
       <section style={{ background:'var(--peach)' }}>
         <div style={{ ...A.wrap, paddingTop:'clamp(48px,7vw,80px)', paddingBottom:'clamp(36px,5vw,56px)' }}>
           <div style={A.eyebrow}>{d.ventanas.evidencia.eyebrow}</div>
@@ -419,7 +421,7 @@ function EditorialLandingExport() {
 
       </React.Fragment>) : null}
 
-      {pagina === 'nosotros' ? (<React.Fragment>
+      {!proyecto && pagina === 'nosotros' ? (<React.Fragment>
       <section style={{ background:'var(--peach)' }}>
         <div style={{ ...A.wrap, paddingTop:'clamp(48px,7vw,80px)', paddingBottom:'clamp(36px,5vw,56px)' }}>
           <div style={A.eyebrow}>{d.ventanas.quienes.eyebrow}</div>
@@ -497,7 +499,6 @@ function EditorialLandingExport() {
       {t.subventana === 'Página'
         ? <SectionPageExport lang={lang} id={drawer} onClose={function(){ setDrawer(null); }} onOpen={setDrawer} onDonate={function(){ setDonar(true); }} />
         : <SectionWindowExport lang={lang} variant={t.winHeader === 'Coral' ? 'grafica' : 'editorial'} id={drawer} onClose={function(){ setDrawer(null); }} onOpen={setDrawer} onDonate={function(){ setDonar(true); }} />}
-      <ProyectoPage lang={lang} id={proyecto} onClose={function(){ setProyecto(null); }} onDonate={function(){ setDonar(true); }} />
       <DonateModal open={donar} onClose={function(){ setDonar(false); }} notice={<span>{u.avisoModal[0]}<b style={{ color:'var(--accent)' }}>{u.avisoModal[1]}</b>{u.avisoModal[2]}</span>}>
         {x.metodosDonacion.map(function(m){ return <PaymentMethod key={m.metodo} name={m.metodo} fields={m.campos} />; })}
       </DonateModal>
