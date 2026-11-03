@@ -12,10 +12,10 @@
  * Cómo se identifica un proyecto:
  *  - Movimientos, columna G "Proyecto" (opcional): menú con la lista de proyectos. Vacía = donación general.
  *    Para sumar un proyecto nuevo a la lista: Datos → Validación de datos en la columna G.
- *  - Gastos: el equipo usa la categoría que considere; si una categoría se llama igual que el
- *    proyecto (ej. "Volver a Sonar"), esos gastos se cuentan como egresos del proyecto.
- * Lo público sigue calculándose de forma global. Lo invertido de cada proyecto ya viaja en
- * egresosPorCategoria; esta función solo envía las fotos.
+ *  - Gastos, columna G "Proyecto": menú con los mismos nombres. La categoría (columna F) dice
+ *    QUÉ se compró; el proyecto dice PARA QUÉ. Son independientes.
+ * Lo público: lo invertido por proyecto viaja en invertidoPorProyecto (HOJA_DATOS.gs).
+ * Los ingresos por proyecto son solo internos (esta pestaña). Esta función solo envía las fotos.
  */
 function leerProyectos_() {
   var ss = SpreadsheetApp.getActiveSpreadsheet();
@@ -40,7 +40,7 @@ var RESUMEN_PROY_HOJA = 'Resumen proyectos';
 function actualizarResumenProyectos() {
   var ss = SpreadsheetApp.getActiveSpreadsheet();
   var hist = leerTasasHistorial_();
-  var SIN = 'Sin proyecto (donación general)';
+  var SIN = 'Sin proyecto (general)';
 
   var orden = [], res = {};
   var asegura = function (c) {
@@ -73,8 +73,11 @@ function actualizarResumenProyectos() {
     });
   }
 
-  // Egresos del proyecto: gastos cuya categoría en Gastos tiene el mismo nombre que el proyecto.
-  leerEgresos_(hist).forEach(function (e) { var c = String(e.categoria || '').trim(); if (res[c] && c !== SIN) res[c].egresos += e.monto; });
+  // Egresos del proyecto: columna G "Proyecto" de Gastos. Vacía = sin proyecto.
+  leerEgresos_(hist).forEach(function (e) {
+    var p = (e.proyecto && e.proyecto !== PROY_DEFAULT) ? e.proyecto : SIN;
+    asegura(p).egresos += e.monto;
+  });
 
   // Armar la pestaña
   var filas = [], negritas = [];
@@ -82,13 +85,13 @@ function actualizarResumenProyectos() {
   var enc = function (a) { filas.push(a); negritas.push(filas.length); };
   enc(['RESUMEN INTERNO POR PROYECTO · se genera solo · no se publica', '', '', '', '']);
   filas.push(['Actualizado ' + new Date().toLocaleString('es-AR') + ' · US$ con la misma tasa que usa el resumen general', '', '', '', '']);
-  filas.push(['Donaciones marcadas = columna G de Movimientos. Egresos = gastos con la categoría del mismo nombre en Gastos.', '', '', '', '']);
+  filas.push(['Donaciones marcadas = columna G de Movimientos. Egresos = columna G "Proyecto" de Gastos.', '', '', '', '']);
   vacia();
   enc(['Proyecto', 'Donaciones marcadas', 'Ingresos marcados (US$)', 'Egresos (US$)', 'Diferencia (US$)']);
   var tI = 0, tE = 0, tC = 0;
   orden.forEach(function (c) {
     var x = res[c];
-    filas.push([c, x.count, redondear2_(x.usd), c === SIN ? '' : redondear2_(x.egresos), x.count && c !== SIN ? redondear2_(x.usd - x.egresos) : '']);
+    filas.push([c, x.count, redondear2_(x.usd), redondear2_(x.egresos), (x.count && c !== SIN) ? redondear2_(x.usd - x.egresos) : '']);
     tI += x.usd; tE += x.egresos; tC += x.count;
   });
   enc(['TOTAL', tC, redondear2_(tI), redondear2_(tE), '']);
@@ -104,6 +107,6 @@ function actualizarResumenProyectos() {
   var h = ss.getSheetByName(RESUMEN_PROY_HOJA) || ss.insertSheet(RESUMEN_PROY_HOJA);
   h.clear();
   h.getRange(1, 1, filas.length, 5).setValues(filas);
-  negritas.forEach(function (n) { h.getRange(n, 1, 1, 5).setFontWeight('bold').setBackground('#f7e3dc'); });
+  negritas.forEach(function (n) { h.getRange(n, 1, 1, 5).setFontWeight('bold').setBackground('#FDF1DE'); });
   h.setColumnWidth(1, 280); h.setColumnWidths(2, 4, 170);
 }

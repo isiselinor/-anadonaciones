@@ -114,9 +114,12 @@
     const slug = function (v) { return String(v || '').trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''); };
     const raw = window.NEXOS_PROYECTOS.map(function (p) {
       const q = Object.assign({}, p);
-      // Lo invertido: categoría del proyecto en la pestaña Gastos (mismo nombre que el proyecto).
+      // Lo invertido: columna "Proyecto" de la pestaña Gastos (los emojis del nombre no importan).
+      // Si el script todavía no envía invertidoPorProyecto, usa la categoría con el mismo nombre.
+      const pid = slug(p.nombre);
+      const ip = ((f && f.invertidoPorProyecto) || []).filter(function (x) { return slug(x.proyecto) === pid; })[0];
       const cat = slug(p.categoria || p.nombre);
-      const eg = ((f && f.egresosRaw) || []).filter(function (c) { return slug(c.categoria) === cat; })[0];
+      const eg = ip || ((f && f.egresosRaw) || []).filter(function (c) { return slug(c.categoria) === cat; })[0];
       if (eg) { q.gastado = eg.total; q.compras = eg.items || []; }
       // Fecha automática: la última actualización de los datos.
       if (f && f.actualizado) q.actualizado = String(f.actualizado).split(',')[0].trim();

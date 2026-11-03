@@ -59,7 +59,8 @@ window.NEXOS_FIXTURE = null;
       enlaceFacturas: d.enlaceFacturas || '',
       enlaceFotos: d.enlaceFotos || '',
       proyectosSheet: (d.proyectos && !Array.isArray(d.proyectos)) ? d.proyectos : null,
-      egresosRaw: Array.isArray(d.egresosPorCategoria) ? d.egresosPorCategoria : []
+      egresosRaw: Array.isArray(d.egresosPorCategoria) ? d.egresosPorCategoria : [],
+      invertidoPorProyecto: Array.isArray(d.invertidoPorProyecto) ? d.invertidoPorProyecto : []
     };
   };
 
