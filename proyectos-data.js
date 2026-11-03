@@ -3,7 +3,7 @@
    Del Sheet vienen solos:
    - Lo invertido: la columna "Proyecto" de la pestaña Gastos (invertidoPorProyecto). Si el script aún no la envía,
      se usa la categoría con el mismo nombre; el proyecto con resto: true se queda con las demás categorías.
-   - estado: 'En curso', 'Próximamente' o 'Cerrado' (decide la sección y la etiqueta).
+   - estado: 'En curso', 'Próximamente' o 'Cerrado' (decide la sección y la etiqueta). Con tipo: 'cerrado' la etiqueta puede decir otra cosa (ej. 'Fase de emergencia').
    - La fecha: la última actualización de los datos.
    - Las fotos: pestaña "Fotos_proyectos"  A: Proyecto | B: Galería | C: Pie de foto | D: Enlace de la foto | E: Pie en inglés (opcional)
      Si el Sheet trae fotos de un proyecto, reemplazan a las de este archivo.
@@ -112,7 +112,7 @@
     resumen: 'Tres meses trabajando directamente en las zonas más afectadas, apoyando a civiles buscando a sus familiares, rescatistas voluntarios y grupos nacionales.',
     resumen_en: 'Three months working directly in the hardest-hit areas, supporting civilians searching for their relatives, volunteer rescuers and national groups.',
     hito: 'Respondimos ante la emergencia', hito_en: 'We responded to the emergency',
-    estado: 'Cerrado', estado_en: 'Closed',
+    estado: 'Fase de emergencia', estado_en: 'Emergency phase', tipo: 'cerrado',
     ubicacion: 'La Guaira y Caracas', periodo: 'junio a octubre 2026', periodo_en: 'June to October 2026',
     fecha: 'Junio 2026', fecha_en: 'June 2026', categoria: '', meta: 0, gastado: 84168, actualizado: '',
     foto: 'photo-rescate-edificio.jpg',
@@ -211,7 +211,7 @@
       return {
         id: String(p.id).trim(),
         nombre: t(p, 'nombre'), lema: t(p, 'lema'), resumen: t(p, 'resumen'), tarjeta: t(p, 'tarjeta'), hito: t(p, 'hito'), estado: t(p, 'estado'),
-        tipo: (function () { const e = slug(p.estado); return e.indexOf('cerr') === 0 ? 'cerrado' : e.indexOf('prox') === 0 ? 'pronto' : 'curso'; })(),
+        tipo: p.tipo || (function () { const e = slug(p.estado); return e.indexOf('cerr') === 0 ? 'cerrado' : e.indexOf('prox') === 0 ? 'pronto' : 'curso'; })(),
         ubicacion: String(p.ubicacion || '').trim(), periodo: t(p, 'periodo'), fecha: t(p, 'fecha'),
         meta: num(p.meta), recaudado: num(p.recaudado), actualizado: String(p.actualizado || '').trim(),
         etapasActivas: (String(p.etapa_actual == null ? '' : p.etapa_actual).match(/\d+/g) || ['1']).map(function (n) { return parseInt(n, 10); }),
