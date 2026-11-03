@@ -93,7 +93,7 @@ function SectionWindowExport({ id, onClose, onOpen, onDonate, variant, lang }) {
             </div>
 
             <div style={{ marginTop:'auto', display:'grid', gap:10 }}>
-              <div style={{ background:'var(--peach)', border:'1px solid var(--accent)', borderRadius:10, padding:'9px 11px', fontSize:11.5, lineHeight:1.5 }}>⚠️ En el asunto <b style={{ color:'var(--accent)' }}>no menciones Venezuela</b> ni la causa.</div>
+              <div style={{ background:'var(--peach)', border:'1px solid var(--accent)', borderRadius:10, padding:'9px 11px', fontSize:11.5, lineHeight:1.5 }}>En el asunto: <b style={{ color:'var(--accent-text)' }}>tu nombre o un “gracias”</b> 💙</div>
               <button onClick={function(){ onClose(); if (onDonate) onDonate(); }} style={{ background:'var(--accent)', color:'#fff', border:'none', borderRadius:999, padding:'14px', fontSize:15, fontWeight:800, cursor:'pointer', boxShadow:'var(--shadow-cta)' }}>💙 Donar ahora</button>
             </div>
 

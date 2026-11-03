@@ -24,7 +24,14 @@ const PR_UI = {
     kitsNota: 'Precios de referencia calculados con el listado de los músicos de la orquesta (medias de mercado).',
     aportarTit: '¿Cómo aportar?', enlacePronto: 'Enlace disponible pronto',
     aliados: 'Aliados', beneficiarios: 'Beneficiarios', junto: 'Junto a',
-    invertido: 'Ya invertido', verCompras: 'Ver en qué →', comprasTit: 'Lo que ya compramos', comprasSub: 'Cada compra sale de nuestra planilla de gastos y tiene su factura.', total: 'Total invertido', verFacturas: 'Ver facturas →'
+    invertido: 'Ya invertido', verCompras: 'Ver en qué →', comprasTit: 'Lo que ya compramos', comprasSub: 'Cada compra sale de nuestra planilla de gastos y tiene su factura.', total: 'Total invertido', verFacturas: 'Ver facturas →',
+    enCursoEy: 'En curso', ahoraTit: 'Lo que estamos haciendo ahora', todosLink: 'Todos los proyectos', conoce: 'Conoce el proyecto →',
+    invertidos: 'invertidos', cerradosEy: 'Cerrados', cumplimosTit: 'Lo que ya cumplimos', comprasConFactura: 'compras con factura',
+    miraTodo: 'Mira todo lo que hicimos →', recorridoTit: 'Nuestro recorrido', loQueViene: 'Lo que viene', proximoProy: 'El próximo proyecto', empiezaAporte: 'Empieza con tu aporte',
+    pagEy: 'Proyectos', pagTit1: 'Cada donación', pagTit2: 'se convierte en ', pagTit3: 'un proyecto',
+    pagLead: 'Con aliados en terreno decidimos dónde hace más falta. Cada proyecto tiene su meta, sus avances y sus cuentas abiertas.',
+    sumateTit: 'Súmate a lo que viene', sumateTxt: 'Tu aporte va al fondo de NEXOS y lo invertimos en los proyectos en curso.',
+    filtroTodos: 'Todos', porCategoria: 'En qué se invirtió', compras: 'compras'
   },
   EN: {
     eyebrow: 'Projects', titulo: 'What your help is building',
@@ -47,9 +54,22 @@ const PR_UI = {
     kitsNota: 'Reference prices based on the orchestra musicians’ own list (market averages).',
     aportarTit: 'How to give', enlacePronto: 'Link coming soon',
     aliados: 'Partners', beneficiarios: 'Beneficiaries', junto: 'With',
-    invertido: 'Already invested', verCompras: 'See what →', comprasTit: 'What we have already bought', comprasSub: 'Every purchase comes from our expense sheet and has its invoice.', total: 'Total invested', verFacturas: 'See invoices →'
+    invertido: 'Already invested', verCompras: 'See what →', comprasTit: 'What we have already bought', comprasSub: 'Every purchase comes from our expense sheet and has its invoice.', total: 'Total invested', verFacturas: 'See invoices →',
+    enCursoEy: 'In progress', ahoraTit: 'What we are doing right now', todosLink: 'All projects', conoce: 'See the project →',
+    invertidos: 'invested', cerradosEy: 'Closed', cumplimosTit: 'What we have already done', comprasConFactura: 'purchases with invoice',
+    miraTodo: 'See everything we did →', recorridoTit: 'Our journey', loQueViene: 'What’s next', proximoProy: 'The next project', empiezaAporte: 'Starts with your donation',
+    pagEy: 'Projects', pagTit1: 'Every donation', pagTit2: 'becomes ', pagTit3: 'a project',
+    pagLead: 'With partners on the ground we decide where help is needed most. Each project has its goal, its progress and its open books.',
+    sumateTit: 'Join what’s next', sumateTxt: 'Your donation goes to the NEXOS fund and we invest it in the projects in progress.',
+    filtroTodos: 'All', porCategoria: 'Where it was invested', compras: 'purchases'
   }
 };
+
+function prCat(nombre, lang) {
+  if (lang !== 'EN') return nombre;
+  const f = window.NEXOS_FIXTURE; const r = ((f && f.egresosRaw) || []).filter(function (c) { return c.categoria === nombre; })[0];
+  return (r && r.categoriaEN) || nombre;
+}
 
 function prFmt(n, lang) {
   const v = Math.round(Number(n) || 0);
@@ -75,49 +95,145 @@ const PR_ST = {
 
 function PrBar({ pct, h, color }) {
   return (<div style={{ height: h || 10, borderRadius: 999, background: 'color-mix(in oklab, var(--blue-lt) 30%, white)', overflow: 'hidden' }}>
-    <div style={{ height: '100%', width: Math.max(0, Math.min(100, pct)) + '%', background: color || 'var(--blue)', borderRadius: 999, transition: 'width .4s' }}></div>
+    <div style={{ height: '100%', width: Math.max(0, Math.min(100, pct)) + '%', background: color || 'var(--accent)', borderRadius: 999, transition: 'width .4s' }}></div>
   </div>);
 }
 
-/* ---------- Sección de la portada ---------- */
+/* ---------- Tarjetas ---------- */
+const PR_TAG = {
+  curso: { background: 'var(--ink)', color: 'var(--amber)' },
+  pronto: { background: 'var(--ink)', color: 'var(--amber)' },
+  cerrado: { background: 'var(--blue-lt)', color: 'var(--ink)' }
+};
+function prPresupuesto(p) { return p.gastos.reduce(function (a, g) { return a + g.monto; }, 0) || p.meta || 0; }
+function prTag(p) { return [p.estado, p.tipo !== 'cerrado' ? p.ubicacion : ''].filter(Boolean).join(' · '); }
+
+function ProyectoCard({ p, lang, onOpen }) {
+  const u = PR_UI[lang === 'EN' ? 'EN' : 'ES'];
+  const pres = prPresupuesto(p);
+  const pct = pres ? p.gastado / pres * 100 : 0;
+  return (
+    <a href={'#p-' + p.id} onClick={function (e) { e.preventDefault(); onOpen(p.id); }} className="opener"
+      style={{ background: '#fff', border: '1px solid var(--line-strong)', borderRadius: 20, overflow: 'hidden', display: 'flex', flexDirection: 'column', textDecoration: 'none', color: 'var(--ink)' }}>
+      {p.foto ? <img src={p.foto} alt="" style={{ width: '100%', aspectRatio: '16/9', objectFit: 'cover', display: 'block' }} />
+        : <div style={{ aspectRatio: '16/9', background: 'var(--steel-2)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'var(--font-display)', fontWeight: 800, fontSize: 40, color: 'var(--ink)', letterSpacing: 2 }}>{p.nombre.split(' ').map(function (w) { return w[0]; }).join('').slice(0, 3).toUpperCase()}</div>}
+      <div style={{ padding: 24, display: 'flex', flexDirection: 'column', gap: 12, flex: 1 }}>
+        <span style={{ ...PR.chip, ...PR_TAG[p.tipo], alignSelf: 'flex-start' }}>{prTag(p)}</span>
+        <div style={{ fontFamily: 'var(--font-display)', fontSize: 26, fontWeight: 700, lineHeight: 1.15 }}>{p.nombre}</div>
+        {p.resumen && p.tipo !== 'curso' ? <div style={{ fontSize: 16, color: 'var(--muted)', lineHeight: 1.55 }}>{p.resumen}</div>
+          : p.lema ? <div style={{ fontSize: 16, color: 'var(--muted)', lineHeight: 1.55 }}>{p.lema}</div> : null}
+        {pres ? <PrBar pct={pct} h={10} color="var(--accent)" /> : null}
+        {p.gastado ? <span style={{ fontSize: 15, fontVariantNumeric: 'tabular-nums' }}><b>US$ {prFmt(p.gastado, lang)}</b> {u.invertidos}{pres ? ' ' + u.de + ' US$ ' + prFmt(pres, lang) : ''}</span> : null}
+        <span style={{ marginTop: 'auto', paddingTop: 4, fontWeight: 700, fontSize: 15 }}>{u.conoce}</span>
+      </div>
+    </a>);
+}
+
+function ZonaCerradaCard({ p, lang, onOpen, grande }) {
+  const u = PR_UI[lang === 'EN' ? 'EN' : 'ES'];
+  return (
+    <a href={'#p-' + p.id} onClick={function (e) { e.preventDefault(); onOpen(p.id); }} className="opener"
+      style={{ background: 'var(--ink)', color: '#fff', borderRadius: 22, overflow: 'hidden', textDecoration: 'none', display: 'flex', flexWrap: 'wrap' }}>
+      {grande && p.foto ? <img src={p.foto} alt="" style={{ flex: '1 1 380px', minWidth: 0, maxWidth: '100%', aspectRatio: '16/10', objectFit: 'cover' }} /> : null}
+      <div style={{ flex: '1 1 380px', minWidth: 0, padding: grande ? 'clamp(24px,4vw,36px)' : 24, display: 'flex', flexDirection: 'column', gap: 12 }}>
+        <span style={{ ...PR.chip, ...PR_TAG.cerrado, alignSelf: 'flex-start' }}>{[p.estado, p.ubicacion].filter(Boolean).join(' · ')}</span>
+        <b style={{ fontFamily: 'var(--font-display)', fontSize: grande ? 34 : 24, lineHeight: 1.1 }}>{p.nombre}</b>
+        <span style={{ fontSize: 16, lineHeight: 1.65, color: 'var(--on-ink-soft)' }}>{grande ? p.resumen : p.lema}</span>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px 32px' }}>
+          <div><b style={{ fontFamily: 'var(--font-display)', fontSize: grande ? 30 : 24, color: 'var(--amber)', fontVariantNumeric: 'tabular-nums' }}>US$ {prFmt(p.gastado, lang)}</b><div style={{ fontSize: 14, color: 'var(--on-ink-soft)' }}>{u.invertidos}</div></div>
+          {grande && p.compras.length ? <div><b style={{ fontFamily: 'var(--font-display)', fontSize: 30, color: 'var(--amber)' }}>{prFmt(p.compras.length, lang)}</b><div style={{ fontSize: 14, color: 'var(--on-ink-soft)' }}>{u.comprasConFactura}</div></div> : null}
+        </div>
+        <span style={{ fontSize: 15, fontWeight: 700 }}>{u.miraTodo}</span>
+      </div>
+    </a>);
+}
+
+/* ---------- Inicio: proyectos en curso (máx. 3) ---------- */
 function ProyectosSection({ lang, onOpen }) {
   const u = PR_UI[lang === 'EN' ? 'EN' : 'ES'];
-  const lista = window.nexosProyectos(lang);
-  if (!lista.length) return null;
+  const activos = window.nexosProyectos(lang).filter(function (p) { return p.tipo !== 'cerrado'; });
+  if (!activos.length) return null;
   return (
-    <section id="proyectos" style={{ padding: 'clamp(56px,8vw,96px) 0', background: 'var(--soft)' }}>
-      <div style={PR.wrap}>
-        <div style={{ ...PR.eyebrow, color: 'var(--accent-text)' }}>{u.eyebrow}</div>
-        <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(28px,4vw,44px)', fontWeight: 700, letterSpacing: '-1px', lineHeight: 1.05, margin: '10px 0 0', color: 'var(--ink)' }}>{u.titulo}</h2>
-        <p style={{ fontSize: 17, lineHeight: 1.7, color: 'var(--muted)', maxWidth: 620, margin: '14px 0 0' }}>{u.lead}</p>
-        <div style={{ marginTop: 34, display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(300px,1fr))', gap: 20 }}>
-          {lista.map(function (p) {
-            const pres = p.gastos.reduce(function (a, g) { return a + g.monto; }, 0) || p.meta;
-            const pct = pres ? p.gastado / pres * 100 : 0;
-            return (
-              <a key={p.id} href={'#p-' + p.id} onClick={function (e) { e.preventDefault(); onOpen(p.id); }} className="opener"
-                style={{ ...PR.card, overflow: 'hidden', display: 'flex', flexDirection: 'column', textDecoration: 'none', color: 'var(--ink)', boxShadow: 'var(--shadow-card)' }}>
-                {p.foto ? <img src={p.foto} alt="" style={{ width: '100%', aspectRatio: '4/3', objectFit: 'cover', display: 'block' }} />
-                  : <div style={{ aspectRatio: '4/3', background: 'var(--peach)' }}></div>}
-                <div style={{ padding: 20, display: 'flex', flexDirection: 'column', gap: 10, flex: 1 }}>
-                  {p.estado ? <span style={{ ...PR.chip, ...{ background: PR_ST.curso.bg, color: PR_ST.curso.fg }, alignSelf: 'flex-start' }}>{p.estado}</span> : null}
-                  <div style={{ fontFamily: 'var(--font-display)', fontSize: 22, fontWeight: 700 }}>{p.nombre}</div>
-                  {p.lema ? <div style={{ fontSize: 14, color: 'var(--muted)', lineHeight: 1.5 }}>{p.lema}</div> : null}
-                  {pres ? <React.Fragment>
-                    <PrBar pct={pct} h={8} />
-                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13, fontVariantNumeric: 'tabular-nums' }}>
-                      <span><b style={{ color: 'var(--blue)' }}>US$ {prFmt(p.gastado, lang)}</b> {u.invertido.toLowerCase()} {u.de} US$ {prFmt(pres, lang)}</span>
-                      <span style={{ color: 'var(--muted)' }}>{Math.round(pct)}%</span>
-                    </div>
-                  </React.Fragment> : null}
-                  <span style={{ marginTop: 'auto', paddingTop: 4, color: 'var(--accent-text)', fontWeight: 800, fontSize: 14 }}>{u.verProyecto}</span>
-                </div>
-              </a>);
-          })}
+    <section id="proyectos-inicio" style={{ padding: 'clamp(56px,8vw,80px) 0', background: 'var(--steel-1)' }}>
+      <div style={{ ...PR.wrap, display: 'flex', flexDirection: 'column', gap: 26 }}>
+        <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'flex-end', gap: 12 }}>
+          <div><div style={{ ...PR.eyebrow, color: 'var(--accent-text)' }}>{u.enCursoEy}</div><h2 style={{ ...PR.h2, fontSize: 'clamp(28px,4vw,38px)', marginTop: 10 }}>{u.ahoraTit}</h2></div>
+          <a href="#proyectos" style={{ fontWeight: 700, fontSize: 15, color: 'var(--ink)' }}>{u.todosLink + (activos.length > 3 ? ' (' + activos.length + ')' : '') + ' →'}</a>
+        </div>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(300px,1fr))', gap: 20 }}>
+          {activos.slice(0, 3).map(function (p) { return <ProyectoCard key={p.id} p={p} lang={lang} onOpen={onOpen} />; })}
         </div>
       </div>
-    </section>
-  );
+    </section>);
+}
+
+/* ---------- Página Proyectos ---------- */
+function ProyectosPagina({ lang, onOpen, onDonate }) {
+  const u = PR_UI[lang === 'EN' ? 'EN' : 'ES'];
+  const todos = window.nexosProyectos(lang);
+  const activos = todos.filter(function (p) { return p.tipo !== 'cerrado'; });
+  const cerrados = todos.filter(function (p) { return p.tipo === 'cerrado'; });
+  const [filtro, setFiltro] = React.useState('');
+  const estados = []; activos.forEach(function (p) { if (estados.indexOf(p.estado) === -1) estados.push(p.estado); });
+  const vista = filtro ? activos.filter(function (p) { return p.estado === filtro; }) : activos;
+  const hitos = cerrados.concat(activos);
+  return (
+    <React.Fragment>
+      <header style={{ background: 'var(--ink)', color: '#fff' }}>
+        <div style={{ ...PR.wrap, paddingTop: 'clamp(48px,8vw,72px)', paddingBottom: 'clamp(44px,7vw,64px)', display: 'flex', flexDirection: 'column', gap: 18, alignItems: 'flex-start' }}>
+          <span style={{ ...PR.eyebrow, color: 'var(--amber)' }}>{u.pagEy}</span>
+          <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(32px,5vw,46px)', lineHeight: 1.08, letterSpacing: '-1px', margin: 0, maxWidth: 860, fontWeight: 700 }}>{u.pagTit1}<br />{u.pagTit2}<span style={{ color: 'var(--amber)', whiteSpace: 'nowrap' }}>{u.pagTit3}</span></h1>
+          <p style={{ margin: 0, fontSize: 18, lineHeight: 1.6, color: 'var(--on-ink-soft)', maxWidth: 640 }}>{u.pagLead}</p>
+        </div>
+      </header>
+
+      {activos.length ? (
+        <section style={{ background: 'var(--steel-1)', padding: 'clamp(48px,7vw,64px) 0' }}>
+          <div style={{ ...PR.wrap, display: 'flex', flexDirection: 'column', gap: 24 }}>
+            <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'flex-end', gap: 16 }}>
+              <div><div style={{ ...PR.eyebrow, color: 'var(--accent-text)' }}>{u.enCursoEy}</div><h2 style={{ ...PR.h2, fontSize: 'clamp(26px,3.6vw,34px)', marginTop: 10 }}>{u.ahoraTit}</h2></div>
+              {activos.length > 3 && estados.length > 1 ? (
+                <div role="group" aria-label={u.filtroTodos} style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+                  {[''].concat(estados).map(function (e) { return <button key={e || 'todos'} type="button" aria-pressed={filtro === e} onClick={function () { setFiltro(e); }} style={PR.pill(filtro === e)}>{e || u.filtroTodos}</button>; })}
+                </div>) : null}
+            </div>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(300px,1fr))', gap: 20 }}>
+              {vista.map(function (p) { return <ProyectoCard key={p.id} p={p} lang={lang} onOpen={onOpen} />; })}
+            </div>
+          </div>
+        </section>) : null}
+
+      {cerrados.length ? (
+        <section style={{ ...PR.wrap, padding: 'clamp(48px,7vw,64px) 24px 24px', display: 'flex', flexDirection: 'column', gap: 24 }}>
+          <div><div style={{ ...PR.eyebrow, color: 'var(--accent-text)' }}>{u.cerradosEy}</div><h2 style={{ ...PR.h2, fontSize: 'clamp(26px,3.6vw,34px)', marginTop: 10 }}>{u.cumplimosTit}</h2></div>
+          {cerrados.length === 1 ? <ZonaCerradaCard p={cerrados[0]} lang={lang} onOpen={onOpen} grande={true} />
+            : <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(300px,1fr))', gap: 16 }}>
+                {cerrados.map(function (p) { return <ZonaCerradaCard key={p.id} p={p} lang={lang} onOpen={onOpen} />; })}
+              </div>}
+        </section>) : null}
+
+      <section style={{ ...PR.wrap, padding: '32px 24px clamp(56px,8vw,72px)', display: 'flex', flexDirection: 'column', gap: 26 }}>
+        <h2 style={{ ...PR.h2, fontSize: 28 }}>{u.recorridoTit}</h2>
+        <ol style={{ listStyle: 'none', margin: 0, padding: 0, display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(220px,1fr))', borderTop: '3px solid var(--line-strong)' }}>
+          {hitos.concat([null]).map(function (p, i) {
+            const color = !p ? null : p.tipo === 'cerrado' ? 'var(--ink)' : p.tipo === 'curso' ? 'var(--accent)' : 'var(--amber)';
+            return (<li key={p ? p.id : 'next'} style={{ padding: '20px 16px 0 0', display: 'flex', flexDirection: 'column', gap: 6, position: 'relative' }}>
+              <span style={{ position: 'absolute', top: -10, left: 0, width: 16, height: 16, borderRadius: '50%', boxSizing: 'border-box', background: color || '#fff', border: color ? 0 : '3px dashed var(--blue-lt)' }}></span>
+              <span style={{ fontSize: 13, fontWeight: 700, color: 'var(--muted)' }}>{p ? (p.fecha || p.estado) : u.loQueViene}</span>
+              <b style={{ fontSize: 17 }}>{p ? p.nombre : u.proximoProy}</b>
+              <span style={{ fontSize: 15, color: 'var(--muted)' }}>{p ? p.lema : u.empiezaAporte}</span>
+            </li>);
+          })}
+        </ol>
+      </section>
+
+      <section style={{ background: 'var(--warm)' }}>
+        <div style={{ ...PR.wrap, padding: 'clamp(40px,6vw,52px) 24px', display: 'flex', flexWrap: 'wrap', gap: 24, alignItems: 'center', justifyContent: 'space-between' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 8, maxWidth: 660 }}><h2 style={{ ...PR.h2, fontSize: 30 }}>{u.sumateTit}</h2><p style={{ margin: 0, fontSize: 16, lineHeight: 1.6, color: 'var(--muted)' }}>{u.sumateTxt}</p></div>
+          <button onClick={onDonate} style={{ ...PR.coral, minHeight: 54, padding: '0 34px', fontSize: 16, border: 0, cursor: 'pointer' }}>{u.donar}</button>
+        </div>
+      </section>
+    </React.Fragment>);
 }
 
 /* ---------- Página completa del proyecto ---------- */
@@ -181,33 +297,33 @@ function ProyectoPage({ id, lang, onClose, onDonate }) {
   return (
     <div className="sp-root" ref={scroller} aria-label={p.nombre} style={{ background: '#fff' }}>
       {/* volver a la lista (el menú principal queda arriba) */}
-      <div style={{ background: 'var(--peach)' }}>
+      <div style={{ background: 'var(--ink)' }}>
         <div style={{ ...PR.wrap, paddingTop: 18 }}>
-          <a href="#proyectos" style={{ fontSize: 14, fontWeight: 700, color: 'var(--blue)' }}>{u.todos}</a>
+          <a href="#proyectos" style={{ fontSize: 14, fontWeight: 700, color: '#fff' }}>{u.todos}</a>
         </div>
       </div>
 
       {/* portada */}
-      <header style={{ background: 'var(--peach)' }}>
+      <header style={{ background: 'var(--ink)', color: '#fff' }}>
         <div style={{ ...PR.wrap, padding: 'clamp(28px,5vw,48px) 24px', display: 'flex', flexWrap: 'wrap', gap: 32, alignItems: 'flex-start' }}>
           <div style={{ flex: '999 1 480px', minWidth: 0, display: 'flex', flexDirection: 'column', gap: 14 }}>
-            {eyebrow ? <span style={{ ...PR.eyebrow, color: 'var(--ink)' }}>{eyebrow}</span> : null}
-            <h1 style={{ fontFamily: 'var(--font-display)', fontWeight: 800, letterSpacing: '-1.6px', fontSize: 'clamp(38px,6vw,64px)', margin: 0, lineHeight: 1.02, color: 'var(--ink)' }}>{p.nombre}</h1>
-            {p.lema ? <p style={{ margin: 0, fontSize: 'clamp(19px,2.4vw,24px)', lineHeight: 1.3, fontWeight: 700, color: 'var(--accent)' }}>{p.lema}</p> : null}
-            {p.resumen ? <p style={{ margin: 0, fontSize: 16, lineHeight: 1.65, maxWidth: 600, color: 'var(--ink)' }}>{p.resumen}</p> : null}
+            {eyebrow ? <span style={{ ...PR.eyebrow, color: 'var(--amber)' }}>{eyebrow}</span> : null}
+            <h1 style={{ fontFamily: 'var(--font-display)', fontWeight: 800, letterSpacing: '-1.6px', fontSize: 'clamp(38px,6vw,64px)', margin: 0, lineHeight: 1.02, color: '#fff' }}>{p.nombre}</h1>
+            {p.lema ? <p style={{ margin: 0, fontSize: 'clamp(19px,2.4vw,24px)', lineHeight: 1.3, fontWeight: 700, color: 'var(--amber)' }}>{p.lema}</p> : null}
+            {p.resumen ? <p style={{ margin: 0, fontSize: 16, lineHeight: 1.65, maxWidth: 600, color: 'var(--on-ink-soft)' }}>{p.resumen}</p> : null}
           </div>
-          {pres ? (
-            <div style={{ flex: '1 1 320px', minWidth: 0, background: '#fff', borderRadius: 22, padding: 24, display: 'flex', flexDirection: 'column', gap: 14, boxShadow: '0 10px 30px rgba(17,37,50,.08)' }}>
+          {(pres || inv) ? (
+            <div style={{ flex: '1 1 320px', minWidth: 0, background: '#fff', color: 'var(--ink)', borderRadius: 22, padding: 24, display: 'flex', flexDirection: 'column', gap: 14, boxShadow: '0 10px 30px rgba(17,37,50,.08)' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', gap: 10, alignItems: 'center', flexWrap: 'wrap' }}>
-                {p.estado ? <span style={{ ...PR.chip, background: PR_ST.curso.bg, color: PR_ST.curso.fg }}>{p.estado}</span> : <span></span>}
+                {p.estado ? <span style={{ ...PR.chip, ...PR_TAG[p.tipo] }}>{p.estado}</span> : <span></span>}
                 {p.actualizado ? <span style={{ fontSize: 12, color: 'var(--muted)' }}>{u.actualizado} {p.actualizado}</span> : null}
               </div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
                 <span style={{ fontSize: 13, color: 'var(--muted)' }}>{u.invertido}</span>
-                <span style={{ fontSize: 40, fontWeight: 800, color: 'var(--blue)', fontVariantNumeric: 'tabular-nums', lineHeight: 1.1 }}>US$ {prFmt(inv, lang)}</span>
-                <span style={{ fontSize: 15 }}>{u.de} <b>US$ {prFmt(pres, lang)}</b> {u.presupuestados}</span>
+                <span style={{ fontSize: 40, fontWeight: 800, color: 'var(--ink)', fontVariantNumeric: 'tabular-nums', lineHeight: 1.1 }}>US$ {prFmt(inv, lang)}</span>
+                {pres ? <span style={{ fontSize: 15 }}>{u.de} <b>US$ {prFmt(pres, lang)}</b> {u.presupuestados}</span> : null}
               </div>
-              <PrBar pct={pct} h={12} />
+              {pres ? <PrBar pct={pct} h={12} color="var(--accent)" /> : null}
               {p.compras.length ? <a href="#compras" onClick={function (e) { e.preventDefault(); const el = document.getElementById('compras'); if (el) el.scrollIntoView({ behavior: 'smooth' }); }} style={{ fontSize: 14, fontWeight: 700 }}>{u.verCompras}</a> : null}
               <button onClick={onDonate} style={PR.coral}>{u.donar}</button>
               <a href="#reporte" onClick={irABuscador} style={{ fontSize: 14, fontWeight: 700 }}>{u.buscaNombre}</a>
@@ -412,7 +528,7 @@ function ProyectoPage({ id, lang, onClose, onDonate }) {
         <section id="compras" style={{ ...PR.wrap, padding: '12px 24px clamp(40px,6vw,56px)', display: 'flex', flexDirection: 'column', gap: 18 }}>
           <div><h2 style={PR.h2}>{u.comprasTit}</h2><p style={PR.sub}>{u.comprasSub}</p></div>
           <div style={{ ...PR.card, padding: '6px 26px' }}>
-            {p.compras.map(function (c, i) {
+            {(p.compras.length > 15 ? p.porCategoria.map(function (c) { return { concepto: prCat(c.categoria, lang) + ' · ' + c.n + ' ' + u.compras, monto: c.total }; }) : p.compras).map(function (c, i) {
               return (<div key={i} style={{ display: 'flex', justifyContent: 'space-between', gap: 16, padding: '14px 0', borderBottom: '1px solid var(--line)', fontSize: 15 }}>
                 <span style={{ minWidth: 0 }}>{c.concepto}</span>
                 <b style={{ color: 'var(--blue)', fontVariantNumeric: 'tabular-nums', whiteSpace: 'nowrap' }}>≈ US$ {prFmt(c.monto, lang)}</b>
@@ -431,4 +547,8 @@ function ProyectoPage({ id, lang, onClose, onDonate }) {
 }
 
 window.ProyectosSection = ProyectosSection;
+window.ProyectosPagina = ProyectosPagina;
+window.ZonaCerradaCard = ZonaCerradaCard;
+window.prCat = prCat;
+window.prFmt = prFmt;
 window.ProyectoPage = ProyectoPage;

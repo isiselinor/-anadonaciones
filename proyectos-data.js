@@ -1,7 +1,9 @@
 /* PROYECTOS de NEXOS
    Los TEXTOS y las ETAPAS EN CURSO de cada proyecto viven aquí, en este archivo (los edita Claude cuando se pidan).
    Del Sheet vienen solos:
-   - Lo invertido: la categoría del proyecto en la pestaña Gastos (mismo nombre que el proyecto, ej. "Volver a Sonar").
+   - Lo invertido: la columna "Proyecto" de la pestaña Gastos (invertidoPorProyecto). Si el script aún no la envía,
+     se usa la categoría con el mismo nombre; el proyecto con resto: true se queda con las demás categorías.
+   - estado: 'En curso', 'Próximamente' o 'Cerrado' (decide la sección y la etiqueta).
    - La fecha: la última actualización de los datos.
    - Las fotos: pestaña "Fotos_proyectos"  A: Proyecto | B: Galería | C: Pie de foto | D: Enlace de la foto | E: Pie en inglés (opcional)
      Si el Sheet trae fotos de un proyecto, reemplazan a las de este archivo.
@@ -16,7 +18,7 @@
     resumen: 'Nexos y La Vida Boheme nos unimos para apoyar a los músicos de la Orquesta Sinfónica Gran Mariscal de Ayacucho afectados por los terremotos de junio de 2026 en Venezuela.',
     resumen_en: 'Nexos and La Vida Boheme joined forces to support the musicians of the Gran Mariscal de Ayacucho Symphony Orchestra affected by the June 2026 earthquakes in Venezuela.',
     estado: 'En curso', estado_en: 'In progress',
-    ubicacion: 'Caracas', fecha: '', categoria: 'Volver a Sonar', meta: 25000, gastado: 2779, actualizado: '',
+    ubicacion: 'Caracas', fecha: 'Septiembre 2026', fecha_en: 'September 2026', categoria: 'Volver a Sonar', meta: 25000, gastado: 2779, actualizado: '',
     etapa_actual: '2, 3', // etapas en curso: se cambian aquí cuando el proyecto avanza
     foto: VS + 'arpa-luthier.jpg',
     historia: 'La sede de la orquesta ocupa un piso alto de la Torre Polar, en Plaza Venezuela. La víspera del sismo dejaron todo listo para ensayar. Cuando la tierra se movió, los contrabajos y la percusión fueron los primeros en caer.',
@@ -87,6 +89,27 @@
       { tipo: 'aliado', titulo: 'La Vida Boheme', imagen: VS + 'logo-la-vida-boheme.png', enlace: 'https://yosoylavidaboheme.com/', instagram: 'lavidaboheme' },
       { tipo: 'beneficiario', titulo: 'Orquesta Sinfónica Gran Mariscal de Ayacucho', imagen: VS + 'logo-orquesta.png', enlace: '' }
     ]
+  }, {
+    id: 'volver-a-trabajar', publicado: 'sí',
+    nombre: 'Volver a Trabajar', nombre_en: 'Volver a Trabajar',
+    lema: 'Herramientas para volver a ganarse la vida', lema_en: 'Tools to make a living again',
+    resumen: 'Equipos de peluquería y cocina para que emprendedores afectados vuelvan a ganarse la vida.',
+    resumen_en: 'Hairdressing and kitchen equipment so affected entrepreneurs can make a living again.',
+    estado: 'Próximamente', estado_en: 'Coming soon',
+    ubicacion: '', fecha: '', categoria: '🚀 Volver a Trabajar', meta: 0, gastado: 362, actualizado: '',
+    foto: '', detalle: [
+      { tipo: 'aporte', titulo: 'Dona a NEXOS', titulo_en: 'Donate to NEXOS', grupo: 'Donar', grupo_en: 'Donate', enlace: 'donar',
+        texto: 'Por nuestros canales de siempre. Tu aporte aparece en Transparencia.', texto_en: 'Through our usual channels. Your donation shows up in Transparency.' }
+    ]
+  }, {
+    id: 'zona-cero', publicado: 'sí', resto: true,
+    nombre: 'Zona Cero', nombre_en: 'Zona Cero',
+    lema: 'Nuestra respuesta al terremoto', lema_en: 'Our response to the earthquake',
+    resumen: 'Cuando llegó el terremoto, salimos a responder. Herramientas para los rescatistas, medicinas, comida y refugio para las familias de La Guaira y Caracas.',
+    resumen_en: 'When the earthquake hit, we got to work. Tools for rescuers, medicine, food and shelter for families in La Guaira and Caracas.',
+    estado: 'Cerrado', estado_en: 'Closed',
+    ubicacion: 'La Guaira y Caracas', fecha: 'Junio 2026', fecha_en: 'June 2026', categoria: '', meta: 0, gastado: 84168, actualizado: '',
+    foto: '@fotos:0', detalle: []
   }];
 
   /* Enlaces de Google Drive (…/file/d/ID/view o open?id=ID) -> enlace directo de imagen. */
@@ -118,9 +141,22 @@
       // Si el script todavía no envía invertidoPorProyecto, usa la categoría con el mismo nombre.
       const pid = slug(p.nombre);
       const ip = ((f && f.invertidoPorProyecto) || []).filter(function (x) { return slug(x.proyecto) === pid; })[0];
-      const cat = slug(p.categoria || p.nombre);
-      const eg = ip || ((f && f.egresosRaw) || []).filter(function (c) { return slug(c.categoria) === cat; })[0];
-      if (eg) { q.gastado = eg.total; q.compras = eg.items || []; }
+      if (ip) {
+        q.gastado = ip.total; q.compras = ip.items || [];
+      } else if (f && (f.egresosRaw || []).length) {
+        // Respaldo mientras el script no envíe invertidoPorProyecto
+        const propias = window.NEXOS_PROYECTOS.filter(function (o) { return !o.resto; }).map(function (o) { return slug(o.categoria || o.nombre); });
+        const cats = f.egresosRaw.filter(function (c) { return p.resto ? propias.indexOf(slug(c.categoria)) === -1 : slug(c.categoria) === slug(p.categoria || p.nombre); });
+        if (cats.length) {
+          q.gastado = cats.reduce(function (a, c) { return a + (Number(c.total) || 0); }, 0);
+          q.compras = [].concat.apply([], cats.map(function (c) { return (c.items || []).map(function (it) { return Object.assign({ categoria: c.categoria }, it); }); }));
+        }
+      }
+      if (typeof q.foto === 'string' && q.foto.indexOf('@fotos:') === 0) {
+        const fx = (window.nexosContent && window.nexosContent(lang).fotos) || [];
+        const fo = fx[parseInt(q.foto.slice(7), 10)];
+        q.foto = fo ? fo.src : '';
+      }
       // Fecha automática: la última actualización de los datos.
       if (f && f.actualizado) q.actualizado = String(f.actualizado).split(',')[0].trim();
       const fotos = (hoja.fotos || []).filter(function (r) { return (slug(r.proyecto) === p.id || slug(r.proyecto) === slug(p.nombre)) && String(r.enlace || '').trim(); });
@@ -142,10 +178,16 @@
       return {
         id: String(p.id).trim(),
         nombre: t(p, 'nombre'), lema: t(p, 'lema'), resumen: t(p, 'resumen'), estado: t(p, 'estado'),
-        ubicacion: String(p.ubicacion || '').trim(), fecha: String(p.fecha || '').trim(),
+        tipo: (function () { const e = slug(p.estado); return e.indexOf('cerr') === 0 ? 'cerrado' : e.indexOf('prox') === 0 ? 'pronto' : 'curso'; })(),
+        ubicacion: String(p.ubicacion || '').trim(), fecha: t(p, 'fecha'),
         meta: num(p.meta), recaudado: num(p.recaudado), actualizado: String(p.actualizado || '').trim(),
         etapasActivas: (String(p.etapa_actual == null ? '' : p.etapa_actual).match(/\d+/g) || ['1']).map(function (n) { return parseInt(n, 10); }),
-        gastado: num(p.gastado), compras: (p.compras || []).map(function (c) { return { concepto: String(c.concepto || '').trim(), monto: num(c.monto) }; }),
+        gastado: num(p.gastado), compras: (p.compras || []).map(function (c) { return { concepto: String(c.concepto || '').trim(), monto: num(c.monto), categoria: String(c.categoria || '').trim() }; }),
+        porCategoria: (function () {
+          const m = {}, o = [];
+          (p.compras || []).forEach(function (c) { const k = String(c.categoria || '').trim() || (en ? 'Other' : 'Otros'); if (!m[k]) { m[k] = { categoria: k, total: 0, n: 0 }; o.push(k); } m[k].total += num(c.monto); m[k].n++; });
+          return o.map(function (k) { return m[k]; }).sort(function (a, b) { return b.total - a.total; });
+        })(),
         foto: img(p.foto),
         historia: t(p, 'historia').split(/\n\s*\n/).map(function (s) { return s.trim(); }).filter(Boolean),
         destacado: t(p, 'destacado'), notaPresupuesto: t(p, 'nota_presupuesto'),

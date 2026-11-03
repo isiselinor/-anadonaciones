@@ -40,7 +40,7 @@ function NavBar({ onOpen, onDonate, lang, setLang, forceSolid }) {
         <nav style={{ display:'flex', gap:20, marginLeft:'auto', alignItems:'center', flexWrap:'nowrap' }} className="navlinks">
           {d.nav.map(function(n){
             return <a key={n.id} href={n.href || ('#' + n.id)} target={n.href ? '_blank' : undefined} rel={n.href ? 'noopener' : undefined} onClick={n.id === 'quienes' || n.id === 'aliados' || n.id === 'faq' ? function(e){ e.preventDefault(); onOpen(n.id); } : undefined}
-              style={{ fontSize:13.5, fontWeight:600, textDecoration:'none', whiteSpace:'nowrap', color: solid ? 'var(--ink)' : 'rgba(255,255,255,.86)', borderBottom: n.id === navActual ? '2px solid ' + (solid ? 'var(--blue)' : '#fff') : '2px solid transparent', paddingBottom:2 }}>{n.label}</a>;
+              style={{ fontSize:13.5, fontWeight:600, textDecoration:'none', whiteSpace:'nowrap', color: solid ? 'var(--ink)' : 'rgba(255,255,255,.86)', borderBottom: n.id === navActual ? '2px solid ' + (solid ? 'var(--accent)' : '#fff') : '2px solid transparent', paddingBottom:2 }}>{n.label}</a>;
           })}
         </nav>
         <button className="menubtn" aria-label={u.menu} onClick={function(){ setMenu(!menu); }} style={{ display:'none', background:'none', border:'1px solid ' + (solid ? 'var(--line)' : 'rgba(255,255,255,.4)'), color: solid ? 'var(--ink)' : '#fff', borderRadius:999, width:40, height:38, marginLeft:'auto', fontSize:15, cursor:'pointer', lineHeight:1 }}>{menu ? '×' : '☰'}</button>
@@ -154,12 +154,28 @@ function HeroMinimal({ onDonate, onOpen, lang }) {
 function PhotoStrip({ onZoom, lang }) {
   const d = window.nexosContent(lang); const u = d.ui;
   const ref = React.useRef(null);
+  const [pausa, setPausa] = React.useState(false);
+  const reanudar = React.useRef(null);
+  // En bucle: al llegar al final vuelve al principio (y al revés).
   function nudge(dir){
     const el = ref.current; if (!el) return;
-    el.scrollBy({ left: dir * Math.round(el.clientWidth * .7), behavior:'smooth' });
+    const max = el.scrollWidth - el.clientWidth - 4;
+    if (dir > 0 && el.scrollLeft >= max) el.scrollTo({ left:0, behavior:'smooth' });
+    else if (dir < 0 && el.scrollLeft <= 4) el.scrollTo({ left:el.scrollWidth, behavior:'smooth' });
+    else el.scrollBy({ left: dir * Math.round(el.clientWidth * .7), behavior:'smooth' });
   }
+  // Avance automático cada 5 s; se pausa al pasar el mouse, al tocar o con el foco, y no corre si la persona pidió menos movimiento.
+  React.useEffect(function(){
+    if (pausa) return;
+    try { if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return; } catch (e) {}
+    const t = setInterval(function(){ nudge(1); }, 5000);
+    return function(){ clearInterval(t); };
+  }, [pausa]);
+  function pausar(){ clearTimeout(reanudar.current); setPausa(true); }
+  function soltar(ms){ clearTimeout(reanudar.current); reanudar.current = setTimeout(function(){ setPausa(false); }, ms || 0); }
+  React.useEffect(function(){ return function(){ clearTimeout(reanudar.current); }; }, []);
   return (
-    <div style={{ marginTop:'clamp(34px,5vw,56px)' }}>
+    <div style={{ marginTop:'clamp(34px,5vw,56px)' }} onMouseEnter={pausar} onMouseLeave={function(){ soltar(0); }} onFocus={pausar} onBlur={function(){ soltar(0); }} onTouchStart={function(){ pausar(); soltar(8000); }}>
       <div style={{ display:'flex', alignItems:'baseline', gap:14, marginBottom:16 }}>
         <div style={{ fontSize:11, fontWeight:800, letterSpacing:1.2, textTransform:'uppercase', color:'var(--muted)' }}>{u.enTerreno}</div>
         <div style={{ fontSize:13, color:'var(--muted)' }}>{u.fotosPor}</div>
@@ -194,6 +210,46 @@ function FaqRow({ q, a, open }) {
       {o ? <p style={{ margin:'0 0 16px 28px', fontSize:14, lineHeight:1.7, color:'var(--muted)' }}>{a}</p> : null}
     </div>
   );
+}
+
+function ProyectoCuentas({ p, lang, total, abierto, onOpen }) {
+  const [o, setO] = React.useState(!!abierto);
+  const en = lang === 'EN';
+  const f = window.NEXOS_FIXTURE || {};
+  const info = function (cat) { return (f.egresosRaw || []).filter(function (c) { return c.categoria === cat; })[0] || {}; };
+  const tag = { cerrado:{ background:'var(--blue-lt)', color:'var(--ink)' }, curso:{ background:'var(--ink)', color:'var(--amber)' }, pronto:{ background:'var(--ink)', color:'var(--amber)' } }[p.tipo];
+  const pct = total ? p.gastado / total * 100 : 0;
+  const pctTxt = (pct >= 10 ? Math.round(pct) : Math.round(pct * 10) / 10).toString().replace('.', en ? '.' : ',') + '%';
+  return (
+    <div style={{ border:'1px solid var(--line-strong)', borderRadius:18, background:'#fff' }}>
+      <button type="button" aria-expanded={o} onClick={function(){ setO(!o); }}
+        style={{ width:'100%', display:'flex', justifyContent:'space-between', alignItems:'center', gap:16, padding:'20px 22px', background:'none', border:0, font:'inherit', color:'inherit', textAlign:'left', cursor:'pointer' }}>
+        <span style={{ display:'flex', gap:12, alignItems:'flex-start', minWidth:0 }}>
+          <span style={{ color:'var(--accent)', fontWeight:800, transform:'rotate(' + (o ? 90 : 0) + 'deg)', transition:'transform .15s', marginTop:4 }}>▸</span>
+          <span style={{ minWidth:0 }}>
+            <b style={{ fontFamily:'var(--font-display)', fontSize:21, marginRight:10 }}>{p.nombre}</b>
+            <span style={{ display:'inline-block', fontSize:11, fontWeight:700, borderRadius:999, padding:'3px 10px', verticalAlign:'middle', ...tag }}>{p.estado}</span>
+            <span style={{ display:'block', fontSize:15, color:'var(--muted)', marginTop:4 }}>{p.lema}{p.compras.length ? ' · ' + window.prFmt(p.compras.length, lang) + (en ? ' purchases' : ' compras') : ''}</span>
+          </span>
+        </span>
+        <span style={{ textAlign:'right', whiteSpace:'nowrap', fontVariantNumeric:'tabular-nums' }}>
+          <b style={{ fontFamily:'var(--font-display)', fontSize:22 }}>US$ {window.prFmt(p.gastado, lang)}</b>
+          <span style={{ display:'block', fontSize:13, color:'var(--muted)' }}>{pctTxt}{en ? ' of total invested' : ' de lo invertido'}</span>
+        </span>
+      </button>
+      {o ? (
+        <div style={{ padding:'0 22px 20px' }}>
+          {p.porCategoria.length ? p.porCategoria.map(function (c) {
+            const inf = info(c.categoria);
+            const dec = function (n) { return (Number(n) || 0).toLocaleString(en ? 'en-US' : 'es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); };
+            const items = p.compras.filter(function (it) { return (it.categoria || '') === c.categoria || (!it.categoria && c.categoria === (en ? 'Other' : 'Otros')); })
+              .map(function (it) { return { concepto: it.concepto, monto: dec(it.monto) }; });
+            return <ExpenseCategory key={c.categoria} name={en ? (inf.categoriaEN || c.categoria) : c.categoria} description={en ? (inf.descripcionEN || inf.descripcion || '') : (inf.descripcion || '')}
+              total={window.prFmt(c.total, lang)} pct={p.gastado ? String(Math.round(c.total / p.gastado * 1000) / 10).replace('.', en ? '.' : ',') : 0} items={items} />;
+          }) : <p style={{ margin:0, fontSize:15, color:'var(--muted)' }}>{en ? 'No purchases yet.' : 'Todavía no hay compras.'}</p>}
+          <a href={'#p-' + p.id} onClick={function (e) { e.preventDefault(); onOpen(p.id); }} style={{ display:'inline-block', marginTop:12, fontSize:15, fontWeight:700, color:'var(--ink)' }}>{en ? 'See the project and its invoices →' : 'Ver el proyecto y sus facturas →'}</a>
+        </div>) : null}
+    </div>);
 }
 
 function Section({ id, eyebrow, titulo, lead, leadWide, children, tone }) {
@@ -234,7 +290,7 @@ function EditorialLandingExport() {
     r.setProperty('--nexos-blue', pal[1]);
     r.setProperty('--blue-lt', '#88A5B7');
     r.setProperty('--amber', '#F4B044');
-    r.setProperty('--muted', '#5B6B78');
+    r.setProperty('--muted', '#4E606D');
     r.setProperty('--line', 'color-mix(in oklab, ' + pal[2] + ' 8%, white)');
     r.setProperty('--soft', 'color-mix(in oklab, ' + pal[2] + ' 2%, white)');
     r.setProperty('--overlay-scrim', 'color-mix(in oklab, ' + pal[2] + ' 55%, transparent)');
@@ -270,208 +326,283 @@ function EditorialLandingExport() {
   }) : [];
   const TOPE = 25;
   const rows = encontrados.slice(0, TOPE);
+  Object.assign(P, lang === 'EN' ? {
+    heroTitulo:'Create Nexos. Transform realities. <span style="color:var(--amber)">Build community.</span>',
+    heroBajada:'What you give becomes concrete projects in Venezuela. And every dollar stays in plain sight.',
+    conoceProyectos:'See the projects →', comoEy:'How it works', comoTit:'How your donation travels',
+    pasos:[['Give from wherever you are','Pesos, bolívares, euros, dollars or crypto. It all goes into one fund.'],['We turn it into projects','With partners on the ground we decide where it’s needed most. Urgent things first.'],['We show you every invoice','Find your name and see where it was invested. No fine print.']],
+    cuentasEy:'Clear accounts', cuentasTit:'Since June 24', recibimos:'We received', invertimos:'We invested', disponible:'Available',
+    enDonaciones:function(n){ return 'in ' + n + ' donations'; }, enCompras:function(n){ return 'in ' + n + ' purchases with invoice'; }, paraProyectos:'for the projects in progress', verCadaGasto:'See every expense →',
+    empezamosEy:'Where we started · closed project', cierreTit:'The next project starts with you', cierreTxt:'Tap Donate, choose how and copy the details. In the reference: your name or a “thank you”.',
+    transpTit:'Every dollar, <span style="color:var(--amber)">in plain sight</span>', transpLead2:'',
+    porProyEy:'By project', porProyTit:'Where it was invested', pruebasEy:'The proof', pruebasTxt:'Every invoice and every photo, sorted by date in open folders. Check them whenever you want.',
+    verFacturas:'See invoices ↗', verFotos:'See photos ↗', buscarTit:'Donated? Find your name', buscarSub:'Every donation is there. Thank you for being here.',
+    misionHtml:'We are <span style="color:var(--amber)">the bridge</span> between those who want to give and the communities that need to rebuild.',
+    misionTxt:'When hands come together transparently, help reaches further, faster and in a more human way.',
+    historiaEy:'Our story', historiaTit:'From the emergency to projects',
+    historia:[['June 2026 · Zona Cero','We were born to respond','The earthquake hit and we organized, from Venezuela and from abroad. Tools, medicine and food reached La Guaira and Caracas.'],['September 2026 · Volver a Sonar','Rebuilding is also playing again','After the emergency, we understood that rebuilding is not only a roof and food. We started working in projects.'],['Today','Projects with their own name','Each one has a goal, partners on the ground and open books for anyone who wants to check them.']],
+    conQuienEy:'Who we work with', puenteTit:'Be part of the bridge', puenteTxt:'Donate, share or write to us at @somos.nexosve.',
+    faqNuevas:[{ q:'Which project does my donation go to?', a:'To the common NEXOS fund. From there we invest it in the projects in progress, starting with the most urgent.' },{ q:'What is the available fund?', a:'What we received and haven’t invested yet. It goes to the projects in progress and the ones coming next.' }]
+  } : {
+    heroTitulo:'Crear Nexos. Transformar realidades. <span style="color:var(--amber)">Construir comunidad.</span>',
+    heroBajada:'Lo que donas se convierte en proyectos concretos en Venezuela. Y cada dólar queda a la vista.',
+    conoceProyectos:'Conoce los proyectos →', comoEy:'Cómo funciona', comoTit:'Así viaja tu aporte',
+    pasos:[['Donas desde donde estés','Pesos, bolívares, euros, dólares o cripto. Todo llega a un mismo fondo.'],['Lo convertimos en proyectos','Con aliados en terreno decidimos dónde hace más falta. Primero lo urgente.'],['Te mostramos cada factura','Busca tu nombre y mira en qué se invirtió. Sin letra chica.']],
+    cuentasEy:'Las cuentas, claras', cuentasTit:'Desde el 24 de junio', recibimos:'Recibimos', invertimos:'Invertimos', disponible:'Disponible',
+    enDonaciones:function(n){ return 'en ' + n + ' donaciones'; }, enCompras:function(n){ return 'en ' + n + ' compras con factura'; }, paraProyectos:'para los proyectos en curso', verCadaGasto:'Ver cada gasto →',
+    empezamosEy:'Donde empezamos · proyecto cerrado', cierreTit:'El próximo proyecto empieza con tu aporte', cierreTxt:'Toca Donar, elige cómo y copia los datos. En el asunto, tu nombre o un “gracias”.',
+    transpTit:'Cada dólar, <span style="color:var(--amber)">a la vista</span>',
+    porProyEy:'Por proyecto', porProyTit:'En qué se invirtió', pruebasEy:'Las pruebas', pruebasTxt:'Cada factura y cada foto, ordenadas por fecha en carpetas abiertas. Revísalas cuando quieras.',
+    verFacturas:'Ver facturas ↗', verFotos:'Ver fotos ↗', buscarTit:'¿Donaste? Busca tu nombre', buscarSub:'Ahí está cada aporte. Gracias por estar.',
+    misionHtml:'Somos <span style="color:var(--amber)">el puente</span> entre los que quieren aportar y las comunidades que hoy necesitan reconstruirse.',
+    misionTxt:'Cuando las manos se juntan de forma transparente, la ayuda llega más lejos, más rápido y de forma más humana.',
+    historiaEy:'Nuestra historia', historiaTit:'De la emergencia a los proyectos',
+    historia:[['Junio 2026 · Zona Cero','Nacimos para responder','Llegó el terremoto y nos organizamos, desde Venezuela y desde afuera. Herramientas, medicinas y comida llegaron a La Guaira y Caracas.'],['Septiembre 2026 · Volver a Sonar','Reconstruir también es volver a sonar','Pasada la emergencia, entendimos que reconstruir no es solo techo y comida. Empezamos a trabajar por proyectos.'],['Hoy','Proyectos con nombre propio','Cada uno tiene una meta, aliados en terreno y sus cuentas abiertas para quien quiera revisarlas.']],
+    conQuienEy:'Con quién trabajamos', puenteTit:'Sé parte del puente', puenteTxt:'Dona, comparte o escríbenos en @somos.nexosve.',
+    faqNuevas:[{ q:'¿A qué proyecto va mi donación?', a:'Al fondo común de NEXOS. Desde ahí la invertimos en los proyectos en curso, empezando por lo más urgente.' },{ q:'¿Qué es el fondo disponible?', a:'Lo que recibimos y todavía no se invirtió. Se usa en los proyectos en curso y en los que vienen.' }]
+  });
+  P.transpLead = lang === 'EN' ? 'Everything we receive goes into one fund. Here you see how much came in, which project it was invested in and with which invoice.' : 'Todo lo que recibimos entra a un mismo fondo. Aquí ves cuánto llegó, en qué proyecto se invirtió y con qué factura.';
+  P.evidenciaTit = lang === 'EN' ? 'Invoices and photos' : 'Facturas y fotos';
+
+  const proyectosTodos = loadingData ? [] : window.nexosProyectos(lang);
+  const cerrado = proyectosTodos.filter(function(p){ return p.tipo === 'cerrado'; })[0];
+  const proyectosOrden = proyectosTodos.slice().sort(function(a, b){ return b.gastado - a.gastado; });
+  const totalProyectos = proyectosOrden.reduce(function(a, p){ return a + (p.gastado || 0); }, 0);
+  const nCompras = proyectosOrden.reduce(function(a, p){ return a + p.compras.length; }, 0);
+  const colorTipo = { cerrado:'var(--ink)', curso:'var(--accent)', pronto:'var(--amber)' };
+
+  function cuentas(conReparto) {
+    if (loadingData) return <div style={{ color:'var(--muted)', fontSize:14 }}>{P.cargando}</div>;
+    const tile = { borderRadius:18, padding:22, display:'flex', flexDirection:'column', gap:4 };
+    const num = { fontFamily:'var(--font-display)', fontSize:'clamp(26px,3vw,32px)', fontWeight:700, fontVariantNumeric:'tabular-nums' };
+    return (<React.Fragment>
+      <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(230px,1fr))', gap:16 }}>
+        <div style={{ ...tile, background:'var(--steel-1)' }}><span style={{ fontSize:14, fontWeight:700, color:'var(--muted)' }}>{P.recibimos}</span><b style={num}>US$ {x.totalUSD}</b><span style={{ fontSize:14, color:'var(--muted)' }}>{P.enDonaciones(window.prFmt(x.totalDonaciones, lang))}</span></div>
+        <div style={{ ...tile, background:'var(--steel-1)' }}><span style={{ fontSize:14, fontWeight:700, color:'var(--muted)' }}>{P.invertimos}</span><b style={num}>US$ {x.totalEgresos}</b><span style={{ fontSize:14, color:'var(--muted)' }}>{nCompras ? P.enCompras(window.prFmt(nCompras, lang)) : ''}</span></div>
+        <div style={{ ...tile, background:'var(--ink)', color:'#fff' }}><span style={{ fontSize:14, fontWeight:700, color:'var(--amber)' }}>{P.disponible}</span><b style={num}>US$ {x.saldo}</b><span style={{ fontSize:14, color:'var(--on-ink-soft)' }}>{P.paraProyectos}</span></div>
+      </div>
+      {conReparto && totalProyectos ? <React.Fragment>
+        <div aria-hidden="true" style={{ display:'flex', height:14, borderRadius:999, overflow:'hidden', gap:3, marginTop:22 }}>
+          {proyectosOrden.filter(function(p){ return p.gastado > 0; }).map(function(p){ return <div key={p.id} style={{ flex:p.gastado, minWidth:8, background:colorTipo[p.tipo] }}></div>; })}
+        </div>
+        <div style={{ display:'flex', flexWrap:'wrap', gap:'8px 24px', fontSize:14, alignItems:'center', marginTop:12 }}>
+          {proyectosOrden.filter(function(p){ return p.gastado > 0; }).map(function(p){ return <span key={p.id}><span style={{ display:'inline-block', width:10, height:10, borderRadius:'50%', background:colorTipo[p.tipo], marginRight:6 }}></span>{p.nombre} · US$ {window.prFmt(p.gastado, lang)}</span>; })}
+          <a href="#transparencia" style={{ marginLeft:'auto', fontWeight:700, color:'var(--ink)' }}>{P.verCadaGasto}</a>
+        </div>
+      </React.Fragment> : null}
+    </React.Fragment>);
+  }
+
+  function buscador(id, lead, tinted) {
+    return (<section id={id} style={{ background: tinted ? 'var(--steel-1)' : '#fff', padding:'clamp(48px,7vw,60px) 0' }}>
+      <div style={A.wrap}>
+        <h2 style={{ fontFamily:'var(--font-display)', fontSize:28, fontWeight:700, margin:0, color:'var(--ink)' }}>{P.buscarTit}</h2>
+        <p style={{ fontSize:15, color:'var(--muted)', margin:'6px 0 18px' }}>{P.buscarSub} {lead}</p>
+        <div style={{ display:'flex', flexWrap:'wrap', gap:10, marginBottom:14 }}>
+          <SearchInput placeholder={u.buscar} value={q} onChange={function(e){ setQ(e.target.value); }} />
+          <FilterSelect placeholder={u.todosMetodos} options={x.metodos} value={met} onChange={function(e){ setMet(e.target.value); }} />
+        </div>
+        {!listos
+          ? <EmptyState>{u.vacio}</EmptyState>
+          : encontrados.length === 0
+            ? <EmptyState>{u.sinResultados}</EmptyState>
+            : <React.Fragment>
+                <Card pad="6px 8px"><DonationsTable rows={rows} /></Card>
+                <div style={{ fontSize:12, color:'var(--muted)', marginTop:12, textAlign:'center' }}>
+                  {encontrados.length > TOPE ? u.mostrando(TOPE, encontrados.length) : u.resultados(encontrados.length)}
+                </div>
+              </React.Fragment>}
+      </div>
+    </section>);
+  }
+
+  function cierre(titulo, texto) {
+    return (<section style={{ background:'var(--warm)' }}>
+      <div style={{ ...A.wrap, padding:'clamp(40px,6vw,56px) 24px', display:'flex', flexWrap:'wrap', gap:24, alignItems:'center', justifyContent:'space-between' }}>
+        <div style={{ display:'flex', flexDirection:'column', gap:8, maxWidth:660 }}>
+          <h2 style={{ ...A.h2, fontSize:'clamp(24px,3vw,32px)', margin:0 }}>{titulo}</h2>
+          <p style={{ margin:0, fontSize:16, lineHeight:1.6, color:'var(--muted)' }}>{texto}</p>
+        </div>
+        <Button variant="primary" onClick={function(){ setDonar(true); }} style={{ width:'auto', padding:'16px 34px', fontSize:16, whiteSpace:'nowrap' }}>{u.donar}</Button>
+      </div>
+    </section>);
+  }
+
+  const boletin = (
+      <section id="historias" style={{ background:'var(--nexos-blue)', overflow:'hidden' }}>
+        <div style={{ overflow:'hidden', borderBottom:'1px solid rgba(255,255,255,.2)', padding:'16px 0' }}>
+          <div className="nx-marquee" style={{ display:'flex', gap:40, whiteSpace:'nowrap', width:'max-content', fontSize:16, fontWeight:700, color:'#fff' }}>
+            {[0,1,2,3].map(function(k){ return u.boletinCinta.map(function(t, i){ return <React.Fragment key={k + '-' + i}><span>{t}</span><span style={{ color:'var(--amber)' }}>●</span></React.Fragment>; }); })}
+          </div>
+        </div>
+        <div style={{ ...A.wrap, padding:'clamp(48px,7vw,84px) 24px', display:'flex', flexDirection:'column', gap:16, alignItems:'flex-start' }}>
+          <div style={{ fontSize:11, fontWeight:800, letterSpacing:1.6, textTransform:'uppercase', color:'var(--amber)' }}>{u.boletinEyebrow}</div>
+          <h2 style={{ ...A.h2, color:'#fff', margin:0, maxWidth:720, textWrap:'balance' }}>{u.boletinTitulo}</h2>
+          <p style={{ fontSize:16, lineHeight:1.7, color:'var(--on-ink-soft)', margin:0, maxWidth:560 }}>{u.boletinTexto}</p>
+          <a href="https://somosnexos.substack.com" target="_blank" rel="noopener" style={{ display:'inline-block', marginTop:8, background:'var(--amber)', color:'var(--ink)', fontWeight:800, fontSize:15, padding:'14px 26px', borderRadius:999, textDecoration:'none' }}>{u.boletinBoton}</a>
+        </div>
+      </section>);
+
   return (
     <div id="top" style={{ background:'#fff' }}>
       <NavBar onOpen={setDrawer} onDonate={function(){ setDonar(true); }} lang={lang} setLang={setLang} forceSolid={t.portada !== 'Foto'} />
       {proyecto ? <ProyectoPage lang={lang} id={proyecto} onClose={function(){ setProyecto(null); }} onDonate={function(){ setDonar(true); }} /> : null}
 
       {!proyecto && pagina === 'inicio' ? (<React.Fragment>
-      <section style={{ background:'var(--peach)' }}>
-        <div style={{ ...A.wrap, paddingTop:'clamp(56px,9vw,104px)', paddingBottom:'clamp(44px,6vw,72px)' }}>
-          <div style={A.eyebrow}>{d.hero.eyebrow}</div>
-          <h1 style={{ fontFamily:'var(--font-display)', fontSize:'clamp(34px,5.6vw,60px)', fontWeight:800, lineHeight:1.04, letterSpacing:'-1.8px', color:'var(--ink)', margin:'14px 0 0', maxWidth:860, textWrap:'balance' }} dangerouslySetInnerHTML={{ __html:d.hero.tituloHtml }} />
-          <p style={{ fontSize:'clamp(16px,1.7vw,19px)', lineHeight:1.65, color:'var(--ink)', maxWidth:620, margin:'20px 0 0' }}>{d.hero.bajada}</p>
-          <div style={{ display:'flex', flexWrap:'wrap', gap:'14px 22px', margin:'30px 0 0', alignItems:'center' }}>
-            <Button variant="primary" onClick={function(){ setDonar(true); }} style={{ width:'auto', padding:'16px 30px', fontSize:17, whiteSpace:'nowrap' }}>{u.donarAhora}</Button>
-            <a href="#transparencia" style={{ fontSize:15, fontWeight:700, color:'var(--blue)' }}>{P.miraUso}</a>
+      <section style={{ background:'var(--ink)', color:'#fff' }}>
+        <div style={{ ...A.wrap, paddingTop:'clamp(52px,8vw,64px)', paddingBottom:'clamp(52px,8vw,64px)', display:'flex', flexDirection:'column', gap:18, alignItems:'flex-start' }}>
+          <div style={{ ...A.eyebrow, color:'var(--amber)' }}>{d.hero.eyebrow}</div>
+          <h1 style={{ fontFamily:'var(--font-display)', fontSize:'clamp(34px,5.6vw,56px)', fontWeight:800, lineHeight:1.04, letterSpacing:'-1.6px', color:'#fff', margin:0, maxWidth:860, textWrap:'balance' }} dangerouslySetInnerHTML={{ __html:P.heroTitulo }} />
+          <p style={{ fontSize:'clamp(16px,1.7vw,18px)', lineHeight:1.6, color:'var(--on-ink-soft)', maxWidth:640, margin:0 }}>{P.heroBajada}</p>
+          <div style={{ display:'flex', flexWrap:'wrap', gap:'14px 22px', alignItems:'center' }}>
+            <Button variant="primary" onClick={function(){ setDonar(true); }} style={{ width:'auto', padding:'16px 30px', fontSize:17, whiteSpace:'nowrap' }}>{u.donar}</Button>
+            <a href="#proyectos" style={{ fontSize:15, fontWeight:700, color:'#fff' }}>{P.conoceProyectos}</a>
           </div>
         </div>
       </section>
-      <section style={{ padding:'clamp(32px,5vw,48px) 0 0' }}>
+
+      <section style={{ padding:'clamp(56px,8vw,80px) 0 clamp(48px,7vw,64px)' }}>
         <div style={A.wrap}>
-          {loadingData
-            ? <div style={{ color:'var(--muted)', fontSize:14 }}>{P.cargando}</div>
-            : <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(200px,1fr))', gap:14 }}>
-                <StatCard tone="income" label={u.totalRecaudado} value={'≈ US$ ' + x.totalUSD} />
-                <StatCard tone="expense" label={u.totalEgresos} value={'≈ US$ ' + x.totalEgresos} />
-                <StatCard tone="balance" label={u.saldo} value={'≈ US$ ' + x.saldo} />
-              </div>}
-          <div style={{ display:'flex', justifyContent:'flex-end', marginTop:12 }}><a href="#transparencia" style={{ fontSize:14, fontWeight:700, color:'var(--blue)' }}>{P.verTransparencia}</a></div>
+          <div style={A.eyebrow}>{P.comoEy}</div>
+          <h2 style={A.h2}>{P.comoTit}</h2>
+          <ol style={{ listStyle:'none', margin:'30px 0 0', padding:0, display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(240px,1fr))', gap:18 }}>
+            {P.pasos.map(function(s, i){
+              const c = ['var(--accent)','var(--blue-lt)','var(--ink)'][i];
+              return (<li key={i} style={{ borderTop:'4px solid ' + c, paddingTop:18, display:'flex', flexDirection:'column', gap:8 }}>
+                <b style={{ fontFamily:'var(--font-display)', fontSize:15, color: i === 0 ? 'var(--accent-text)' : i === 1 ? 'var(--muted)' : 'var(--ink)' }}>{'0' + (i + 1)}</b>
+                <b style={{ fontSize:20 }}>{s[0]}</b>
+                <span style={{ fontSize:16, lineHeight:1.6, color:'var(--muted)' }}>{s[1]}</span>
+              </li>);
+            })}
+          </ol>
         </div>
       </section>
+
       <ProyectosSection lang={lang} onOpen={setProyecto} />
-      <Section id="donar" tone="coral" titulo={u.donarTitulo}>
-        <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(240px,1fr))', gap:12 }}>
-          <StepCard n={1} title={u.paso1t} html={u.paso1} />
-          <StepCard n={2} title={u.paso2t} html={u.paso2} />
-          <StepCard n={3} title={u.paso3t} html={u.paso3} />
-        </div>
-        <div style={{ display:'grid', gridTemplateColumns:'minmax(0,1fr) auto', gap:18, alignItems:'center', marginTop:20 }} className="cta-row">
-          <Notice>⚠️ {d.aviso}</Notice>
-          <Button variant="primary" onClick={function(){ setDonar(true); }} style={{ width:'auto', padding:'16px 28px', fontSize:16 }}>{u.donarAhora}</Button>
-        </div>
-      </Section>
 
-      <Section id="reporte" tone="soft" titulo={u.reporteTitulo} lead={P.buscarLead}>
-        <div style={{ display:'flex', flexWrap:'wrap', gap:10, marginBottom:14 }}>
-          <SearchInput placeholder={u.buscar} value={q} onChange={function(e){ setQ(e.target.value); }} />
-          <FilterSelect placeholder={u.todosMetodos} options={x.metodos} value={met} onChange={function(e){ setMet(e.target.value); }} />
-        </div>
-        {!listos
-          ? <EmptyState>{u.vacio}</EmptyState>
-          : encontrados.length === 0
-            ? <EmptyState>{u.sinResultados}</EmptyState>
-            : <React.Fragment>
-                <Card pad="6px 8px"><DonationsTable rows={rows} /></Card>
-                <div style={{ fontSize:12, color:'var(--muted)', marginTop:12, textAlign:'center' }}>
-                  {encontrados.length > TOPE ? u.mostrando(TOPE, encontrados.length) : u.resultados(encontrados.length)}
-                </div>
-              </React.Fragment>}
-        <div style={{ marginTop:16 }}><a href="#transparencia" style={{ fontSize:14, fontWeight:700, color:'var(--blue)' }}>{P.verGastos}</a></div>
-      </Section>
-
-      <section id="historias" style={{ background:'var(--nexos-blue)', overflow:'hidden' }}>
-        <div style={{ overflow:'hidden', borderBottom:'1px solid rgba(255,255,255,.2)', padding:'16px 0' }}>
-          <div className="nx-marquee" style={{ display:'flex', gap:40, whiteSpace:'nowrap', width:'max-content', fontSize:16, fontWeight:700, color:'#fff' }}>
-            {[0,1,2,3].map(function(k){ return u.boletinCinta.map(function(t, i){ return <React.Fragment key={k + '-' + i}><span>{t}</span><span style={{ color:'var(--amber)' }}>●</span></React.Fragment>; }); })}
-          </div>
-        </div>
-        <div style={{ ...A.wrap, padding:'clamp(48px,7vw,84px) 24px', display:'flex', flexDirection:'column', gap:16, alignItems:'flex-start' }}>
-          <div style={{ fontSize:11, fontWeight:800, letterSpacing:1.6, textTransform:'uppercase', color:'#fff' }}>{u.boletinEyebrow}</div>
-          <h2 style={{ ...A.h2, color:'#fff', margin:0, maxWidth:720, textWrap:'balance' }}>{u.boletinTitulo}</h2>
-          <p style={{ fontSize:16, lineHeight:1.7, color:'#fff', margin:0, maxWidth:560 }}>{u.boletinTexto}</p>
-          <a href="https://somosnexos.substack.com" target="_blank" rel="noopener" style={{ display:'inline-block', marginTop:8, background:'var(--nexos-coral)', color:'#fff', fontWeight:800, fontSize:15, padding:'14px 26px', borderRadius:999, textDecoration:'none' }}>{u.boletinBoton}</a>
+      <section style={{ padding:'clamp(56px,8vw,72px) 0' }}>
+        <div style={A.wrap}>
+          <div style={A.eyebrow}>{P.cuentasEy}</div>
+          <h2 style={A.h2}>{P.cuentasTit}</h2>
+          <div style={{ marginTop:26 }}>{cuentas(true)}</div>
         </div>
       </section>
 
+      {cerrado ? (
+        <section style={{ background:'var(--ink)', padding:'clamp(48px,7vw,64px) 0' }}>
+          <div style={{ ...A.wrap, display:'flex', flexDirection:'column', gap:18 }}>
+            <div style={{ ...A.eyebrow, color:'var(--amber)' }}>{P.empezamosEy}</div>
+            <window.ZonaCerradaCard p={cerrado} lang={lang} onOpen={setProyecto} grande={true} />
+          </div>
+        </section>) : null}
+
+      {buscador('reporte', P.buscarLead, false)}
+
+      {boletin}
+
+      {cierre(P.cierreTit, P.cierreTxt)}
       </React.Fragment>) : null}
 
-      {!proyecto && pagina === 'proyectos' ? <ProyectosSection lang={lang} onOpen={setProyecto} /> : null}
+      {!proyecto && pagina === 'proyectos' ? <ProyectosPagina lang={lang} onOpen={setProyecto} onDonate={function(){ setDonar(true); }} /> : null}
 
       {!proyecto && pagina === 'transparencia' ? (<React.Fragment>
-      <section style={{ background:'var(--peach)' }}>
-        <div style={{ ...A.wrap, paddingTop:'clamp(48px,7vw,80px)', paddingBottom:'clamp(36px,5vw,56px)' }}>
-          <div style={A.eyebrow}>{d.ventanas.evidencia.eyebrow}</div>
-          <h1 style={{ ...A.h2, fontSize:'clamp(32px,5vw,54px)', margin:'12px 0 0' }}>{d.ventanas.evidencia.titulo}</h1>
-          <p style={{ ...A.lead, color:'var(--ink)' }}>{P.transpLead}</p>
+      <section style={{ background:'var(--ink)', color:'#fff' }}>
+        <div style={{ ...A.wrap, paddingTop:'clamp(48px,8vw,64px)', paddingBottom:'clamp(44px,7vw,56px)', display:'flex', flexDirection:'column', gap:18, alignItems:'flex-start' }}>
+          <div style={{ ...A.eyebrow, color:'var(--amber)' }}>{d.ventanas.evidencia.titulo}</div>
+          <h1 style={{ fontFamily:'var(--font-display)', fontSize:'clamp(32px,5vw,52px)', fontWeight:700, lineHeight:1.06, letterSpacing:'-1.4px', margin:0, maxWidth:860 }} dangerouslySetInnerHTML={{ __html:P.transpTit }} />
+          <p style={{ fontSize:18, lineHeight:1.6, color:'var(--on-ink-soft)', maxWidth:680, margin:0 }}>{P.transpLead}</p>
         </div>
       </section>
-      <Section id="cifras" tone="line" titulo={u.cifrasTitulo} lead={loadingData ? '' : x.notaTasas} leadWide>
-        {loadingData
-          ? <div style={{ color:'var(--muted)', fontSize:14, padding:'8px 0 20px' }}>Cargando cifras en vivo…</div>
-          : <React.Fragment>
-              <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(200px,1fr))', gap:14, marginBottom:14 }}>
-                <StatCard tone="income" label={u.totalRecaudado} value={'≈ US$ ' + x.totalUSD} />
-                <StatCard tone="expense" label={u.totalEgresos} value={'≈ US$ ' + x.totalEgresos} />
-                <StatCard tone="balance" label={u.saldo} value={'≈ US$ ' + x.saldo} />
-              </div>
-              <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(170px,1fr))', gap:14 }}>
-                {x.porMoneda.map(function(m){ return <CurrencyCard key={m.moneda} {...m} />; })}
-              </div>
-            </React.Fragment>}
-      </Section>
-
-      <Section id="reporte" tone="soft" titulo={u.reporteTitulo} lead={u.reporteLead}>
-        <div style={{ display:'flex', flexWrap:'wrap', gap:10, marginBottom:14 }}>
-          <SearchInput placeholder={u.buscar} value={q} onChange={function(e){ setQ(e.target.value); }} />
-          <FilterSelect placeholder={u.todosMetodos} options={x.metodos} value={met} onChange={function(e){ setMet(e.target.value); }} />
+      <section id="cifras" style={{ padding:'clamp(44px,7vw,56px) 0 clamp(36px,6vw,48px)' }}>
+        <div style={A.wrap}>
+          {cuentas(false)}
+          {!loadingData && x.porMoneda.length ? <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(170px,1fr))', gap:14, marginTop:22 }}>
+            {x.porMoneda.map(function(m){ return <CurrencyCard key={m.moneda} {...m} />; })}
+          </div> : null}
+          {!loadingData && x.notaTasas ? <p style={{ fontSize:14, color:'var(--muted)', margin:'16px 0 0', lineHeight:1.6 }}>{x.notaTasas}</p> : null}
         </div>
-        {!listos
-          ? <EmptyState>{u.vacio}</EmptyState>
-          : encontrados.length === 0
-            ? <EmptyState>{u.sinResultados}</EmptyState>
-            : <React.Fragment>
-                <Card pad="6px 8px"><DonationsTable rows={rows} /></Card>
-                <div style={{ fontSize:12, color:'var(--muted)', marginTop:12, textAlign:'center' }}>
-                  {encontrados.length > TOPE ? u.mostrando(TOPE, encontrados.length) : u.resultados(encontrados.length)}
-                </div>
-              </React.Fragment>}
-        <h3 style={{ fontFamily:'var(--font-display)', fontSize:20, fontWeight:700, margin:'38px 0 14px' }}>{u.egresosTitulo}</h3>
-        {x.egresos.map(function(c, i){
-          return <ExpenseCategory key={c.categoria} name={c.categoria} description={c.descripcion} total={c.total} pct={c.pct} items={c.items} />;
-        })}
-      </Section>
+      </section>
 
-      <Section id="evidencia" tone="line" titulo={P.evidenciaTit} lead={u.evidenciaLead}>
-        <div style={{ display:'grid', gridTemplateColumns:'repeat(2,minmax(0,1fr))', gap:'var(--gap-grid)' }} className="ev-grid">
-          {d.fotos.slice(0,2).map(function(p, i){
-            return (<figure key={p.src} style={{ margin:0, position:'relative' }}>
-              <button onClick={function(){ setZoom(i); }} className="zoomable" aria-label={u.ampliar}
-                style={{ display:'block', width:'100%', aspectRatio:'4/3', padding:0, border:'none', borderRadius:'var(--radius-lg)', overflow:'hidden', cursor:'zoom-in', background:'none' }}>
-                <img src={p.src} alt="" style={{ width:'100%', height:'100%', objectFit:'cover', display:'block' }} /></button>
-              <figcaption style={{ position:'absolute', left:10, bottom:10, fontSize:11, color:'#fff', background:'rgba(17,37,50,.55)', padding:'4px 9px', borderRadius:999 }}>{p.credito}</figcaption>
-            </figure>);
-          })}
-          {x.enlaceFacturas ? <a href={x.enlaceFacturas} target="_blank" rel="noopener" className="ev-link"
-            style={{ display:'flex', flexDirection:'column', gap:6, textDecoration:'none', background:'#fff', border:'1px solid var(--line)', borderTop:'3px solid var(--blue)', borderRadius:'var(--radius-md)', padding:'20px 22px' }}>
-            <span style={{ fontSize:11, fontWeight:800, letterSpacing:1, textTransform:'uppercase', color:'var(--muted)' }}>{u.facturas}</span>
-            <span style={{ fontFamily:'var(--font-display)', fontSize:20, fontWeight:700, color:'var(--blue)', letterSpacing:'-.4px' }}>{u.verFacturas}</span>
-            <span style={{ fontSize:13, color:'var(--muted)', lineHeight:1.5 }}>{u.facturasSub}</span>
-          </a> : null}
-          {x.enlaceFotos ? <a href={x.enlaceFotos} target="_blank" rel="noopener" className="ev-link"
-            style={{ display:'flex', flexDirection:'column', gap:6, textDecoration:'none', background:'#fff', border:'1px solid var(--line)', borderTop:'3px solid var(--accent)', borderRadius:'var(--radius-md)', padding:'20px 22px' }}>
-            <span style={{ fontSize:11, fontWeight:800, letterSpacing:1, textTransform:'uppercase', color:'var(--muted)' }}>{u.fotosLabel}</span>
-            <span style={{ fontFamily:'var(--font-display)', fontSize:20, fontWeight:700, color:'var(--accent)', letterSpacing:'-.4px' }}>{u.verFotos}</span>
-            <span style={{ fontSize:13, color:'var(--muted)', lineHeight:1.5 }}>{u.fotosSub}</span>
-          </a> : null}
-        </div>
-        <div style={{ display:'flex', flexWrap:'wrap', gap:16, alignItems:'center', paddingTop:14 }}>
-          {(d.ventanas.evidencia.cuerpo || []).map(function(p, i){ return <p key={i} style={{ margin:0, fontSize:15, lineHeight:1.7, color:'var(--muted)', maxWidth:720 }} dangerouslySetInnerHTML={{ __html:p }} />; })}
-        </div>
-      </Section>
+      {buscador('reporte', u.reporteLead, true)}
 
+      <section id="por-proyecto" style={{ padding:'clamp(56px,8vw,64px) 0' }}>
+        <div style={A.wrap}>
+          <div style={A.eyebrow}>{P.porProyEy}</div>
+          <h2 style={A.h2}>{P.porProyTit}</h2>
+          <div style={{ display:'flex', flexDirection:'column', gap:16, marginTop:26 }}>
+            {loadingData ? <div style={{ color:'var(--muted)', fontSize:14 }}>{P.cargando}</div>
+              : proyectosOrden.map(function(p, i){ return <ProyectoCuentas key={p.id} p={p} lang={lang} total={totalProyectos} abierto={i === 0} onOpen={setProyecto} />; })}
+          </div>
+        </div>
+      </section>
+
+      <section id="evidencia" style={{ background:'var(--ink)', color:'#fff' }}>
+        <div style={{ ...A.wrap, padding:'clamp(48px,7vw,60px) 24px', display:'flex', flexWrap:'wrap', gap:'24px 48px', alignItems:'center', justifyContent:'space-between' }}>
+          <div style={{ flex:'1 1 440px', minWidth:0, display:'flex', flexDirection:'column', gap:12 }}>
+            <div style={{ ...A.eyebrow, color:'var(--amber)' }}>{P.pruebasEy}</div>
+            <h2 style={{ ...A.h2, color:'#fff', margin:0 }}>{P.evidenciaTit}</h2>
+            <p style={{ margin:0, fontSize:17, lineHeight:1.7, color:'var(--on-ink-soft)' }}>{P.pruebasTxt}</p>
+          </div>
+          <div style={{ display:'flex', flexWrap:'wrap', gap:12 }}>
+            {x.enlaceFacturas ? <a href={x.enlaceFacturas} target="_blank" rel="noopener" style={{ background:'var(--amber)', color:'var(--ink)', fontWeight:800, borderRadius:999, padding:'0 26px', minHeight:50, display:'inline-flex', alignItems:'center', textDecoration:'none' }}>{P.verFacturas}</a> : null}
+            {x.enlaceFotos ? <a href={x.enlaceFotos} target="_blank" rel="noopener" style={{ border:'2px solid var(--blue-lt)', color:'#fff', fontWeight:800, borderRadius:999, padding:'0 26px', minHeight:50, display:'inline-flex', alignItems:'center', textDecoration:'none', boxSizing:'border-box' }}>{P.verFotos}</a> : null}
+          </div>
+        </div>
+      </section>
       </React.Fragment>) : null}
 
       {!proyecto && pagina === 'nosotros' ? (<React.Fragment>
-      <section style={{ background:'var(--peach)' }}>
-        <div style={{ ...A.wrap, paddingTop:'clamp(48px,7vw,80px)', paddingBottom:'clamp(36px,5vw,56px)' }}>
-          <div style={A.eyebrow}>{d.ventanas.quienes.eyebrow}</div>
-          <h1 style={{ ...A.h2, fontSize:'clamp(32px,5vw,54px)', margin:'12px 0 0' }}>{d.ventanas.quienes.titulo}</h1>
-          <p style={{ ...A.lead, color:'var(--ink)' }}>{d.ventanas.quienes.resumen}</p>
+      <section style={{ background:'var(--ink)', color:'#fff' }}>
+        <div style={{ ...A.wrap, paddingTop:'clamp(48px,8vw,64px)', paddingBottom:'clamp(48px,8vw,64px)', display:'flex', flexWrap:'wrap', gap:44, alignItems:'center' }}>
+          <div style={{ flex:'1 1 460px', minWidth:0, display:'flex', flexDirection:'column', gap:18 }}>
+            <div style={{ ...A.eyebrow, color:'var(--amber)' }}>{d.ventanas.quienes.titulo}</div>
+            <p style={{ fontFamily:'var(--font-display)', fontSize:'clamp(24px,3.4vw,34px)', lineHeight:1.3, fontWeight:700, letterSpacing:'-.4px', margin:0 }} dangerouslySetInnerHTML={{ __html:P.misionHtml }} />
+            <p style={{ fontSize:18, lineHeight:1.7, color:'var(--on-ink-soft)', margin:0 }}>{P.misionTxt}</p>
+          </div>
+          {d.fotos[0] ? <img src={d.fotos[0].src} alt="" style={{ flex:'1 1 320px', minWidth:0, maxWidth:'100%', aspectRatio:'4/5', objectFit:'cover', borderRadius:22 }} /> : null}
         </div>
       </section>
-      <section style={{ padding:'clamp(48px,7vw,80px) 0' }}>
+      <section style={{ padding:'clamp(56px,8vw,72px) 0' }}>
         <div style={A.wrap}>
-          <div style={{ maxWidth:720 }}>
-            {((lang === 'EN' ? x.misionEn : x.mision) ? [lang === 'EN' ? x.misionEn : x.mision].concat((d.ventanas.quienes.cuerpo || []).slice(1)) : (d.ventanas.quienes.cuerpo || [])).map(function(p, i){
-              return <p key={i} style={{ fontSize:18, lineHeight:1.85, color:'var(--ink)', margin: i ? '22px 0 0' : 0 }} dangerouslySetInnerHTML={{ __html:p }} />;
+          <div style={A.eyebrow}>{P.historiaEy}</div>
+          <h2 style={A.h2}>{P.historiaTit}</h2>
+          <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(280px,1fr))', gap:20, marginTop:28 }}>
+            {P.historia.map(function(h, i){
+              const dark = i === 0;
+              return (<div key={i} style={{ background: dark ? 'var(--ink)' : 'var(--steel-1)', color: dark ? '#fff' : 'var(--ink)', borderRadius:20, padding:28, display:'flex', flexDirection:'column', gap:10 }}>
+                <span style={{ fontSize:13, fontWeight:700, color: dark ? 'var(--amber)' : 'var(--accent-text)' }}>{h[0]}</span>
+                <b style={{ fontFamily:'var(--font-display)', fontSize:21 }}>{h[1]}</b>
+                <span style={{ fontSize:16, lineHeight:1.6, color: dark ? 'var(--on-ink-soft)' : 'var(--muted)' }}>{h[2]}</span>
+              </div>);
             })}
           </div>
           <PhotoStrip onZoom={setZoom} lang={lang} />
         </div>
       </section>
-      <Section id="aliados" tone="soft" titulo={d.ventanas.aliados.titulo}>
-        <div style={{ maxWidth:720 }}>
-          {(d.ventanas.aliados.cuerpo || []).map(function(p, i){ return <p key={i} style={{ fontSize:16.5, lineHeight:1.75, color:'var(--ink)', margin: i ? '16px 0 0' : 0 }} dangerouslySetInnerHTML={{ __html:p }} />; })}
-        </div>
-        {d.ventanas.aliados.formas ? <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(240px,1fr))', gap:14, marginTop:26 }}>
-          {d.ventanas.aliados.formas.map(function(r){
-            return (<div key={r.titulo} style={{ borderTop:'2px solid var(--accent)', paddingTop:12 }}>
-              <div style={{ fontWeight:800, fontSize:15.5 }}>{r.titulo}</div>
-              <div style={{ fontSize:14, color:'var(--muted)', marginTop:5, lineHeight:1.6 }}>{r.detalle}</div></div>);
-          })}
-        </div> : null}
-        <a href="https://instagram.com/somos.nexosve" target="_blank" rel="noopener" style={{ display:'inline-block', marginTop:24, fontWeight:800, fontSize:15, color:'var(--blue)' }}>{P.escribenos}</a>
-      </Section>
-      <Section id="faq" titulo={d.ventanas.faq.titulo}>
-        <div style={{ maxWidth:820 }}>
-          {(d.ventanas.faq.items || []).map(function(it, i){ return <FaqRow key={i} q={it.q} a={it.a} open={i === 0} />; })}
-        </div>
-      </Section>
-      <section id="historias" style={{ background:'var(--nexos-blue)', overflow:'hidden' }}>
-        <div style={{ overflow:'hidden', borderBottom:'1px solid rgba(255,255,255,.2)', padding:'16px 0' }}>
-          <div className="nx-marquee" style={{ display:'flex', gap:40, whiteSpace:'nowrap', width:'max-content', fontSize:16, fontWeight:700, color:'#fff' }}>
-            {[0,1,2,3].map(function(k){ return u.boletinCinta.map(function(t, i){ return <React.Fragment key={k + '-' + i}><span>{t}</span><span style={{ color:'var(--amber)' }}>●</span></React.Fragment>; }); })}
+      <section id="aliados" style={{ background:'var(--steel-1)', padding:'clamp(48px,7vw,60px) 0' }}>
+        <div style={A.wrap}>
+          <div style={A.eyebrow}>{P.conQuienEy}</div>
+          <h2 style={A.h2}>{d.ventanas.aliados.titulo}</h2>
+          <div style={{ maxWidth:720, marginTop:16 }}>
+            {(d.ventanas.aliados.cuerpo || []).map(function(p, i){ return <p key={i} style={{ fontSize:16.5, lineHeight:1.75, color:'var(--ink)', margin: i ? '16px 0 0' : 0 }} dangerouslySetInnerHTML={{ __html:p }} />; })}
           </div>
-        </div>
-        <div style={{ ...A.wrap, padding:'clamp(48px,7vw,84px) 24px', display:'flex', flexDirection:'column', gap:16, alignItems:'flex-start' }}>
-          <div style={{ fontSize:11, fontWeight:800, letterSpacing:1.6, textTransform:'uppercase', color:'#fff' }}>{u.boletinEyebrow}</div>
-          <h2 style={{ ...A.h2, color:'#fff', margin:0, maxWidth:720, textWrap:'balance' }}>{u.boletinTitulo}</h2>
-          <p style={{ fontSize:16, lineHeight:1.7, color:'#fff', margin:0, maxWidth:560 }}>{u.boletinTexto}</p>
-          <a href="https://somosnexos.substack.com" target="_blank" rel="noopener" style={{ display:'inline-block', marginTop:8, background:'var(--nexos-coral)', color:'#fff', fontWeight:800, fontSize:15, padding:'14px 26px', borderRadius:999, textDecoration:'none' }}>{u.boletinBoton}</a>
+          {d.ventanas.aliados.formas ? <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(240px,1fr))', gap:14, marginTop:26 }}>
+            {d.ventanas.aliados.formas.map(function(r){
+              return (<div key={r.titulo} style={{ background:'#fff', borderRadius:16, padding:22 }}>
+                <div style={{ fontWeight:800, fontSize:16 }}>{r.titulo}</div>
+                <div style={{ fontSize:14.5, color:'var(--muted)', marginTop:6, lineHeight:1.6 }}>{r.detalle}</div></div>);
+            })}
+          </div> : null}
+          <a href="https://instagram.com/somos.nexosve" target="_blank" rel="noopener" style={{ display:'inline-block', marginTop:24, fontWeight:800, fontSize:15, color:'var(--ink)' }}>{P.escribenos}</a>
         </div>
       </section>
-
+      <Section id="faq" titulo={d.ventanas.faq.titulo}>
+        <div style={{ maxWidth:820 }}>
+          {P.faqNuevas.concat(d.ventanas.faq.items || []).map(function(it, i){ return <FaqRow key={i} q={it.q} a={it.a} open={i === 0} />; })}
+        </div>
+      </Section>
+      {boletin}
+      {cierre(P.puenteTit, P.puenteTxt)}
       </React.Fragment>) : null}
 
       <footer style={{ background:'var(--ink)', color:'rgba(255,255,255,.7)', padding:'54px 0 40px' }}>
