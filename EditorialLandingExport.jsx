@@ -328,40 +328,40 @@ function EditorialLandingExport() {
   const rows = encontrados.slice(0, TOPE);
   Object.assign(P, lang === 'EN' ? {
     heroTitulo:'Create Nexos. Transform realities. <span style="color:var(--amber)">Build community.</span>',
-    heroBajada:'What you give becomes concrete projects in Venezuela. And every dollar stays in plain sight.',
-    conoceProyectos:'See the projects →', comoEy:'How it works', comoTit:'How your donation travels',
-    pasos:[['Give from wherever you are','Pesos, bolívares, euros, dollars or crypto. It all goes into one fund.'],['We turn it into projects','With partners on the ground we decide where it’s needed most. Urgent things first.'],['We show you every invoice','Find your name and see where it was invested. No fine print.']],
+    heroBajada:'Social and environmental impact projects in Venezuela  •  We are the bridge between those who want to help and real needs',
+    conoceProyectos:'See the projects →', comoEy:'How it works', comoTit:'Impact projects funded together',
+    pasos:[['Give from wherever you are','Pesos, bolívares, euros, dollars or crypto. It all goes into one fund.'],['We turn it into projects','We work directly with communities, identify needs and carry out solutions.'],['We publish everything','Total transparency. You can search every donation received and see where each dollar was invested.']],
     cuentasEy:'Clear accounts', cuentasTit:'Since June 24', recibimos:'We received', invertimos:'We invested', disponible:'Available',
     enDonaciones:function(n){ return 'in ' + n + ' donations'; }, enCompras:function(n){ return 'in ' + n + ' purchases with invoice'; }, paraProyectos:'for the projects in progress', verCadaGasto:'See every expense →',
-    empezamosEy:'Where we started · closed project', cierreTit:'The next project starts with you', cierreTxt:'Tap Donate, choose how and copy the details. In the reference: your name or a “thank you”.',
+    empezamosEy:'Where we started', cierreTit:'The next project starts with you', cierreTxt:'Tap Donate, choose the payment method and copy the details.',
     transpTit:'Every dollar, <span style="color:var(--amber)">in plain sight</span>', transpLead2:'',
     porProyEy:'By project', porProyTit:'Where it was invested', pruebasEy:'The proof', pruebasTxt:'Every invoice and every photo, sorted by date in open folders. Check them whenever you want.',
-    verFacturas:'See invoices ↗', verFotos:'See photos ↗', buscarTit:'Donated? Find your name', buscarSub:'Every donation is there. Thank you for being here.',
+    verFacturas:'See invoices ↗', verFotos:'See photos ↗', buscarTit:'Donated? Find your name', buscarSub:'Thank you for helping, donations are the engine of our work.',
     misionHtml:'We are <span style="color:var(--amber)">the bridge</span> between those who want to give and the communities that need to rebuild.',
     misionTxt:'When hands come together transparently, help reaches further, faster and in a more human way.',
     historiaEy:'Our story', historiaTit:'From the emergency to projects',
-    historia:[['June 2026 · Zona Cero','We were born to respond','The earthquake hit and we organized, from Venezuela and from abroad. Tools, medicine and food reached La Guaira and Caracas.'],['September 2026 · Volver a Sonar','Rebuilding is also playing again','After the emergency, we understood that rebuilding is not only a roof and food. We started working in projects.'],['Today','Projects with their own name','Each one has a goal, partners on the ground and open books for anyone who wants to check them.']],
+    historia:[['June 2026 · Apoyo Zona Cero','We were born to respond','The earthquake hit and we organized, from Venezuela and from abroad. Tools, medicine and food reached La Guaira and Caracas.'],['September 2026 · Volver a Sonar','Rebuilding is also playing again','After the emergency, we understood that rebuilding is not only a roof and food. We started working in projects.'],['Today','Projects with their own name','Each one has a goal, partners on the ground and open books for anyone who wants to check them.']],
     conQuienEy:'Who we work with', puenteTit:'Be part of the bridge', puenteTxt:'Donate, share or write to us at @somos.nexosve.',
     faqNuevas:[{ q:'Which project does my donation go to?', a:'To the common NEXOS fund. From there we invest it in the projects in progress, starting with the most urgent.' },{ q:'What is the available fund?', a:'What we received and haven’t invested yet. It goes to the projects in progress and the ones coming next.' }]
   } : {
     heroTitulo:'Crear Nexos. Transformar realidades. <span style="color:var(--amber)">Construir comunidad.</span>',
-    heroBajada:'Lo que donas se convierte en proyectos concretos en Venezuela. Y cada dólar queda a la vista.',
-    conoceProyectos:'Conoce los proyectos →', comoEy:'Cómo funciona', comoTit:'Así viaja tu aporte',
-    pasos:[['Donas desde donde estés','Pesos, bolívares, euros, dólares o cripto. Todo llega a un mismo fondo.'],['Lo convertimos en proyectos','Con aliados en terreno decidimos dónde hace más falta. Primero lo urgente.'],['Te mostramos cada factura','Busca tu nombre y mira en qué se invirtió. Sin letra chica.']],
+    heroBajada:'Proyectos de Impacto Social y Ambiental en Venezuela  •  Somos el puente entre quienes quieren ayudar y las necesidades reales',
+    conoceProyectos:'Conoce los proyectos →', comoEy:'Cómo funciona', comoTit:'Proyectos de impacto financiados en colectivo',
+    pasos:[['Donas desde donde estés','Pesos, bolívares, euros, dólares o cripto. Todo llega a un mismo fondo.'],['Lo convertimos en proyectos','Trabajamos directo con las comunidades, identificamos necesidades y llevamos a cabo soluciones.'],['Publicamos todo','Transparencia absoluta. Puedes buscar todas las donaciones recibidas y en qué se ha invertido cada dólar.']],
     cuentasEy:'Las cuentas, claras', cuentasTit:'Desde el 24 de junio', recibimos:'Recibimos', invertimos:'Invertimos', disponible:'Disponible',
     enDonaciones:function(n){ return 'en ' + n + ' donaciones'; }, enCompras:function(n){ return 'en ' + n + ' compras con factura'; }, paraProyectos:'para los proyectos en curso', verCadaGasto:'Ver cada gasto →',
-    empezamosEy:'Donde empezamos · proyecto cerrado', cierreTit:'El próximo proyecto empieza con tu aporte', cierreTxt:'Toca Donar, elige cómo y copia los datos. En el asunto, tu nombre o un “gracias”.',
+    empezamosEy:'Donde empezamos', cierreTit:'El próximo proyecto empieza con tu aporte', cierreTxt:'Toca Donar, elige el medio de pago y copia los datos.',
     transpTit:'Cada dólar, <span style="color:var(--amber)">a la vista</span>',
     porProyEy:'Por proyecto', porProyTit:'En qué se invirtió', pruebasEy:'Las pruebas', pruebasTxt:'Cada factura y cada foto, ordenadas por fecha en carpetas abiertas. Revísalas cuando quieras.',
-    verFacturas:'Ver facturas ↗', verFotos:'Ver fotos ↗', buscarTit:'¿Donaste? Busca tu nombre', buscarSub:'Ahí está cada aporte. Gracias por estar.',
+    verFacturas:'Ver facturas ↗', verFotos:'Ver fotos ↗', buscarTit:'¿Donaste? Busca tu nombre', buscarSub:'Gracias por ayudar, las donaciones son el motor de nuestra acción.',
     misionHtml:'Somos <span style="color:var(--amber)">el puente</span> entre los que quieren aportar y las comunidades que hoy necesitan reconstruirse.',
     misionTxt:'Cuando las manos se juntan de forma transparente, la ayuda llega más lejos, más rápido y de forma más humana.',
     historiaEy:'Nuestra historia', historiaTit:'De la emergencia a los proyectos',
-    historia:[['Junio 2026 · Zona Cero','Nacimos para responder','Llegó el terremoto y nos organizamos, desde Venezuela y desde afuera. Herramientas, medicinas y comida llegaron a La Guaira y Caracas.'],['Septiembre 2026 · Volver a Sonar','Reconstruir también es volver a sonar','Pasada la emergencia, entendimos que reconstruir no es solo techo y comida. Empezamos a trabajar por proyectos.'],['Hoy','Proyectos con nombre propio','Cada uno tiene una meta, aliados en terreno y sus cuentas abiertas para quien quiera revisarlas.']],
+    historia:[['Junio 2026 · Apoyo Zona Cero','Nacimos para responder','Llegó el terremoto y nos organizamos, desde Venezuela y desde afuera. Herramientas, medicinas y comida llegaron a La Guaira y Caracas.'],['Septiembre 2026 · Volver a Sonar','Reconstruir también es volver a sonar','Pasada la emergencia, entendimos que reconstruir no es solo techo y comida. Empezamos a trabajar por proyectos.'],['Hoy','Proyectos con nombre propio','Cada uno tiene una meta, aliados en terreno y sus cuentas abiertas para quien quiera revisarlas.']],
     conQuienEy:'Con quién trabajamos', puenteTit:'Sé parte del puente', puenteTxt:'Dona, comparte o escríbenos en @somos.nexosve.',
     faqNuevas:[{ q:'¿A qué proyecto va mi donación?', a:'Al fondo común de NEXOS. Desde ahí la invertimos en los proyectos en curso, empezando por lo más urgente.' },{ q:'¿Qué es el fondo disponible?', a:'Lo que recibimos y todavía no se invirtió. Se usa en los proyectos en curso y en los que vienen.' }]
   });
-  P.transpLead = lang === 'EN' ? 'Everything we receive goes into one fund. Here you see how much came in, which project it was invested in and with which invoice.' : 'Todo lo que recibimos entra a un mismo fondo. Aquí ves cuánto llegó, en qué proyecto se invirtió y con qué factura.';
+  P.transpLead = lang === 'EN' ? 'You can search every donation received and the expenses categorized by project.' : 'Puedes buscar todas las donaciones recibidas y los gastos categorizados por proyecto.';
   P.evidenciaTit = lang === 'EN' ? 'Invoices and photos' : 'Facturas y fotos';
 
   const proyectosTodos = loadingData ? [] : window.nexosProyectos(lang);

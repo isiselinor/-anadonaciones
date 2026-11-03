@@ -11,7 +11,7 @@ const PR_UI = {
     actualizado: 'Actualizado', donarProyecto: 'Donar a este proyecto', buscaNombre: '¿Ya donaste? Busca tu nombre →',
     estRecien: 'Recién empezamos', estAbierta: 'Recaudación abierta', estMeta: 'Meta alcanzada',
     loQuePaso: 'Lo que pasó',
-    procesoTit: 'El proceso, paso a paso', procesoSub: 'Toca cada etapa para ver en qué consiste.',
+    procesoTit: 'El proceso, paso a paso', procesoSub: 'Haz click en cada etapa para ver en qué consiste.',
     etapa: 'Etapa', deN: 'de', hecho: 'Hecho', aqui: 'Estamos aquí', proximo: 'Próximo', quien: 'Quién', veras: 'Lo que vas a ver',
     fotosTit: 'Fotos del proyecto', fotosSub: 'Del daño a la reparación. Toca una foto para verla en grande.',
     pronto: 'Muy pronto', prontoTxt: 'Estamos tomando las fotos de esta etapa. Las vas a ver aquí.',
@@ -29,9 +29,9 @@ const PR_UI = {
     invertidos: 'invertidos', cerradosEy: 'Cerrados', cumplimosTit: 'Lo que ya cumplimos', comprasConFactura: 'compras con factura',
     miraTodo: 'Mira todo lo que hicimos →', recorridoTit: 'Nuestro recorrido', loQueViene: 'Lo que viene', proximoProy: 'El próximo proyecto', empiezaAporte: 'Empieza con tu aporte',
     pagEy: 'Proyectos', pagTit1: 'Cada donación', pagTit2: 'se convierte en ', pagTit3: 'un proyecto',
-    pagLead: 'Con aliados en terreno decidimos dónde hace más falta. Cada proyecto tiene su meta, sus avances y sus cuentas abiertas.',
+    pagLead: 'Identificamos necesidades, desarrollamos la propuesta y la llevamos a la acción. Cada proyecto tiene sus avances y cuentas visibles.',
     sumateTit: 'Súmate a lo que viene', sumateTxt: 'Tu aporte va al fondo de NEXOS y lo invertimos en los proyectos en curso.',
-    filtroTodos: 'Todos', porCategoria: 'En qué se invirtió', compras: 'compras', conFacturaCorto: 'cada una con su factura', verDetalle: 'Ver el detalle en Transparencia →', fotosTitZ: 'Así se vio', fotosSubZ: 'Fotos de nuestro equipo en terreno. Toca una para verla en grande.', hicimosTit: 'Lo que hicimos', hicimosSub: 'Toca cada momento para ver qué pasó.', categoriasMas: function (n) { return '+ ' + n + ' categorías más'; }, despuesEy: 'Lo que vino después', despuesTit: 'Zona Cero terminó, pero lo que empezó ahí sigue', graciasTit: 'Gracias a cada persona que donó', graciasTxt: 'Tu aporte hizo posible este proyecto. Hoy sigue en los proyectos en curso.'
+    filtroTodos: 'Todos', porCategoria: 'En qué se invirtió', compras: 'compras', conFacturaCorto: 'cada una con su factura', verDetalle: 'Ver el detalle en Transparencia →', fotosTitZ: 'Así se vio', fotosSubZ: 'Fotos de nuestro equipo en terreno. Toca una para verla en grande.', resumenEy: 'Resumen', hicimosTit: 'Lo que hicimos', hicimosSub: 'Haz click en cada categoría para ver el detalle.', categoriasMas: function (n) { return '+ ' + n + ' categorías más'; }, despuesEy: 'Proyectos actuales', despuesTit: 'Nuestro apoyo en Zona Cero fue prioridad los primeros meses, pero las necesidades ahora son muchas más. Revisa nuestros proyectos actuales:', graciasTit: '¡Gracias a todos los que donaron!', graciasTxt: 'Sus aportes hicieron posible este proyecto y siguen construyendo los que vienen.'
   },
   EN: {
     eyebrow: 'Projects', titulo: 'What your help is building',
@@ -41,7 +41,7 @@ const PR_UI = {
     actualizado: 'Updated', donarProyecto: 'Donate to this project', buscaNombre: 'Already donated? Find your name →',
     estRecien: 'Just getting started', estAbierta: 'Fundraising open', estMeta: 'Goal reached',
     loQuePaso: 'What happened',
-    procesoTit: 'The process, step by step', procesoSub: 'Tap each stage to see what it involves.',
+    procesoTit: 'The process, step by step', procesoSub: 'Click each stage to see what it involves.',
     etapa: 'Stage', deN: 'of', hecho: 'Done', aqui: 'We are here', proximo: 'Next', quien: 'Who', veras: 'What you will see',
     fotosTit: 'Project photos', fotosSub: 'From damage to repair. Tap a photo to enlarge it.',
     pronto: 'Coming soon', prontoTxt: 'We are taking the photos for this stage. You will see them here.',
@@ -59,9 +59,9 @@ const PR_UI = {
     invertidos: 'invested', cerradosEy: 'Closed', cumplimosTit: 'What we have already done', comprasConFactura: 'purchases with invoice',
     miraTodo: 'See everything we did →', recorridoTit: 'Our journey', loQueViene: 'What’s next', proximoProy: 'The next project', empiezaAporte: 'Starts with your donation',
     pagEy: 'Projects', pagTit1: 'Every donation', pagTit2: 'becomes ', pagTit3: 'a project',
-    pagLead: 'With partners on the ground we decide where help is needed most. Each project has its goal, its progress and its open books.',
+    pagLead: 'We identify needs, develop the proposal and put it into action. Every project has its progress and accounts in plain sight.',
     sumateTit: 'Join what’s next', sumateTxt: 'Your donation goes to the NEXOS fund and we invest it in the projects in progress.',
-    filtroTodos: 'All', porCategoria: 'Where it was invested', compras: 'purchases', conFacturaCorto: 'each with its invoice', verDetalle: 'See the detail in Transparency →', fotosTitZ: 'How it looked', fotosSubZ: 'Photos by our team on the ground. Tap one to enlarge it.', hicimosTit: 'What we did', hicimosSub: 'Tap each moment to see what happened.', categoriasMas: function (n) { return '+ ' + n + ' more categories'; }, despuesEy: 'What came next', despuesTit: 'Zona Cero ended, but what started there goes on', graciasTit: 'Thank you to everyone who donated', graciasTxt: 'Your donation made this project possible. Today it lives on in the projects in progress.'
+    filtroTodos: 'All', porCategoria: 'Where it was invested', compras: 'purchases', conFacturaCorto: 'each with its invoice', verDetalle: 'See the detail in Transparency →', fotosTitZ: 'How it looked', fotosSubZ: 'Photos by our team on the ground. Tap one to enlarge it.', resumenEy: 'Summary', hicimosTit: 'What we did', hicimosSub: 'Click each category to see the details.', categoriasMas: function (n) { return '+ ' + n + ' more categories'; }, despuesEy: 'Current projects', despuesTit: 'Our support in Zona Cero was the priority in the first months, but the needs are now much greater. See our current projects:', graciasTit: 'Thank you to everyone who donated!', graciasTxt: 'Your donations made this project possible and keep building the ones to come.'
   }
 };
 
@@ -120,8 +120,7 @@ function ProyectoCard({ p, lang, onOpen }) {
       <div style={{ padding: 24, display: 'flex', flexDirection: 'column', gap: 12, flex: 1 }}>
         <span style={{ ...PR.chip, ...PR_TAG[p.tipo], alignSelf: 'flex-start' }}>{prTag(p)}</span>
         <div style={{ fontFamily: 'var(--font-display)', fontSize: 26, fontWeight: 700, lineHeight: 1.15 }}>{p.nombre}</div>
-        {p.resumen && p.tipo !== 'curso' ? <div style={{ fontSize: 16, color: 'var(--muted)', lineHeight: 1.55 }}>{p.resumen}</div>
-          : p.lema ? <div style={{ fontSize: 16, color: 'var(--muted)', lineHeight: 1.55 }}>{p.lema}</div> : null}
+        {(p.tarjeta || p.resumen || p.lema) ? <div style={{ fontSize: 16, color: 'var(--muted)', lineHeight: 1.55 }}>{p.tarjeta || p.resumen || p.lema}</div> : null}
         {pres ? <PrBar pct={pct} h={10} color="var(--accent)" /> : null}
         {p.gastado ? <span style={{ fontSize: 15, fontVariantNumeric: 'tabular-nums' }}><b>US$ {prFmt(p.gastado, lang)}</b> {u.invertidos}{pres ? ' ' + u.de + ' US$ ' + prFmt(pres, lang) : ''}</span> : null}
         <span style={{ marginTop: 'auto', paddingTop: 4, fontWeight: 700, fontSize: 15 }}>{u.conoce}</span>
@@ -138,7 +137,7 @@ function ZonaCerradaCard({ p, lang, onOpen, grande }) {
       <div style={{ flex: '1 1 380px', minWidth: 0, padding: grande ? 'clamp(24px,4vw,36px)' : 24, display: 'flex', flexDirection: 'column', gap: 12 }}>
         <span style={{ ...PR.chip, ...PR_TAG.cerrado, alignSelf: 'flex-start' }}>{[p.estado, p.ubicacion].filter(Boolean).join(' · ')}</span>
         <b style={{ fontFamily: 'var(--font-display)', fontSize: grande ? 34 : 24, lineHeight: 1.1 }}>{p.nombre}</b>
-        <span style={{ fontSize: 16, lineHeight: 1.65, color: 'var(--on-ink-soft)' }}>{grande ? p.resumen : p.lema}</span>
+        <span style={{ fontSize: 16, lineHeight: 1.65, color: 'var(--on-ink-soft)' }}>{grande ? [p.lema, p.resumen].filter(Boolean).join(' ') : (p.hito || p.lema)}</span>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px 32px' }}>
           <div><b style={{ fontFamily: 'var(--font-display)', fontSize: grande ? 30 : 24, color: 'var(--amber)', fontVariantNumeric: 'tabular-nums' }}>US$ {prFmt(p.gastado, lang)}</b><div style={{ fontSize: 14, color: 'var(--on-ink-soft)' }}>{u.invertidos}</div></div>
           {grande && p.compras.length ? <div><b style={{ fontFamily: 'var(--font-display)', fontSize: 30, color: 'var(--amber)' }}>{prFmt(p.compras.length, lang)}</b><div style={{ fontSize: 14, color: 'var(--on-ink-soft)' }}>{u.comprasConFactura}</div></div> : null}
@@ -221,7 +220,7 @@ function ProyectosPagina({ lang, onOpen, onDonate }) {
               <span style={{ position: 'absolute', top: -10, left: 0, width: 16, height: 16, borderRadius: '50%', boxSizing: 'border-box', background: color || '#fff', border: color ? 0 : '3px dashed var(--blue-lt)' }}></span>
               <span style={{ fontSize: 13, fontWeight: 700, color: 'var(--muted)' }}>{p ? (p.fecha || p.estado) : u.loQueViene}</span>
               <b style={{ fontSize: 17 }}>{p ? p.nombre : u.proximoProy}</b>
-              <span style={{ fontSize: 15, color: 'var(--muted)' }}>{p ? p.lema : u.empiezaAporte}</span>
+              <span style={{ fontSize: 15, color: 'var(--muted)' }}>{p ? (p.hito || p.lema) : u.empiezaAporte}</span>
             </li>);
           })}
         </ol>
@@ -337,7 +336,7 @@ function ProyectoPage({ id, lang, onClose, onDonate }) {
       {(p.historia.length || p.cifras.length) ? (
         <section style={{ ...PR.wrap, padding: 'clamp(40px,6vw,56px) 24px 12px', display: 'flex', flexWrap: 'wrap', gap: '32px 48px', alignItems: 'center' }}>
           <div style={{ flex: p.historia.length ? '1 1 380px' : '1 1 100%', minWidth: 0, display: 'flex', flexDirection: 'column', gap: 16 }}>
-            <span style={PR.eyebrow}>{u.loQuePaso}</span>
+            <span style={PR.eyebrow}>{cerrado ? u.resumenEy : u.loQuePaso}</span>
             {p.historia.map(function (t, i) { return <p key={i} style={{ margin: 0, fontSize: 19, lineHeight: 1.7, color: 'var(--ink)' }}>{t}</p>; })}
             {p.destacado ? <p style={{ margin: 0, fontSize: 16, lineHeight: 1.65, fontWeight: 700, color: 'var(--accent-text)' }}>{p.destacado}</p> : null}
           </div>
@@ -367,7 +366,7 @@ function ProyectoPage({ id, lang, onClose, onDonate }) {
                     style={{ flex: '1 1 0', minWidth: 120, border: 0, background: 'none', padding: 0, fontFamily: 'inherit', color: 'var(--ink)', cursor: 'pointer', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 10, textAlign: 'center', position: 'relative' }}>
                     <span style={{ width: 52, height: 52, borderRadius: 999, display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: 18, boxSizing: 'border-box',
                       background: st === 'hecho' ? 'var(--ink)' : st === 'curso' ? 'var(--blue)' : '#fff', color: st === 'prox' ? 'var(--muted)' : '#fff',
-                      border: st === 'prox' ? '2px solid var(--line)' : '0', boxShadow: on ? '0 0 0 5px var(--amber)' : 'none' }}>{i + 1}</span>
+                      border: st === 'prox' ? '2px solid var(--line)' : '0', boxShadow: on ? '0 0 0 5px var(--amber)' : 'none' }}>{cerrado ? '' : i + 1}</span>
                     <b style={{ fontSize: 15 }}>{e.titulo}</b>
                     <span style={{ fontSize: 12, fontWeight: 700, color: st === 'curso' ? 'var(--blue)' : 'var(--muted)' }}>{cerrado && e.cuando ? e.cuando : etapaInfo(i)[1]}</span>
                   </button>);
@@ -377,10 +376,11 @@ function ProyectoPage({ id, lang, onClose, onDonate }) {
           {act ? (
             <div style={{ border: '1px solid var(--line)', borderRadius: 22, padding: 28, display: 'flex', flexWrap: 'wrap', gap: 28, background: 'var(--soft)' }}>
               <div style={{ flex: '2 1 420px', minWidth: 0, display: 'flex', flexDirection: 'column', gap: 12 }}>
+{cerrado ? null : (
                 <div style={{ display: 'flex', gap: 10, alignItems: 'center', flexWrap: 'wrap' }}>
                   <span style={{ fontSize: 13, fontWeight: 700, color: 'var(--muted)' }}>{u.etapa.toUpperCase()} {selF + 1} {u.deN.toUpperCase()} {nE}</span>
                   <span style={{ ...PR.chip, background: PR_ST[etapaInfo(selF)[0]].bg, color: PR_ST[etapaInfo(selF)[0]].fg }}>{etapaInfo(selF)[1]}</span>
-                </div>
+                </div>)}
                 {act.cuando ? <span style={{ fontSize: 13, fontWeight: 700, color: 'var(--accent-text)' }}>{act.cuando}</span> : null}
                 <b style={{ fontSize: 24 }}>{act.titulo}</b>
                 <p style={{ margin: 0, fontSize: 16, lineHeight: 1.65 }}>{act.texto}</p>
@@ -566,7 +566,7 @@ function ProyectoPage({ id, lang, onClose, onDonate }) {
         return (<React.Fragment>
           {otros.length ? (
             <section style={{ ...PR.wrap, padding: '8px 24px clamp(44px,7vw,64px)', display: 'flex', flexDirection: 'column', gap: 20 }}>
-              <div><div style={{ ...PR.eyebrow, color: 'var(--accent-text)' }}>{u.despuesEy}</div><h2 style={{ ...PR.h2, marginTop: 10 }}>{u.despuesTit}</h2></div>
+              <div><div style={{ ...PR.eyebrow, color: 'var(--accent-text)' }}>{u.despuesEy}</div><h2 style={{ ...PR.h2, fontSize: 'clamp(20px,2.4vw,26px)', lineHeight: 1.3, marginTop: 10, maxWidth: 820 }}>{u.despuesTit}</h2></div>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(280px,1fr))', gap: 16 }}>
                 {otros.map(function (o) {
                   return (<a key={o.id} href={'#p-' + o.id} style={{ border: '1px solid var(--line-strong)', borderRadius: 18, padding: 22, textDecoration: 'none', color: 'var(--ink)', display: 'flex', flexDirection: 'column', gap: 8 }}>

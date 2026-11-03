@@ -10,7 +10,7 @@ const NEXOS_ES = {
     { id:'nosotros', label:'Nosotros' }
   ],
   hero: {
-    eyebrow: 'Ayuda humanitaria · Venezuela',
+    eyebrow: 'Ayuda directa, humana y transparente',
     titulo: 'Crear Nexos. Transformar realidades. Construir comunidad.',
     tituloHtml: 'Crear <span style="color:var(--accent)">Nexos</span>. Transformar realidades. Construir comunidad.',
     bajada: 'Somos el puente entre los que quieren ayudar y las necesidades reales. Ayuda directa, humana y transparente.',
@@ -102,7 +102,7 @@ const NEXOS_ES = {
     fotosPor: 'Fotos: nuestro equipo en terreno',
     anterior: 'Anterior', siguiente: 'Siguiente', ampliar: 'Ampliar foto',
     cifrasTitulo: 'La ayuda en números',
-    boletinEyebrow: 'En Substack', boletinTitulo: 'Lo que no cabe en una cifra, te lo contamos con una historia', boletinCinta: ['Historias desde el terreno','Voces de la comunidad','Reporte de cada aporte'], boletinTexto: 'Mantente al tanto de todo lo que estamos haciendo y los próximos pasos en nuestro Substack.', boletinBoton: 'Suscríbete', boletinQuienes: 'Lee nuestras historias en Substack',
+    boletinEyebrow: 'En Substack', boletinTitulo: 'Lo que no cabe en una cifra, te lo contamos con una historia', boletinCinta: ['Ayuda directa y transparente','Reportes de gastos y donaciones','Contacto directo con las comunidades','Proyectos de impacto real','Historias desde el terreno','Colaboraciones con otras fundaciones'], boletinTexto: 'Mantente al tanto de todo lo que estamos haciendo y los próximos pasos en nuestro Substack.', boletinBoton: 'Suscríbete', boletinQuienes: 'Lee nuestras historias en Substack',
     donarTitulo: 'Cómo donar en 3 pasos',
     paso1t: 'Elige método', paso1: 'Haz click en <b style="color:var(--accent)">Donar ahora</b> y selecciona la forma de pago que prefieras.',
     paso2t: 'Copia y transfiere', paso2: 'Copia los datos con <b style="color:var(--accent)">Copiar</b> y haz tu aporte desde tu banco.',
@@ -140,7 +140,7 @@ const NEXOS_EN = {
     { id:'nosotros', label:'About us' }
   ],
   hero: {
-    eyebrow: 'Humanitarian aid · Venezuela',
+    eyebrow: 'Direct, human and transparent aid',
     titulo: 'Create Nexos. Transform realities. Build community.',
     tituloHtml: 'Create <span style="color:var(--accent)">Nexos</span>. Transform realities. Build community.',
     bajada: 'We are the bridge between those who want to help and real needs. Direct, human and transparent aid.',
@@ -226,7 +226,7 @@ const NEXOS_EN = {
     fotosPor: 'Photos: our team on the ground',
     anterior: 'Previous', siguiente: 'Next', ampliar: 'Enlarge photo',
     cifrasTitulo: 'Aid in numbers',
-    boletinEyebrow: 'On Substack', boletinTitulo: "What doesn't fit in a number, we tell you with a story", boletinCinta: ['Stories from the ground','Voices of the community','Where every contribution goes'], boletinTexto: 'Stay up to date with everything we are doing and our next steps on our Substack.', boletinBoton: 'Subscribe', boletinQuienes: 'Read our stories on Substack',
+    boletinEyebrow: 'On Substack', boletinTitulo: "What doesn't fit in a number, we tell you with a story", boletinCinta: ['Direct and transparent aid','Expense and donation reports','Direct contact with communities','Real-impact projects','Stories from the ground','Collaborations with other foundations'], boletinTexto: 'Stay up to date with everything we are doing and our next steps on our Substack.', boletinBoton: 'Subscribe', boletinQuienes: 'Read our stories on Substack',
     donarTitulo: 'How to donate in 3 steps',
     paso1t: 'Choose a method', paso1: 'Click <b style="color:var(--accent)">Donate now</b> and select the payment method you prefer.',
     paso2t: 'Copy and transfer', paso2: 'Copy the details with <b style="color:var(--accent)">Copy</b> and send your contribution from your bank.',

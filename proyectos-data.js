@@ -15,6 +15,8 @@
     id: 'volver-a-sonar', publicado: 'sí',
     nombre: 'Volver a Sonar', nombre_en: 'Volver a Sonar',
     lema: 'La música también necesita reconstruirse', lema_en: 'Music needs rebuilding too',
+    tarjeta: 'La música también necesita reconstruirse. Apoyamos a la Orquesta Sinfónica Gran Mariscal de Ayacucho a recuperar sus instrumentos tras el doble terremoto.',
+    tarjeta_en: 'Music needs rebuilding too. We are helping the Gran Mariscal de Ayacucho Symphony Orchestra recover its instruments after the double earthquake.',
     resumen: 'Nexos y La Vida Boheme nos unimos para apoyar a los músicos de la Orquesta Sinfónica Gran Mariscal de Ayacucho afectados por los terremotos de junio de 2026 en Venezuela.',
     resumen_en: 'Nexos and La Vida Boheme joined forces to support the musicians of the Gran Mariscal de Ayacucho Symphony Orchestra affected by the June 2026 earthquakes in Venezuela.',
     estado: 'En curso', estado_en: 'In progress',
@@ -92,9 +94,11 @@
   }, {
     id: 'volver-a-trabajar', publicado: 'sí',
     nombre: 'Volver a Trabajar', nombre_en: 'Volver a Trabajar',
-    lema: 'Herramientas para volver a ganarse la vida', lema_en: 'Tools to make a living again',
-    resumen: 'Equipos de peluquería y cocina para que emprendedores afectados vuelvan a ganarse la vida.',
-    resumen_en: 'Hairdressing and kitchen equipment so affected entrepreneurs can make a living again.',
+    lema: 'Herramientas para recuperar la autonomía', lema_en: 'Tools to regain independence',
+    resumen: 'Ayudamos a trabajadores autónomos que hayan perdido sus equipos y herramientas de trabajo tras el doble terremoto para que puedan volver a su actividad.',
+    resumen_en: 'We help self-employed workers who lost their equipment and work tools in the double earthquake so they can get back to work.',
+    tarjeta: 'Ayudamos a trabajadores autónomos que hayan perdido sus equipos y herramientas de trabajo tras el doble terremoto para que puedan recuperar su autonomía.',
+    tarjeta_en: 'We help self-employed workers who lost their equipment and work tools in the double earthquake so they can regain their independence.',
     estado: 'Próximamente', estado_en: 'Coming soon',
     ubicacion: '', fecha: '', categoria: '🚀 Volver a Trabajar', meta: 0, gastado: 362, actualizado: '',
     foto: '', detalle: [
@@ -102,33 +106,34 @@
         texto: 'Por nuestros canales de siempre. Tu aporte aparece en Transparencia.', texto_en: 'Through our usual channels. Your donation shows up in Transparency.' }
     ]
   }, {
-    id: 'zona-cero', publicado: 'sí', resto: true,
-    nombre: 'Zona Cero', nombre_en: 'Zona Cero',
-    lema: 'Nacimos para responder', lema_en: 'We were born to respond',
-    resumen: 'Llegó el terremoto y nos organizamos, desde Venezuela y desde afuera. Herramientas, medicinas y comida llegaron a La Guaira y Caracas.',
-    resumen_en: 'The earthquake hit and we organized, from Venezuela and from abroad. Tools, medicine and food reached La Guaira and Caracas.',
+    id: 'zona-cero', publicado: 'sí', resto: true, clave: 'Zona Cero',
+    nombre: 'Apoyo Zona Cero', nombre_en: 'Apoyo Zona Cero',
+    lema: 'Llegó el terremoto, nos organizamos y activamos la ayuda humanitaria.', lema_en: 'The earthquake hit, we organized and activated humanitarian aid.',
+    resumen: 'Tres meses trabajando directamente en las zonas más afectadas, apoyando a civiles buscando a sus familiares, rescatistas voluntarios y grupos nacionales.',
+    resumen_en: 'Three months working directly in the hardest-hit areas, supporting civilians searching for their relatives, volunteer rescuers and national groups.',
+    hito: 'Respondimos ante la emergencia', hito_en: 'We responded to the emergency',
     estado: 'Cerrado', estado_en: 'Closed',
     ubicacion: 'La Guaira y Caracas', periodo: 'junio a octubre 2026', periodo_en: 'June to October 2026',
     fecha: 'Junio 2026', fecha_en: 'June 2026', categoria: '', meta: 0, gastado: 84168, actualizado: '',
     foto: 'photo-rescate-edificio.jpg',
     detalle: [
       { tipo: 'cifra', titulo: 'US$ 84.168', texto: 'invertidos en la emergencia', texto_en: 'invested in the emergency' },
-      { tipo: 'cifra', titulo: '346', texto: 'compras, cada una con su factura', texto_en: 'purchases, each with its invoice' },
-      { tipo: 'cifra', titulo: '117', texto: 'carpas para familias sin techo', texto_en: 'tents for families left without a roof' },
-      { tipo: 'cifra', titulo: '1.100', titulo_en: '1,100', texto: 'silbatos de seguridad para niños', texto_en: 'safety whistles for children' },
+      { tipo: 'cifra', titulo: '+1.500', titulo_en: '+1,500', texto: 'equipos y herramientas para rescates', texto_en: 'pieces of equipment and tools for rescues' },
+      { tipo: 'cifra', titulo: '+300', texto: 'botas de seguridad', texto_en: 'pairs of safety boots' },
+      { tipo: 'cifra', titulo: '+400', texto: 'carpas y toldos para civiles sin techo', texto_en: 'tents and canopies for civilians left without a roof' },
 
-      { tipo: 'etapa', titulo: 'Rescate', titulo_en: 'Rescue', cuando: 'Desde el 25 de junio', cuando_en: 'From June 25',
-        texto: 'En los edificios que se derrumbaron, como el OPP 25 y el OPPE 27, equipamos a los rescatistas con esmeriles, rotomartillos, oxicorte y plantas eléctricas. Después llegaron las botas, los respiradores y la ropa de trabajo.',
-        texto_en: 'At the buildings that collapsed, such as OPP 25 and OPPE 27, we equipped rescuers with grinders, rotary hammers, oxy-fuel cutters and generators. Then came boots, respirators and workwear.' },
-      { tipo: 'etapa', titulo: 'Atención', titulo_en: 'Care', cuando: 'Junio a septiembre', cuando_en: 'June to September',
-        texto: 'Medicinas e insumos médicos, agua y viandas para los equipos en terreno y para las familias.',
-        texto_en: 'Medicine and medical supplies, water and meals for the teams on the ground and for families.' },
-      { tipo: 'etapa', titulo: 'Refugio', titulo_en: 'Shelter', cuando: 'Junio a agosto', cuando_en: 'June to August',
-        texto: 'Carpas, lonas, colchonetas, cobijas, luces con paneles solares y kits de higiene. Con Docentes Solidarias llevamos colores, cuadernos y actividades a los niños.',
-        texto_en: 'Tents, tarps, mattresses, blankets, solar-powered lights and hygiene kits. With Docentes Solidarias we brought colors, notebooks and activities to the children.' },
-      { tipo: 'etapa', titulo: 'Volver a levantar', titulo_en: 'Standing up again', cuando: 'Agosto a octubre', cuando_en: 'August to October',
-        texto: 'Materiales para 15 postes de luz y materiales de construcción para familias afectadas.',
-        texto_en: 'Materials for 15 light poles and building materials for affected families.' },
+      { tipo: 'etapa', titulo: 'Zonas de Rescate', titulo_en: 'Rescue zones', cuando: 'Junio a septiembre', cuando_en: 'June to September',
+        texto: 'Apoyo directo en las misiones de rescate y recuperación de cuerpos en OPPE 25, OPPE 26, OPPE 27, OPPE 33, Residencias Caribe, Bahía Mar, Belo Horizonte, Parque Azul, Residencias Luisa Cáceres de Arismendi, Sol Marino Garden y La Gabarra.',
+        texto_en: 'Direct support in rescue and body recovery missions at OPPE 25, OPPE 26, OPPE 27, OPPE 33, Residencias Caribe, Bahía Mar, Belo Horizonte, Parque Azul, Residencias Luisa Cáceres de Arismendi, Sol Marino Garden and La Gabarra.' },
+      { tipo: 'etapa', titulo: 'Equipos', titulo_en: 'Equipment', cuando: 'Junio a septiembre', cuando_en: 'June to September',
+        texto: 'Herramientas clave para el proceso de rescate y recuperación de cuerpos: oxicortes, esmeriles, rotomartillos, plantas eléctricas, extensiones, baterías, linternas, regletas, fumigadoras, discos de corte, indumentaria de seguridad y más.',
+        texto_en: 'Key tools for rescue and body recovery: oxy-fuel cutters, grinders, rotary hammers, generators, extension cords, batteries, flashlights, power strips, sprayers, cutting discs, safety gear and more.' },
+      { tipo: 'etapa', titulo: 'Campamentos', titulo_en: 'Camps', cuando: 'Junio a septiembre', cuando_en: 'June to September',
+        texto: 'Apoyo a campamentos de rescatistas y damnificados con carpas, toldos, comidas, hidratación, luces LED, insumos de higiene y otros equipos necesarios para la pernocta en el Campo de Golf de Caraballeda, zonas aledañas a las OPPE de Caraballeda, Tanaguarenas, Mare Abajo y Playa Verde.',
+        texto_en: 'Support for rescuer and survivor camps with tents, canopies, meals, hydration, LED lights, hygiene supplies and other equipment for overnight stays at the Caraballeda Golf Course, the areas around the Caraballeda OPPE buildings, Tanaguarenas, Mare Abajo and Playa Verde.' },
+      { tipo: 'etapa', titulo: 'Brigadas', titulo_en: 'Brigades', cuando: 'Junio a octubre', cuando_en: 'June to October',
+        texto: 'Apoyo a grupos de defensa civil y bomberos de Mérida, Táchira, Trujillo, Cojedes, Lara y La Guaira. Grupo de médicos de Guayana, médicos voluntarios de OPPE 26 y 27, médicos de la UCV.',
+        texto_en: 'Support for civil defense groups and firefighters from Mérida, Táchira, Trujillo, Cojedes, Lara and La Guaira. A group of doctors from Guayana, volunteer doctors at OPPE 26 and 27, and doctors from UCV.' },
 
       { tipo: 'foto', grupo: 'En terreno', grupo_en: 'On the ground', titulo: 'Ler Rosell — La Guaira', imagen: '@fotos:1' },
       { tipo: 'foto', grupo: 'En terreno', grupo_en: 'On the ground', titulo: 'Ler Rosell — La Guaira', imagen: '@fotos:2' },
@@ -136,9 +141,7 @@
       { tipo: 'foto', grupo: 'En terreno', grupo_en: 'On the ground', titulo: 'Patricia Díaz — La Guaira', imagen: '@fotos:4' },
 
       { tipo: 'cita', titulo: '“Soy un reflejo de Dios en cada acción que realizo”', titulo_en: '“I am a reflection of God in every action I take”',
-        texto: 'Escrito en el guante de un rescatista. Foto: Francisco Rizquez', texto_en: 'Written on a rescuer’s glove. Photo: Francisco Rizquez', imagen: 'photo-guante-mensaje.jpg' },
-
-      { tipo: 'aliado', titulo: 'Docentes Solidarias', enlace: '' }
+        texto: 'Escrito en el guante de un rescatista. Foto: Francisco Rizquez', texto_en: 'Written on a rescuer’s glove. Photo: Francisco Rizquez', imagen: 'photo-guante-mensaje.jpg' }
     ]
   }];
 
@@ -174,13 +177,13 @@
       const q = Object.assign({}, p);
       // Lo invertido: columna "Proyecto" de la pestaña Gastos (los emojis del nombre no importan).
       // Si el script todavía no envía invertidoPorProyecto, usa la categoría con el mismo nombre.
-      const pid = slug(p.nombre);
+      const pid = slug(p.clave || p.nombre);
       const ip = ((f && f.invertidoPorProyecto) || []).filter(function (x) { return slug(x.proyecto) === pid; })[0];
       if (ip) {
         q.gastado = ip.total; q.compras = ip.items || [];
       } else if (f && (f.egresosRaw || []).length) {
         // Respaldo mientras el script no envíe invertidoPorProyecto
-        const propias = window.NEXOS_PROYECTOS.filter(function (o) { return !o.resto; }).map(function (o) { return slug(o.categoria || o.nombre); });
+        const propias = window.NEXOS_PROYECTOS.filter(function (o) { return !o.resto; }).map(function (o) { return slug(o.categoria || o.clave || o.nombre); });
         const cats = f.egresosRaw.filter(function (c) { return p.resto ? propias.indexOf(slug(c.categoria)) === -1 : slug(c.categoria) === slug(p.categoria || p.nombre); });
         if (cats.length) {
           q.gastado = cats.reduce(function (a, c) { return a + (Number(c.total) || 0); }, 0);
@@ -207,7 +210,7 @@
       const de = function (tipo) { return det.filter(function (d) { return String(d.tipo || '').trim().toLowerCase() === tipo; }); };
       return {
         id: String(p.id).trim(),
-        nombre: t(p, 'nombre'), lema: t(p, 'lema'), resumen: t(p, 'resumen'), estado: t(p, 'estado'),
+        nombre: t(p, 'nombre'), lema: t(p, 'lema'), resumen: t(p, 'resumen'), tarjeta: t(p, 'tarjeta'), hito: t(p, 'hito'), estado: t(p, 'estado'),
         tipo: (function () { const e = slug(p.estado); return e.indexOf('cerr') === 0 ? 'cerrado' : e.indexOf('prox') === 0 ? 'pronto' : 'curso'; })(),
         ubicacion: String(p.ubicacion || '').trim(), periodo: t(p, 'periodo'), fecha: t(p, 'fecha'),
         meta: num(p.meta), recaudado: num(p.recaudado), actualizado: String(p.actualizado || '').trim(),
