@@ -31,7 +31,7 @@ const PR_UI = {
     pagEy: 'Proyectos', pagTit1: 'Cada donación', pagTit2: 'se convierte en ', pagTit3: 'un proyecto',
     pagLead: 'Con aliados en terreno decidimos dónde hace más falta. Cada proyecto tiene su meta, sus avances y sus cuentas abiertas.',
     sumateTit: 'Súmate a lo que viene', sumateTxt: 'Tu aporte va al fondo de NEXOS y lo invertimos en los proyectos en curso.',
-    filtroTodos: 'Todos', porCategoria: 'En qué se invirtió', compras: 'compras', conFacturaCorto: 'cada una con su factura', verDetalle: 'Ver el detalle en Transparencia →'
+    filtroTodos: 'Todos', porCategoria: 'En qué se invirtió', compras: 'compras', conFacturaCorto: 'cada una con su factura', verDetalle: 'Ver el detalle en Transparencia →', fotosTitZ: 'Así se vio', fotosSubZ: 'Fotos de nuestro equipo en terreno. Toca una para verla en grande.', hicimosTit: 'Lo que hicimos', hicimosSub: 'Toca cada momento para ver qué pasó.', categoriasMas: function (n) { return '+ ' + n + ' categorías más'; }, despuesEy: 'Lo que vino después', despuesTit: 'Zona Cero terminó, pero lo que empezó ahí sigue', graciasTit: 'Gracias a cada persona que donó', graciasTxt: 'Tu aporte hizo posible este proyecto. Hoy sigue en los proyectos en curso.'
   },
   EN: {
     eyebrow: 'Projects', titulo: 'What your help is building',
@@ -61,7 +61,7 @@ const PR_UI = {
     pagEy: 'Projects', pagTit1: 'Every donation', pagTit2: 'becomes ', pagTit3: 'a project',
     pagLead: 'With partners on the ground we decide where help is needed most. Each project has its goal, its progress and its open books.',
     sumateTit: 'Join what’s next', sumateTxt: 'Your donation goes to the NEXOS fund and we invest it in the projects in progress.',
-    filtroTodos: 'All', porCategoria: 'Where it was invested', compras: 'purchases', conFacturaCorto: 'each with its invoice', verDetalle: 'See the detail in Transparency →'
+    filtroTodos: 'All', porCategoria: 'Where it was invested', compras: 'purchases', conFacturaCorto: 'each with its invoice', verDetalle: 'See the detail in Transparency →', fotosTitZ: 'How it looked', fotosSubZ: 'Photos by our team on the ground. Tap one to enlarge it.', hicimosTit: 'What we did', hicimosSub: 'Tap each moment to see what happened.', categoriasMas: function (n) { return '+ ' + n + ' more categories'; }, despuesEy: 'What came next', despuesTit: 'Zona Cero ended, but what started there goes on', graciasTit: 'Thank you to everyone who donated', graciasTxt: 'Your donation made this project possible. Today it lives on in the projects in progress.'
   }
 };
 
@@ -262,13 +262,14 @@ function ProyectoPage({ id, lang, onClose, onDonate }) {
   const pres = p.gastos.reduce(function (a, g) { return a + g.monto; }, 0) || p.meta || 0;
   const inv = p.gastado || 0;
   const pct = pres ? inv / pres * 100 : 0;
-  const eyebrow = [p.ubicacion, p.aliados.length ? (u.junto + ' ' + p.aliados.map(function (a) { return a.nombre; }).join(', ')) : ''].filter(Boolean).join(' · ');
+  const cerrado = p.tipo === 'cerrado';
+  const eyebrow = [cerrado ? p.estado : '', p.ubicacion, p.periodo, !cerrado && p.aliados.length ? (u.junto + ' ' + p.aliados.map(function (a) { return a.nombre; }).join(', ')) : ''].filter(Boolean).join(' · ');
 
   // Etapas
   const nE = p.etapas.length;
-  const activas = p.etapasActivas.map(function (n) { return Math.min(Math.max(n - 1, 0), Math.max(nE - 1, 0)); });
-  const ultima = Math.max.apply(null, activas.concat([0]));
-  const actual = Math.min.apply(null, activas.length ? activas : [0]);
+  const activas = cerrado ? [] : p.etapasActivas.map(function (n) { return Math.min(Math.max(n - 1, 0), Math.max(nE - 1, 0)); });
+  const ultima = cerrado ? nE : Math.max.apply(null, activas.concat([0]));
+  const actual = cerrado ? 0 : Math.min.apply(null, activas.length ? activas : [0]);
   const selF = fase === null ? actual : fase;
   const etapaInfo = function (i) { return activas.indexOf(i) > -1 ? ['curso', activas.length > 1 ? u.enCurso : u.aqui] : i < ultima ? ['hecho', u.hecho] : ['prox', u.proximo]; };
   const act = p.etapas[selF];
@@ -312,7 +313,8 @@ function ProyectoPage({ id, lang, onClose, onDonate }) {
             {p.lema ? <p style={{ margin: 0, fontSize: 'clamp(19px,2.4vw,24px)', lineHeight: 1.3, fontWeight: 700, color: 'var(--amber)' }}>{p.lema}</p> : null}
             {p.resumen ? <p style={{ margin: 0, fontSize: 16, lineHeight: 1.65, maxWidth: 600, color: 'var(--on-ink-soft)' }}>{p.resumen}</p> : null}
           </div>
-          {(pres || inv) ? (
+          {cerrado && p.foto ? <img src={p.foto} alt="" style={{ flex: '1 1 360px', minWidth: 0, maxWidth: '100%', aspectRatio: '4/3', objectFit: 'cover', borderRadius: 22 }} />
+          : (pres || inv) ? (
             <div style={{ flex: '1 1 320px', minWidth: 0, background: '#fff', color: 'var(--ink)', borderRadius: 22, padding: 24, display: 'flex', flexDirection: 'column', gap: 14, boxShadow: '0 10px 30px rgba(17,37,50,.08)' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', gap: 10, alignItems: 'center', flexWrap: 'wrap' }}>
                 {p.estado ? <span style={{ ...PR.chip, ...PR_TAG[p.tipo] }}>{p.estado}</span> : <span></span>}
@@ -334,16 +336,16 @@ function ProyectoPage({ id, lang, onClose, onDonate }) {
       {/* lo que pasó + cifras */}
       {(p.historia.length || p.cifras.length) ? (
         <section style={{ ...PR.wrap, padding: 'clamp(40px,6vw,56px) 24px 12px', display: 'flex', flexWrap: 'wrap', gap: '32px 48px', alignItems: 'center' }}>
-          <div style={{ flex: '1 1 380px', minWidth: 0, display: 'flex', flexDirection: 'column', gap: 16 }}>
+          <div style={{ flex: p.historia.length ? '1 1 380px' : '1 1 100%', minWidth: 0, display: 'flex', flexDirection: 'column', gap: 16 }}>
             <span style={PR.eyebrow}>{u.loQuePaso}</span>
             {p.historia.map(function (t, i) { return <p key={i} style={{ margin: 0, fontSize: 19, lineHeight: 1.7, color: 'var(--ink)' }}>{t}</p>; })}
             {p.destacado ? <p style={{ margin: 0, fontSize: 16, lineHeight: 1.65, fontWeight: 700, color: 'var(--accent-text)' }}>{p.destacado}</p> : null}
           </div>
           {p.cifras.length ? (
-            <div style={{ flex: '1 1 440px', minWidth: 0, display: 'grid', gridTemplateColumns: 'repeat(2,minmax(0,1fr))', gap: 12 }}>
+            <div style={{ flex: p.historia.length ? '1 1 440px' : '1 1 100%', minWidth: 0, display: 'grid', gridTemplateColumns: p.historia.length ? 'repeat(2,minmax(0,1fr))' : 'repeat(auto-fit,minmax(220px,1fr))', gap: 12 }}>
               {p.cifras.map(function (c, i) {
                 return (<div key={i} style={{ background: 'color-mix(in oklab, var(--blue-lt) 16%, white)', borderRadius: 18, padding: 22, display: 'flex', flexDirection: 'column', gap: 10, minWidth: 0 }}>
-                  <b style={{ fontSize: 46, lineHeight: 1, fontWeight: 800, color: 'var(--blue)', fontVariantNumeric: 'tabular-nums' }}>{c.n}</b>
+                  <b style={{ fontSize: c.n.length > 6 ? 'clamp(28px,3vw,36px)' : 46, lineHeight: 1, fontWeight: 800, color: 'var(--blue)', fontVariantNumeric: 'tabular-nums', whiteSpace: 'nowrap' }}>{c.n}</b>
                   <span style={{ fontSize: 14, lineHeight: 1.45, color: 'var(--ink)' }}>{c.texto}</span>
                 </div>);
               })}
@@ -353,11 +355,11 @@ function ProyectoPage({ id, lang, onClose, onDonate }) {
       {/* proceso */}
       {nE ? (
         <section style={{ ...PR.wrap, padding: 'clamp(40px,6vw,56px) 24px', display: 'flex', flexDirection: 'column', gap: 26 }}>
-          <div><h2 style={PR.h2}>{u.procesoTit}</h2><p style={PR.sub}>{u.procesoSub}</p></div>
+          <div><h2 style={PR.h2}>{cerrado ? u.hicimosTit : u.procesoTit}</h2><p style={PR.sub}>{cerrado ? u.hicimosSub : u.procesoSub}</p></div>
           <div style={{ overflowX: 'auto', padding: '12px 8px 8px' }}>
             <div style={{ position: 'relative', display: 'flex', gap: 8, minWidth: Math.max(nE * 128, 320) }}>
               {nE > 1 ? <div style={{ position: 'absolute', left: (50 / nE) + '%', width: ((nE - 1) * 100 / nE) + '%', top: 25, height: 4, background: 'var(--line)', borderRadius: 999 }}></div> : null}
-              {nE > 1 ? <div style={{ position: 'absolute', left: (50 / nE) + '%', width: (ultima * 100 / nE) + '%', top: 25, height: 4, background: 'var(--blue)', borderRadius: 999 }}></div> : null}
+              {nE > 1 ? <div style={{ position: 'absolute', left: (50 / nE) + '%', width: (Math.min(ultima, nE - 1) * 100 / nE) + '%', top: 25, height: 4, background: 'var(--blue)', borderRadius: 999 }}></div> : null}
               {p.etapas.map(function (e, i) {
                 const st = etapaInfo(i)[0]; const on = i === selF;
                 return (
@@ -367,7 +369,7 @@ function ProyectoPage({ id, lang, onClose, onDonate }) {
                       background: st === 'hecho' ? 'var(--ink)' : st === 'curso' ? 'var(--blue)' : '#fff', color: st === 'prox' ? 'var(--muted)' : '#fff',
                       border: st === 'prox' ? '2px solid var(--line)' : '0', boxShadow: on ? '0 0 0 5px var(--amber)' : 'none' }}>{i + 1}</span>
                     <b style={{ fontSize: 15 }}>{e.titulo}</b>
-                    <span style={{ fontSize: 12, fontWeight: 700, color: st === 'curso' ? 'var(--blue)' : 'var(--muted)' }}>{etapaInfo(i)[1]}</span>
+                    <span style={{ fontSize: 12, fontWeight: 700, color: st === 'curso' ? 'var(--blue)' : 'var(--muted)' }}>{cerrado && e.cuando ? e.cuando : etapaInfo(i)[1]}</span>
                   </button>);
               })}
             </div>
@@ -379,6 +381,7 @@ function ProyectoPage({ id, lang, onClose, onDonate }) {
                   <span style={{ fontSize: 13, fontWeight: 700, color: 'var(--muted)' }}>{u.etapa.toUpperCase()} {selF + 1} {u.deN.toUpperCase()} {nE}</span>
                   <span style={{ ...PR.chip, background: PR_ST[etapaInfo(selF)[0]].bg, color: PR_ST[etapaInfo(selF)[0]].fg }}>{etapaInfo(selF)[1]}</span>
                 </div>
+                {act.cuando ? <span style={{ fontSize: 13, fontWeight: 700, color: 'var(--accent-text)' }}>{act.cuando}</span> : null}
                 <b style={{ fontSize: 24 }}>{act.titulo}</b>
                 <p style={{ margin: 0, fontSize: 16, lineHeight: 1.65 }}>{act.texto}</p>
               </div>
@@ -389,7 +392,7 @@ function ProyectoPage({ id, lang, onClose, onDonate }) {
       {p.fotos.length ? (
         <section style={{ ...PR.wrap, padding: '12px 24px clamp(40px,6vw,56px)', display: 'flex', flexDirection: 'column', gap: 20 }}>
           <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'flex-end', gap: '14px 24px' }}>
-            <div><h2 style={PR.h2}>{u.fotosTit}</h2><p style={PR.sub}>{u.fotosSub}</p></div>
+            <div><h2 style={PR.h2}>{cerrado ? u.fotosTitZ : u.fotosTit}</h2><p style={PR.sub}>{cerrado ? u.fotosSubZ : u.fotosSub}</p></div>
             {grupos.length > 1 ? <div role="tablist" style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
               {grupos.map(function (g, i) {
                 const n = p.fotos.filter(function (f) { return f.grupo === g; }).length;
@@ -423,6 +426,19 @@ function ProyectoPage({ id, lang, onClose, onDonate }) {
               </div>
             </div>) : null}
         </section>) : null}
+
+      {/* cita */}
+      {p.citas.length ? p.citas.map(function (c, i) {
+        return (<section key={i} style={{ background: 'var(--ink)', color: '#fff' }}>
+          <div style={{ ...PR.wrap, padding: 'clamp(44px,7vw,64px) 24px', display: 'flex', flexWrap: 'wrap', gap: 40, alignItems: 'center' }}>
+            {c.src ? <img src={c.src} alt="" style={{ flex: '1 1 280px', minWidth: 0, maxWidth: '100%', aspectRatio: '4/5', objectFit: 'cover', borderRadius: 22 }} /> : null}
+            <div style={{ flex: '1 1 420px', minWidth: 0, display: 'flex', flexDirection: 'column', gap: 14 }}>
+              <p style={{ margin: 0, fontFamily: 'var(--font-display)', fontSize: 'clamp(24px,3.4vw,36px)', lineHeight: 1.3, fontWeight: 700 }}>{c.frase}</p>
+              {c.pie ? <span style={{ fontSize: 15, color: 'var(--on-ink-soft)' }}>{c.pie}</span> : null}
+            </div>
+          </div>
+        </section>);
+      }) : null}
 
       {/* reparto */}
       {gastos.length ? (
@@ -532,8 +548,44 @@ function ProyectoPage({ id, lang, onClose, onDonate }) {
               <span style={{ fontSize: 16, color: 'var(--muted)' }}><b style={{ color: 'var(--ink)', fontVariantNumeric: 'tabular-nums' }}>US$ {prFmt(inv, lang)}</b>{p.compras.length ? ' · ' + prFmt(p.compras.length, lang) + ' ' + u.compras : ''} · {u.conFacturaCorto}</span>
             </div>
             <a href="#transparencia" onClick={function (e) { e.preventDefault(); window.nexosVerCuentas(p.id); }} style={{ ...PR.ghost, background: '#fff', borderColor: 'var(--ink)', color: 'var(--ink)', textDecoration: 'none' }}>{u.verDetalle}</a>
+            {p.porCategoria.length > 1 ? (
+              <div style={{ flexBasis: '100%', display: 'flex', flexDirection: 'column', gap: 14 }}>
+                {p.porCategoria.slice(0, 3).map(function (c) {
+                  return (<div key={c.categoria} style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', gap: 12, fontSize: 15 }}><span>{prCat(c.categoria, lang)}</span><b style={{ fontVariantNumeric: 'tabular-nums' }}>US$ {prFmt(c.total, lang)}</b></div>
+                    <PrBar pct={inv ? c.total / inv * 100 : 0} h={10} />
+                  </div>);
+                })}
+                {p.porCategoria.length > 3 ? <span style={{ fontSize: 14, color: 'var(--muted)' }}>{u.categoriasMas(p.porCategoria.length - 3)}</span> : null}
+              </div>) : null}
           </div>
         </section>) : null}
+
+      {cerrado ? (function () {
+        const otros = window.nexosProyectos(lang).filter(function (o) { return o.tipo !== 'cerrado'; });
+        return (<React.Fragment>
+          {otros.length ? (
+            <section style={{ ...PR.wrap, padding: '8px 24px clamp(44px,7vw,64px)', display: 'flex', flexDirection: 'column', gap: 20 }}>
+              <div><div style={{ ...PR.eyebrow, color: 'var(--accent-text)' }}>{u.despuesEy}</div><h2 style={{ ...PR.h2, marginTop: 10 }}>{u.despuesTit}</h2></div>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(280px,1fr))', gap: 16 }}>
+                {otros.map(function (o) {
+                  return (<a key={o.id} href={'#p-' + o.id} style={{ border: '1px solid var(--line-strong)', borderRadius: 18, padding: 22, textDecoration: 'none', color: 'var(--ink)', display: 'flex', flexDirection: 'column', gap: 8 }}>
+                    <span style={{ ...PR.chip, ...PR_TAG[o.tipo], alignSelf: 'flex-start' }}>{o.estado}</span>
+                    <b style={{ fontFamily: 'var(--font-display)', fontSize: 22 }}>{o.nombre}</b>
+                    <span style={{ fontSize: 15, color: 'var(--muted)' }}>{o.lema}</span>
+                    <span style={{ fontWeight: 700, fontSize: 15 }}>{u.conoce}</span>
+                  </a>);
+                })}
+              </div>
+            </section>) : null}
+          <section style={{ background: 'var(--warm)' }}>
+            <div style={{ ...PR.wrap, padding: 'clamp(40px,6vw,52px) 24px', display: 'flex', flexWrap: 'wrap', gap: 24, alignItems: 'center', justifyContent: 'space-between' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 8, maxWidth: 660 }}><h2 style={{ ...PR.h2, fontSize: 30 }}>{u.graciasTit}</h2><p style={{ margin: 0, fontSize: 16, lineHeight: 1.6, color: 'var(--muted)' }}>{u.graciasTxt}</p></div>
+              <button onClick={onDonate} style={{ ...PR.coral, minHeight: 54, padding: '0 34px', fontSize: 16, border: 0, cursor: 'pointer' }}>{u.donar}</button>
+            </div>
+          </section>
+        </React.Fragment>);
+      })() : null}
 
     </div>
   );

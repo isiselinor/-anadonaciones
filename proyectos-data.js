@@ -104,18 +104,53 @@
   }, {
     id: 'zona-cero', publicado: 'sí', resto: true,
     nombre: 'Zona Cero', nombre_en: 'Zona Cero',
-    lema: 'Nuestra respuesta al terremoto', lema_en: 'Our response to the earthquake',
-    resumen: 'Cuando llegó el terremoto, salimos a responder. Herramientas para los rescatistas, medicinas, comida y refugio para las familias de La Guaira y Caracas.',
-    resumen_en: 'When the earthquake hit, we got to work. Tools for rescuers, medicine, food and shelter for families in La Guaira and Caracas.',
+    lema: 'Nacimos para responder', lema_en: 'We were born to respond',
+    resumen: 'Llegó el terremoto y nos organizamos, desde Venezuela y desde afuera. Herramientas, medicinas y comida llegaron a La Guaira y Caracas.',
+    resumen_en: 'The earthquake hit and we organized, from Venezuela and from abroad. Tools, medicine and food reached La Guaira and Caracas.',
     estado: 'Cerrado', estado_en: 'Closed',
-    ubicacion: 'La Guaira y Caracas', fecha: 'Junio 2026', fecha_en: 'June 2026', categoria: '', meta: 0, gastado: 84168, actualizado: '',
-    foto: '@fotos:0', detalle: []
+    ubicacion: 'La Guaira y Caracas', periodo: 'junio a octubre 2026', periodo_en: 'June to October 2026',
+    fecha: 'Junio 2026', fecha_en: 'June 2026', categoria: '', meta: 0, gastado: 84168, actualizado: '',
+    foto: 'photo-rescate-edificio.jpg',
+    detalle: [
+      { tipo: 'cifra', titulo: 'US$ 84.168', texto: 'invertidos en la emergencia', texto_en: 'invested in the emergency' },
+      { tipo: 'cifra', titulo: '346', texto: 'compras, cada una con su factura', texto_en: 'purchases, each with its invoice' },
+      { tipo: 'cifra', titulo: '117', texto: 'carpas para familias sin techo', texto_en: 'tents for families left without a roof' },
+      { tipo: 'cifra', titulo: '1.100', titulo_en: '1,100', texto: 'silbatos de seguridad para niños', texto_en: 'safety whistles for children' },
+
+      { tipo: 'etapa', titulo: 'Rescate', titulo_en: 'Rescue', cuando: 'Desde el 25 de junio', cuando_en: 'From June 25',
+        texto: 'En los edificios que se derrumbaron, como el OPP 25 y el OPPE 27, equipamos a los rescatistas con esmeriles, rotomartillos, oxicorte y plantas eléctricas. Después llegaron las botas, los respiradores y la ropa de trabajo.',
+        texto_en: 'At the buildings that collapsed, such as OPP 25 and OPPE 27, we equipped rescuers with grinders, rotary hammers, oxy-fuel cutters and generators. Then came boots, respirators and workwear.' },
+      { tipo: 'etapa', titulo: 'Atención', titulo_en: 'Care', cuando: 'Junio a septiembre', cuando_en: 'June to September',
+        texto: 'Medicinas e insumos médicos, agua y viandas para los equipos en terreno y para las familias.',
+        texto_en: 'Medicine and medical supplies, water and meals for the teams on the ground and for families.' },
+      { tipo: 'etapa', titulo: 'Refugio', titulo_en: 'Shelter', cuando: 'Junio a agosto', cuando_en: 'June to August',
+        texto: 'Carpas, lonas, colchonetas, cobijas, luces con paneles solares y kits de higiene. Con Docentes Solidarias llevamos colores, cuadernos y actividades a los niños.',
+        texto_en: 'Tents, tarps, mattresses, blankets, solar-powered lights and hygiene kits. With Docentes Solidarias we brought colors, notebooks and activities to the children.' },
+      { tipo: 'etapa', titulo: 'Volver a levantar', titulo_en: 'Standing up again', cuando: 'Agosto a octubre', cuando_en: 'August to October',
+        texto: 'Materiales para 15 postes de luz y materiales de construcción para familias afectadas.',
+        texto_en: 'Materials for 15 light poles and building materials for affected families.' },
+
+      { tipo: 'foto', grupo: 'En terreno', grupo_en: 'On the ground', titulo: 'Ler Rosell — La Guaira', imagen: '@fotos:1' },
+      { tipo: 'foto', grupo: 'En terreno', grupo_en: 'On the ground', titulo: 'Ler Rosell — La Guaira', imagen: '@fotos:2' },
+      { tipo: 'foto', grupo: 'En terreno', grupo_en: 'On the ground', titulo: 'Ler Rosell — La Guaira', imagen: '@fotos:3' },
+      { tipo: 'foto', grupo: 'En terreno', grupo_en: 'On the ground', titulo: 'Patricia Díaz — La Guaira', imagen: '@fotos:4' },
+
+      { tipo: 'cita', titulo: '“Soy un reflejo de Dios en cada acción que realizo”', titulo_en: '“I am a reflection of God in every action I take”',
+        texto: 'Escrito en el guante de un rescatista. Foto: Francisco Rizquez', texto_en: 'Written on a rescuer’s glove. Photo: Francisco Rizquez', imagen: 'photo-guante-mensaje.jpg' },
+
+      { tipo: 'aliado', titulo: 'Docentes Solidarias', enlace: '' }
+    ]
   }];
 
   /* Enlaces de Google Drive (…/file/d/ID/view o open?id=ID) -> enlace directo de imagen. */
   const img = function (u) {
     u = String(u || '').trim();
     if (!u) return '';
+    if (u.indexOf('@fotos:') === 0) {
+      const fx = (window.nexosContent && window.nexosContent('ES').fotos) || [];
+      const fo = fx[parseInt(u.slice(7), 10)];
+      return fo ? fo.src : '';
+    }
     const m = u.match(/drive\.google\.com\/(?:file\/d\/|open\?id=|uc\?(?:export=\w+&)?id=)([\w-]{10,})/);
     return m ? 'https://lh3.googleusercontent.com/d/' + m[1] + '=w1600' : u;
   };
@@ -152,11 +187,6 @@
           q.compras = [].concat.apply([], cats.map(function (c) { return (c.items || []).map(function (it) { return Object.assign({ categoria: c.categoria }, it); }); }));
         }
       }
-      if (typeof q.foto === 'string' && q.foto.indexOf('@fotos:') === 0) {
-        const fx = (window.nexosContent && window.nexosContent(lang).fotos) || [];
-        const fo = fx[parseInt(q.foto.slice(7), 10)];
-        q.foto = fo ? fo.src : '';
-      }
       // Fecha automática: la última actualización de los datos.
       if (f && f.actualizado) q.actualizado = String(f.actualizado).split(',')[0].trim();
       const fotos = (hoja.fotos || []).filter(function (r) { return (slug(r.proyecto) === p.id || slug(r.proyecto) === slug(p.nombre)) && String(r.enlace || '').trim(); });
@@ -179,7 +209,7 @@
         id: String(p.id).trim(),
         nombre: t(p, 'nombre'), lema: t(p, 'lema'), resumen: t(p, 'resumen'), estado: t(p, 'estado'),
         tipo: (function () { const e = slug(p.estado); return e.indexOf('cerr') === 0 ? 'cerrado' : e.indexOf('prox') === 0 ? 'pronto' : 'curso'; })(),
-        ubicacion: String(p.ubicacion || '').trim(), fecha: t(p, 'fecha'),
+        ubicacion: String(p.ubicacion || '').trim(), periodo: t(p, 'periodo'), fecha: t(p, 'fecha'),
         meta: num(p.meta), recaudado: num(p.recaudado), actualizado: String(p.actualizado || '').trim(),
         etapasActivas: (String(p.etapa_actual == null ? '' : p.etapa_actual).match(/\d+/g) || ['1']).map(function (n) { return parseInt(n, 10); }),
         gastado: num(p.gastado), compras: (p.compras || []).map(function (c) { return { concepto: String(c.concepto || '').trim(), monto: num(c.monto), categoria: String(c.categoria || '').trim() }; }),
@@ -192,7 +222,8 @@
         historia: t(p, 'historia').split(/\n\s*\n/).map(function (s) { return s.trim(); }).filter(Boolean),
         destacado: t(p, 'destacado'), notaPresupuesto: t(p, 'nota_presupuesto'),
         cifras: de('cifra').map(function (d) { return { n: t(d, 'titulo'), texto: t(d, 'texto') }; }),
-        etapas: de('etapa').map(function (d) { return { titulo: t(d, 'titulo'), texto: t(d, 'texto'), quien: t(d, 'grupo'), evidencia: lista(d), enlace: String(d.enlace || '').trim() }; }),
+        citas: de('cita').map(function (d) { return { frase: t(d, 'titulo'), pie: t(d, 'texto'), src: img(d.imagen) }; }),
+        etapas: de('etapa').map(function (d) { return { titulo: t(d, 'titulo'), cuando: t(d, 'cuando'), texto: t(d, 'texto'), quien: t(d, 'grupo'), evidencia: lista(d), enlace: String(d.enlace || '').trim() }; }),
         gastos: de('gasto').map(function (d) { return { titulo: t(d, 'titulo'), texto: t(d, 'texto'), monto: num(d.monto), items: lista(d) }; }),
         kits: de('kit').map(function (d) { return { titulo: t(d, 'titulo'), instrumentos: t(d, 'grupo'), texto: t(d, 'texto'), precio: String(d.monto == null ? '' : d.monto).trim() }; }),
         fotos: de('foto').map(function (d) { return { grupo: t(d, 'grupo') || (en ? 'Photos' : 'Fotos'), pie: t(d, 'titulo'), src: img(d.imagen) }; }).filter(function (x) { return x.src; }),
