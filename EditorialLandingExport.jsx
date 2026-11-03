@@ -221,7 +221,7 @@ function ProyectoCuentas({ p, lang, total, abierto, onOpen }) {
   const pct = total ? p.gastado / total * 100 : 0;
   const pctTxt = (pct >= 10 ? Math.round(pct) : Math.round(pct * 10) / 10).toString().replace('.', en ? '.' : ',') + '%';
   return (
-    <div style={{ border:'1px solid var(--line-strong)', borderRadius:18, background:'#fff' }}>
+    <div id={'cuentas-' + p.id} style={{ border:'1px solid var(--line-strong)', borderRadius:18, background:'#fff', scrollMarginTop:90 }}>
       <button type="button" aria-expanded={o} onClick={function(){ setO(!o); }}
         style={{ width:'100%', display:'flex', justifyContent:'space-between', alignItems:'center', gap:16, padding:'20px 22px', background:'none', border:0, font:'inherit', color:'inherit', textAlign:'left', cursor:'pointer' }}>
         <span style={{ display:'flex', gap:12, alignItems:'flex-start', minWidth:0 }}>
@@ -531,7 +531,7 @@ function EditorialLandingExport() {
           <h2 style={A.h2}>{P.porProyTit}</h2>
           <div style={{ display:'flex', flexDirection:'column', gap:16, marginTop:26 }}>
             {loadingData ? <div style={{ color:'var(--muted)', fontSize:14 }}>{P.cargando}</div>
-              : proyectosOrden.map(function(p, i){ return <ProyectoCuentas key={p.id} p={p} lang={lang} total={totalProyectos} abierto={i === 0} onOpen={setProyecto} />; })}
+              : proyectosOrden.map(function(p, i){ return <ProyectoCuentas key={p.id} p={p} lang={lang} total={totalProyectos} abierto={window.__nxAbrir ? window.__nxAbrir === p.id : i === 0} onOpen={setProyecto} />; })}
           </div>
         </div>
       </section>

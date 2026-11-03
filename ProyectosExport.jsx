@@ -31,7 +31,7 @@ const PR_UI = {
     pagEy: 'Proyectos', pagTit1: 'Cada donación', pagTit2: 'se convierte en ', pagTit3: 'un proyecto',
     pagLead: 'Con aliados en terreno decidimos dónde hace más falta. Cada proyecto tiene su meta, sus avances y sus cuentas abiertas.',
     sumateTit: 'Súmate a lo que viene', sumateTxt: 'Tu aporte va al fondo de NEXOS y lo invertimos en los proyectos en curso.',
-    filtroTodos: 'Todos', porCategoria: 'En qué se invirtió', compras: 'compras'
+    filtroTodos: 'Todos', porCategoria: 'En qué se invirtió', compras: 'compras', conFacturaCorto: 'cada una con su factura', verDetalle: 'Ver el detalle en Transparencia →'
   },
   EN: {
     eyebrow: 'Projects', titulo: 'What your help is building',
@@ -61,7 +61,7 @@ const PR_UI = {
     pagEy: 'Projects', pagTit1: 'Every donation', pagTit2: 'becomes ', pagTit3: 'a project',
     pagLead: 'With partners on the ground we decide where help is needed most. Each project has its goal, its progress and its open books.',
     sumateTit: 'Join what’s next', sumateTxt: 'Your donation goes to the NEXOS fund and we invest it in the projects in progress.',
-    filtroTodos: 'All', porCategoria: 'Where it was invested', compras: 'purchases'
+    filtroTodos: 'All', porCategoria: 'Where it was invested', compras: 'purchases', conFacturaCorto: 'each with its invoice', verDetalle: 'See the detail in Transparency →'
   }
 };
 
@@ -95,7 +95,7 @@ const PR_ST = {
 
 function PrBar({ pct, h, color }) {
   return (<div style={{ height: h || 10, borderRadius: 999, background: 'color-mix(in oklab, var(--blue-lt) 30%, white)', overflow: 'hidden' }}>
-    <div style={{ height: '100%', width: Math.max(0, Math.min(100, pct)) + '%', background: color || 'var(--accent)', borderRadius: 999, transition: 'width .4s' }}></div>
+    <div style={{ height: '100%', width: Math.max(0, Math.min(100, pct)) + '%', background: color || 'var(--blue)', borderRadius: 999, transition: 'width .4s' }}></div>
   </div>);
 }
 
@@ -324,7 +324,7 @@ function ProyectoPage({ id, lang, onClose, onDonate }) {
                 {pres ? <span style={{ fontSize: 15 }}>{u.de} <b>US$ {prFmt(pres, lang)}</b> {u.presupuestados}</span> : null}
               </div>
               {pres ? <PrBar pct={pct} h={12} color="var(--accent)" /> : null}
-              {p.compras.length ? <a href="#compras" onClick={function (e) { e.preventDefault(); const el = document.getElementById('compras'); if (el) el.scrollIntoView({ behavior: 'smooth' }); }} style={{ fontSize: 14, fontWeight: 700 }}>{u.verCompras}</a> : null}
+              {inv ? <a href="#transparencia" onClick={function (e) { e.preventDefault(); window.nexosVerCuentas(p.id); }} style={{ fontSize: 14, fontWeight: 700 }}>{u.verCompras}</a> : null}
               <button onClick={onDonate} style={PR.coral}>{u.donar}</button>
               <a href="#reporte" onClick={irABuscador} style={{ fontSize: 14, fontWeight: 700 }}>{u.buscaNombre}</a>
             </div>) : null}
@@ -523,23 +523,16 @@ function ProyectoPage({ id, lang, onClose, onDonate }) {
           })}
         </section>) : null}
 
-      {/* compras ya hechas (automático desde Gastos) */}
-      {p.compras.length ? (
-        <section id="compras" style={{ ...PR.wrap, padding: '12px 24px clamp(40px,6vw,56px)', display: 'flex', flexDirection: 'column', gap: 18 }}>
-          <div><h2 style={PR.h2}>{u.comprasTit}</h2><p style={PR.sub}>{u.comprasSub}</p></div>
-          <div style={{ ...PR.card, padding: '6px 26px' }}>
-            {(p.compras.length > 15 ? p.porCategoria.map(function (c) { return { concepto: prCat(c.categoria, lang) + ' · ' + c.n + ' ' + u.compras, monto: c.total }; }) : p.compras).map(function (c, i) {
-              return (<div key={i} style={{ display: 'flex', justifyContent: 'space-between', gap: 16, padding: '14px 0', borderBottom: '1px solid var(--line)', fontSize: 15 }}>
-                <span style={{ minWidth: 0 }}>{c.concepto}</span>
-                <b style={{ color: 'var(--blue)', fontVariantNumeric: 'tabular-nums', whiteSpace: 'nowrap' }}>≈ US$ {prFmt(c.monto, lang)}</b>
-              </div>);
-            })}
-            <div style={{ display: 'flex', justifyContent: 'space-between', gap: 16, padding: '16px 0', fontSize: 16 }}>
-              <b>{u.total}</b><b style={{ color: 'var(--blue)', fontVariantNumeric: 'tabular-nums' }}>≈ US$ {prFmt(p.gastado, lang)}</b>
+      {/* lo invertido: resumen y enlace al detalle en Transparencia (la lista completa vive allá) */}
+      {inv ? (
+        <section id="compras" style={{ ...PR.wrap, padding: '12px 24px clamp(40px,6vw,56px)' }}>
+          <div style={{ background: 'var(--steel-1)', borderRadius: 22, padding: 'clamp(22px,4vw,30px)', display: 'flex', flexWrap: 'wrap', gap: '18px 32px', alignItems: 'center', justifyContent: 'space-between' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 6, minWidth: 0 }}>
+              <h2 style={PR.h2}>{u.comprasTit}</h2>
+              <span style={{ fontSize: 16, color: 'var(--muted)' }}><b style={{ color: 'var(--ink)', fontVariantNumeric: 'tabular-nums' }}>US$ {prFmt(inv, lang)}</b>{p.compras.length ? ' · ' + prFmt(p.compras.length, lang) + ' ' + u.compras : ''} · {u.conFacturaCorto}</span>
             </div>
+            <a href="#transparencia" onClick={function (e) { e.preventDefault(); window.nexosVerCuentas(p.id); }} style={{ ...PR.ghost, background: '#fff', borderColor: 'var(--ink)', color: 'var(--ink)', textDecoration: 'none' }}>{u.verDetalle}</a>
           </div>
-          {window.NEXOS_FIXTURE && window.NEXOS_FIXTURE.enlaceFacturas
-            ? <a href={window.NEXOS_FIXTURE.enlaceFacturas} target="_blank" rel="noopener" style={{ fontSize: 14, fontWeight: 700 }}>{u.verFacturas}</a> : null}
         </section>) : null}
 
     </div>
@@ -551,4 +544,10 @@ window.ProyectosPagina = ProyectosPagina;
 window.ZonaCerradaCard = ZonaCerradaCard;
 window.prCat = prCat;
 window.prFmt = prFmt;
+/* Lleva a Transparencia con el proyecto abierto. */
+window.nexosVerCuentas = function (id) {
+  window.__nxAbrir = id;
+  location.hash = 'transparencia';
+  setTimeout(function () { const el = document.getElementById('cuentas-' + id); if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' }); window.__nxAbrir = null; }, 450);
+};
 window.ProyectoPage = ProyectoPage;
