@@ -397,7 +397,7 @@ function EditorialLandingExport() {
     return (<section id={id} style={{ background: tinted ? 'var(--steel-1)' : '#fff', padding:'clamp(48px,7vw,60px) 0' }}>
       <div style={A.wrap}>
         <h2 style={{ fontFamily:'var(--font-display)', fontSize:28, fontWeight:700, margin:0, color:'var(--ink)' }}>{P.buscarTit}</h2>
-        <p style={{ fontSize:15, color:'var(--muted)', margin:'6px 0 18px' }}>{P.buscarSub} {lead}</p>
+        <p style={{ fontSize:15, color:'var(--muted)', margin:'6px 0 18px' }}>{P.buscarSub}</p>
         <div style={{ display:'flex', flexWrap:'wrap', gap:10, marginBottom:14 }}>
           <SearchInput placeholder={u.buscar} value={q} onChange={function(e){ setQ(e.target.value); }} />
           <FilterSelect placeholder={u.todosMetodos} options={x.metodos} value={met} onChange={function(e){ setMet(e.target.value); }} />
