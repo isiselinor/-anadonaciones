@@ -22,7 +22,7 @@
     estado: 'En curso', estado_en: 'In progress',
     ubicacion: 'Caracas', fecha: 'Septiembre 2026', fecha_en: 'September 2026', categoria: 'Volver a Sonar', meta: 25000, gastado: 2779, actualizado: '',
     etapa_actual: '2, 3', // etapas en curso: se cambian aquí cuando el proyecto avanza
-    foto: VS + 'arpa-luthier.jpg',
+    foto: VS + 'portada-ensayo.jpg',
     historia: 'La sede de la orquesta ocupa un piso alto de la Torre Polar, en Plaza Venezuela. La víspera del sismo dejaron todo listo para ensayar. Cuando la tierra se movió, los contrabajos y la percusión fueron los primeros en caer.',
     historia_en: 'The orchestra is based on a high floor of Torre Polar, in Plaza Venezuela. The day before the earthquake they left everything ready to rehearse. When the ground shook, the double basses and the percussion were the first to fall.',
     destacado: 'Este proyecto atiende lo urgente: reparar lo dañado y equipar a cada músico para que pueda seguir trabajando.',
@@ -62,6 +62,11 @@
       { tipo: 'foto', grupo: 'Los daños', grupo_en: 'The damage', titulo: 'Instrumento de cuerda: borde golpeado', titulo_en: 'String instrument: damaged edge', imagen: VS + 'cuerda-borde.jpg' },
       { tipo: 'foto', grupo: 'Resultados', grupo_en: 'Results', titulo: 'Arpa en reparación con el luthier', titulo_en: 'Harp being repaired by the luthier', imagen: VS + 'arpa-luthier.jpg' },
       { tipo: 'foto', grupo: 'Resultados', grupo_en: 'Results', titulo: 'Reparación de la caja del arpa', titulo_en: 'Repairing the harp’s soundbox', imagen: VS + 'arpa-caja.jpg' },
+      { tipo: 'foto', grupo: 'Ensayos', grupo_en: 'Rehearsals', titulo: 'La orquesta vuelve a ensayar', titulo_en: 'The orchestra rehearses again', imagen: VS + 'ensayo-directora.jpg' },
+      { tipo: 'foto', grupo: 'Ensayos', grupo_en: 'Rehearsals', titulo: 'Violines y metales en el ensayo', titulo_en: 'Violins and brass in rehearsal', imagen: VS + 'ensayo-violin.jpg' },
+      { tipo: 'foto', grupo: 'Ensayos', grupo_en: 'Rehearsals', titulo: 'Cuerdas y voces', titulo_en: 'Strings and voices', imagen: VS + 'ensayo-cuerdas-coro.jpg' },
+      { tipo: 'foto', grupo: 'Ensayos', grupo_en: 'Rehearsals', titulo: 'La fila de violines', titulo_en: 'The violin section', imagen: VS + 'ensayo-violines.jpg' },
+      { tipo: 'foto', grupo: 'Ensayos', grupo_en: 'Rehearsals', titulo: 'El arpa de la orquesta', titulo_en: 'The orchestra’s harp', imagen: VS + 'arpa-detalle.jpg' },
 
       { tipo: 'gasto', titulo: 'Instrumentos dañados y reparaciones', titulo_en: 'Damaged instruments and repairs', monto: 5829,
         texto: 'Cuatro contrabajos, un arpa y la puesta a punto de la percusión.', texto_en: 'Four double basses, a harp and a tune-up of the percussion.' },
