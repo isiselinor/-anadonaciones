@@ -241,13 +241,32 @@ function ProyectoPage({ id, lang, onClose, onDonate }) {
   const u = PR_UI[L];
   const scroller = React.useRef(null);
   const [fase, setFase] = React.useState(null);
-  const [gtab, setGtab] = React.useState(0);
   const [lb, setLb] = React.useState(null);
   const [kit, setKit] = React.useState(0);
+  // Carrusel de fotos en bucle: avanza solo cada 5 s y se pausa al pasar el mouse, al tocar o con el foco.
+  const carrusel = React.useRef(null);
+  const [pausaF, setPausaF] = React.useState(false);
+  const reanudarF = React.useRef(null);
+  function moverF(dir) {
+    const el = carrusel.current; if (!el) return;
+    const max = el.scrollWidth - el.clientWidth - 4;
+    if (dir > 0 && el.scrollLeft >= max) el.scrollTo({ left: 0, behavior: 'smooth' });
+    else if (dir < 0 && el.scrollLeft <= 4) el.scrollTo({ left: el.scrollWidth, behavior: 'smooth' });
+    else el.scrollBy({ left: dir * Math.round(el.clientWidth * .7), behavior: 'smooth' });
+  }
+  React.useEffect(function () {
+    if (pausaF || lb !== null) return;
+    try { if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return; } catch (e) {}
+    const t = setInterval(function () { moverF(1); }, 5000);
+    return function () { clearInterval(t); };
+  }, [pausaF, lb, id]);
+  React.useEffect(function () { return function () { clearTimeout(reanudarF.current); }; }, []);
+  function pausarF() { clearTimeout(reanudarF.current); setPausaF(true); }
+  function soltarF(ms) { clearTimeout(reanudarF.current); reanudarF.current = setTimeout(function () { setPausaF(false); }, ms || 0); }
 
   React.useEffect(function () {
     if (!id) return;
-    setFase(null); setGtab(0); setLb(null); setKit(0);
+    setFase(null); setLb(null); if (carrusel.current) carrusel.current.scrollLeft = 0; setKit(0);
     function k(e) { if (e.key === 'Escape') { if (lb !== null) setLb(null); else onClose(); } }
     document.addEventListener('keydown', k);
     window.scrollTo(0, 0);
@@ -282,10 +301,7 @@ function ProyectoPage({ id, lang, onClose, onDonate }) {
   });
 
   // Galería
-  const grupos = [];
-  p.fotos.forEach(function (f) { if (grupos.indexOf(f.grupo) === -1) grupos.push(f.grupo); });
-  const gi = Math.min(gtab, Math.max(grupos.length - 1, 0));
-  const fotosTab = p.fotos.filter(function (f) { return f.grupo === grupos[gi]; });
+  const fotosTab = p.fotos; // todas las fotos juntas, sin etiquetas de grupo
 
   const irABuscador = function (e) {
     e.preventDefault();
@@ -393,17 +409,15 @@ function ProyectoPage({ id, lang, onClose, onDonate }) {
         <section style={{ ...PR.wrap, padding: '12px 24px clamp(40px,6vw,56px)', display: 'flex', flexDirection: 'column', gap: 20 }}>
           <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'flex-end', gap: '14px 24px' }}>
             <div><h2 style={PR.h2}>{cerrado ? u.fotosTitZ : u.fotosTit}</h2><p style={PR.sub}>{cerrado ? u.fotosSubZ : u.fotosSub}</p></div>
-            {grupos.length > 1 ? <div role="tablist" style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
-              {grupos.map(function (g, i) {
-                const n = p.fotos.filter(function (f) { return f.grupo === g; }).length;
-                return <button key={g} role="tab" aria-selected={i === gi} onClick={function () { setGtab(i); setLb(null); }} style={PR.pill(i === gi)}>{g} · {n}</button>;
-              })}
+            {fotosTab.length > 1 ? <div style={{ display: 'flex', gap: 8 }}>
+              <button onClick={function () { moverF(-1); }} aria-label={u.anterior} className="strip-nav">←</button>
+              <button onClick={function () { moverF(1); }} aria-label={u.siguiente} className="strip-nav">→</button>
             </div> : null}
           </div>
           {fotosTab.length ? (
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(240px,1fr))', gap: 12 }}>
+            <div ref={carrusel} className="strip" onMouseEnter={pausarF} onMouseLeave={function () { soltarF(0); }} onFocus={pausarF} onBlur={function () { soltarF(0); }} onTouchStart={function () { pausarF(); soltarF(8000); }}>
               {fotosTab.map(function (f, i) {
-                return (<button key={f.src} onClick={function () { setLb(i); }} className="zoomable" aria-label={f.pie}
+                return (<button key={f.src} onClick={function () { setLb(i); }} className="zoomable strip-item" aria-label={f.pie}
                   style={{ border: 0, padding: 0, background: 'none', cursor: 'zoom-in', textAlign: 'left', fontFamily: 'inherit', color: 'var(--ink)', display: 'flex', flexDirection: 'column', gap: 8 }}>
                   <img src={f.src} alt={f.pie} loading="lazy" style={{ width: '100%', aspectRatio: '4/3', objectFit: 'cover', borderRadius: 16, display: 'block' }} />
                   <span style={{ fontSize: 14, lineHeight: 1.4 }}>{f.pie}</span>
