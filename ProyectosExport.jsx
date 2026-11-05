@@ -226,7 +226,7 @@ function ProyectosPagina({ lang, onOpen, onDonate }) {
         </ol>
       </section>
 
-      <section style={{ background: 'var(--warm)' }}>
+      <section style={{ background: 'var(--warm)', borderTop: '1px solid var(--line)' }}>
         <div style={{ ...PR.wrap, padding: 'clamp(40px,6vw,52px) 24px', display: 'flex', flexWrap: 'wrap', gap: 24, alignItems: 'center', justifyContent: 'space-between' }}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 8, maxWidth: 660 }}><h2 style={{ ...PR.h2, fontSize: 30 }}>{u.sumateTit}</h2><p style={{ margin: 0, fontSize: 16, lineHeight: 1.6, color: 'var(--muted)' }}>{u.sumateTxt}</p></div>
           <button onClick={onDonate} style={{ ...PR.coral, minHeight: 54, padding: '0 34px', fontSize: 16, border: 0, cursor: 'pointer' }}>{u.donar}</button>
@@ -507,7 +507,7 @@ function ProyectoPage({ id, lang, onClose, onDonate }) {
 
       {/* cómo aportar */}
       {p.aportes.length ? (
-        <section style={{ background: 'var(--peach)' }}>
+        <section style={{ background: 'var(--peach)', borderTop: '1px solid var(--line)' }}>
           <div style={{ ...PR.wrap, padding: 'clamp(40px,6vw,52px) 24px', display: 'flex', flexDirection: 'column', gap: 22 }}>
             <h2 style={PR.h2}>{u.aportarTit}</h2>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(260px,1fr))', gap: 16 }}>
@@ -592,7 +592,7 @@ function ProyectoPage({ id, lang, onClose, onDonate }) {
                 })}
               </div>
             </section>) : null}
-          <section style={{ background: 'var(--warm)' }}>
+          <section style={{ background: 'var(--warm)', borderTop: '1px solid var(--line)' }}>
             <div style={{ ...PR.wrap, padding: 'clamp(40px,6vw,52px) 24px', display: 'flex', flexWrap: 'wrap', gap: 24, alignItems: 'center', justifyContent: 'space-between' }}>
               <div style={{ display: 'flex', flexDirection: 'column', gap: 8, maxWidth: 660 }}><h2 style={{ ...PR.h2, fontSize: 30 }}>{u.graciasTit}</h2><p style={{ margin: 0, fontSize: 16, lineHeight: 1.6, color: 'var(--muted)' }}>{u.graciasTxt}</p></div>
               <button onClick={onDonate} style={{ ...PR.coral, minHeight: 54, padding: '0 34px', fontSize: 16, border: 0, cursor: 'pointer' }}>{u.donar}</button>

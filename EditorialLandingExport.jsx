@@ -3,7 +3,7 @@ const { Button, Card, Notice, StatCard, CurrencyCard, DonationsTable, ExpenseCat
         SearchInput, FilterSelect, DonateModal, PaymentMethod, DriveLinkButton, StepCard, CopyButton } = NS;
 
 const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
-  "palette": ["#E0680E", "#11354C", "#11354C", "#FDF1DE"],
+  "palette": ["#E0680E", "#11354C", "#11354C", "#FFFFFF"],
   "portada": "Sobrio",
   "subventana": "Página",
   "overlay": "Navy",
@@ -429,7 +429,7 @@ function EditorialLandingExport() {
   }
 
   function cierre(titulo, texto) {
-    return (<section style={{ background:'var(--warm)' }}>
+    return (<section style={{ background:'var(--warm)', borderTop:'1px solid var(--line)' }}>
       <div style={{ ...A.wrap, padding:'clamp(40px,6vw,56px) 24px', display:'flex', flexWrap:'wrap', gap:24, alignItems:'center', justifyContent:'space-between' }}>
         <div style={{ display:'flex', flexDirection:'column', gap:8, maxWidth:660 }}>
           <h2 style={{ ...A.h2, fontSize:'clamp(24px,3vw,32px)', margin:0 }}>{titulo}</h2>
@@ -641,7 +641,7 @@ function EditorialLandingExport() {
       <window.TweaksPanel>
         <window.TweakSection label="Paleta" />
         <window.TweakColor label="Colores de marca" value={pal}
-          options={[["#E0680E","#11354C","#11354C","#FDF1DE"],
+          options={[["#E0680E","#11354C","#11354C","#FFFFFF"],
                     ["#E0680E","#11354C","#141c33","#fde7e0"],
                     ["#d2542f","#23407f","#211a16","#f4e4d6"],
                     ["#E0680E","#12306b","#0e1a33","#e8eef9"],

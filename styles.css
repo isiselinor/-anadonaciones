@@ -13,7 +13,7 @@
 --accent:#E0680E;
 --blue:#11354C;
 --blue-lt:#87A5B7;
---peach:#FDF1DE;
+--peach:#FFFFFF;
 --amber:#F4B044;
 --accent-text:#B8530A; /* naranja oscuro para textos chicos: contraste AA sobre blanco */
 --line:#E4E9ED;
@@ -22,7 +22,7 @@
 --steel-1:#E3EAEF; /* fondo tenue azul grisáceo: secciones alternas y cifras */
 --steel-2:#C9D6DF;
 --line-strong:#D5DFE6;
---warm:#FDF1DE;    /* calidez: una vez por página, el cierre que invita a donar */
+--warm:#FFFFFF;    /* cierre que invita a donar: blanco, la crema salió de la paleta */
 --on-ink-soft:#DCE5EB; /* texto secundario sobre azul noche */
 --white:#ffffff;
 --soft:#F7F9FA;
