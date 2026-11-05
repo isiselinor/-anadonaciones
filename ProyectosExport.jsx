@@ -330,7 +330,7 @@ function ProyectoPage({ id, lang, onClose, onDonate }) {
           </div>
           {cerrado && p.foto ? <img src={p.foto} alt="" style={{ flex: '1 1 360px', minWidth: 0, maxWidth: '100%', aspectRatio: '4/3', objectFit: 'cover', borderRadius: 22 }} />
           : (pres || inv) ? (
-            <div style={{ flex: '1 1 320px', minWidth: 0, background: '#fff', color: 'var(--ink)', borderRadius: 22, padding: 24, display: 'flex', flexDirection: 'column', gap: 14, boxShadow: '0 10px 30px rgba(17,37,50,.08)' }}>
+            <div style={{ flex: '1 1 320px', minWidth: 0, background: '#fff', color: 'var(--ink)', borderRadius: 22, padding: 24, display: 'flex', flexDirection: 'column', gap: 14, boxShadow: '0 10px 30px rgba(17,53,76,.08)' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', gap: 10, alignItems: 'center', flexWrap: 'wrap' }}>
                 {p.estado ? <span style={{ ...PR.chip, ...PR_TAG[p.tipo] }}>{p.estado}</span> : <span></span>}
                 {p.actualizado ? <span style={{ fontSize: 12, color: 'var(--muted)' }}>{u.actualizado} {p.actualizado}</span> : null}
@@ -430,7 +430,7 @@ function ProyectoPage({ id, lang, onClose, onDonate }) {
             </div>)}
           {lb !== null && fotosTab[lb] ? (
             <div className="lb-root" role="dialog" aria-modal="true" onClick={function (e) { if (e.target === e.currentTarget) setLb(null); }}
-              style={{ position: 'fixed', inset: 0, zIndex: 60, background: 'rgba(17,37,50,.9)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 14, padding: 24 }}>
+              style={{ position: 'fixed', inset: 0, zIndex: 60, background: 'rgba(17,53,76,.9)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 14, padding: 24 }}>
               <img className="lb-img" src={fotosTab[lb].src} alt={fotosTab[lb].pie} style={{ maxWidth: '100%', maxHeight: '74vh', objectFit: 'contain', borderRadius: 12 }} />
               <span style={{ color: '#fff', fontSize: 15, textAlign: 'center' }}>{fotosTab[lb].pie} · {lb + 1} / {fotosTab.length}</span>
               <div style={{ display: 'flex', gap: 10 }}>

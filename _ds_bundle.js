@@ -1537,7 +1537,7 @@ const {
   CopyButton
 } = NS;
 const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
-  "palette": ["#E0680E", "#112532", "#112532", "#FDF1DE"],
+  "palette": ["#E0680E", "#11354C", "#11354C", "#FDF1DE"],
   "portada": "Sobrio",
   "subventana": "Página",
   "overlay": "Navy",
@@ -1715,7 +1715,7 @@ function NavBar({
     style: {
       background: '#fff',
       borderTop: '1px solid var(--line)',
-      boxShadow: '0 20px 40px rgba(17,37,50,.12)'
+      boxShadow: '0 20px 40px rgba(17,53,76,.12)'
     }
   }, /*#__PURE__*/React.createElement("div", {
     style: {
@@ -2926,7 +2926,7 @@ function EditorialLanding() {
   }), /*#__PURE__*/React.createElement(window.TweakColor, {
     label: "Colores de marca",
     value: pal,
-    options: [["#E0680E", "#112532", "#112532", "#FDF1DE"], ["#E0680E", "#112532", "#141c33", "#fde7e0"], ["#d2542f", "#23407f", "#211a16", "#f4e4d6"], ["#E0680E", "#12306b", "#0e1a33", "#e8eef9"], ["#f04e28", "#0b2a6b", "#101014", "#ffede6"]],
+    options: [["#E0680E", "#11354C", "#11354C", "#FDF1DE"], ["#E0680E", "#11354C", "#141c33", "#fde7e0"], ["#d2542f", "#23407f", "#211a16", "#f4e4d6"], ["#E0680E", "#12306b", "#0e1a33", "#e8eef9"], ["#f04e28", "#0b2a6b", "#101014", "#ffede6"]],
     onChange: function (v) {
       setTweak('palette', v);
     }
@@ -3224,7 +3224,7 @@ function Hero({
       fontSize: 17,
       fontWeight: 800,
       cursor: 'pointer',
-      boxShadow: '0 14px 30px rgba(17,37,50,.24)'
+      boxShadow: '0 14px 30px rgba(17,53,76,.24)'
     }
   }, "\uD83D\uDC99 Donar ahora"), /*#__PURE__*/React.createElement("button", {
     onClick: function () {
@@ -4134,7 +4134,7 @@ function SectionPage({
     style: {
       position: 'absolute',
       inset: 0,
-      background: 'linear-gradient(180deg, rgba(17,37,50,.28), rgba(17,37,50,.82))'
+      background: 'linear-gradient(180deg, rgba(17,53,76,.28), rgba(17,53,76,.82))'
     }
   }), /*#__PURE__*/React.createElement("div", {
     style: {
@@ -4490,7 +4490,7 @@ function SectionWindow({
       position: 'fixed',
       inset: 0,
       zIndex: 50,
-      background: 'rgba(17,37,50,.55)',
+      background: 'rgba(17,53,76,.55)',
       backdropFilter: 'blur(10px) saturate(140%)',
       WebkitBackdropFilter: 'blur(10px) saturate(140%)',
       display: 'flex',
@@ -4509,7 +4509,7 @@ function SectionWindow({
       background: '#fff',
       borderRadius: 24,
       overflow: 'hidden',
-      boxShadow: '0 40px 100px rgba(17,37,50,.42)'
+      boxShadow: '0 40px 100px rgba(17,53,76,.42)'
     }
   }, /*#__PURE__*/React.createElement("div", {
     style: {
@@ -5430,7 +5430,7 @@ const {
   CopyButton
 } = NS;
 const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
-  "palette": ["#E0680E", "#112532", "#112532", "#FDF1DE"],
+  "palette": ["#E0680E", "#11354C", "#11354C", "#FDF1DE"],
   "portada": "Sobrio",
   "subventana": "Página",
   "overlay": "Navy",
@@ -5608,7 +5608,7 @@ function NavBar({
     style: {
       background: '#fff',
       borderTop: '1px solid var(--line)',
-      boxShadow: '0 20px 40px rgba(17,37,50,.12)'
+      boxShadow: '0 20px 40px rgba(17,53,76,.12)'
     }
   }, /*#__PURE__*/React.createElement("div", {
     style: {
@@ -6819,7 +6819,7 @@ function EditorialLandingExport() {
   }), /*#__PURE__*/React.createElement(window.TweakColor, {
     label: "Colores de marca",
     value: pal,
-    options: [["#E0680E", "#112532", "#112532", "#FDF1DE"], ["#E0680E", "#112532", "#141c33", "#fde7e0"], ["#d2542f", "#23407f", "#211a16", "#f4e4d6"], ["#E0680E", "#12306b", "#0e1a33", "#e8eef9"], ["#f04e28", "#0b2a6b", "#101014", "#ffede6"]],
+    options: [["#E0680E", "#11354C", "#11354C", "#FDF1DE"], ["#E0680E", "#11354C", "#141c33", "#fde7e0"], ["#d2542f", "#23407f", "#211a16", "#f4e4d6"], ["#E0680E", "#12306b", "#0e1a33", "#e8eef9"], ["#f04e28", "#0b2a6b", "#101014", "#ffede6"]],
     onChange: function (v) {
       setTweak('palette', v);
     }
@@ -7095,7 +7095,7 @@ function SectionPageExport({
     style: {
       position: 'absolute',
       inset: 0,
-      background: 'linear-gradient(180deg, rgba(17,37,50,.28), rgba(17,37,50,.82))'
+      background: 'linear-gradient(180deg, rgba(17,53,76,.28), rgba(17,53,76,.82))'
     }
   }), /*#__PURE__*/React.createElement("div", {
     style: {
@@ -7451,7 +7451,7 @@ function SectionWindowExport({
       position: 'fixed',
       inset: 0,
       zIndex: 50,
-      background: 'rgba(17,37,50,.55)',
+      background: 'rgba(17,53,76,.55)',
       backdropFilter: 'blur(10px) saturate(140%)',
       WebkitBackdropFilter: 'blur(10px) saturate(140%)',
       display: 'flex',
@@ -7470,7 +7470,7 @@ function SectionWindowExport({
       background: '#fff',
       borderRadius: 24,
       overflow: 'hidden',
-      boxShadow: '0 40px 100px rgba(17,37,50,.42)'
+      boxShadow: '0 40px 100px rgba(17,53,76,.42)'
     }
   }, /*#__PURE__*/React.createElement("div", {
     style: {

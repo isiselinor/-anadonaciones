@@ -3,7 +3,7 @@ const { Button, Card, Notice, StatCard, CurrencyCard, DonationsTable, ExpenseCat
         SearchInput, FilterSelect, DonateModal, PaymentMethod, DriveLinkButton, StepCard, CopyButton } = NS;
 
 const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
-  "palette": ["#E0680E", "#112532", "#112532", "#FDF1DE"],
+  "palette": ["#E0680E", "#11354C", "#11354C", "#FDF1DE"],
   "portada": "Sobrio",
   "subventana": "Página",
   "overlay": "Navy",
@@ -48,7 +48,7 @@ function NavBar({ onOpen, onDonate, lang, setLang, forceSolid }) {
         <Button variant="primarySmall" onClick={onDonate} style={{ fontSize:13.5, padding:'11px 20px' }}>{u.donar}</Button>
       </div>
       {menu ? (
-        <div style={{ background:'#fff', borderTop:'1px solid var(--line)', boxShadow:'0 20px 40px rgba(17,37,50,.12)' }}>
+        <div style={{ background:'#fff', borderTop:'1px solid var(--line)', boxShadow:'0 20px 40px rgba(17,53,76,.12)' }}>
           <div style={{ ...A.wrap, display:'grid', padding:'8px 24px 16px' }}>
             {d.nav.map(function(n){
               const isWin = ['quienes','aliados','faq'].indexOf(n.id) > -1;
@@ -200,7 +200,7 @@ function PhotoStrip({ onZoom, lang }) {
               style={{ display:'block', width:'100%', height:300, padding:0, border:'none', borderRadius:'var(--radius-lg)', overflow:'hidden', cursor:'zoom-in', background:'none' }}>
               <img src={p.src} alt="" style={{ width:'100%', height:'100%', objectFit:'cover', display:'block' }} />
             </button>
-            <figcaption style={{ position:'absolute', left:10, bottom:10, fontSize:11, color:'#fff', background:'rgba(17,37,50,.55)', padding:'4px 9px', borderRadius:999 }}>{p.credito}</figcaption>
+            <figcaption style={{ position:'absolute', left:10, bottom:10, fontSize:11, color:'#fff', background:'rgba(17,53,76,.55)', padding:'4px 9px', borderRadius:999 }}>{p.credito}</figcaption>
           </figure>);
         })}
       </div>
@@ -297,7 +297,7 @@ function EditorialLandingExport() {
     r.setProperty('--peach', pal[3]);
     r.setProperty('--nexos-coral', pal[0]);
     r.setProperty('--nexos-blue', pal[1]);
-    r.setProperty('--blue-lt', '#88A5B7');
+    r.setProperty('--blue-lt', '#87A5B7');
     r.setProperty('--amber', '#F4B044');
     r.setProperty('--muted', '#4E606D');
     r.setProperty('--line', 'color-mix(in oklab, ' + pal[2] + ' 8%, white)');
@@ -647,8 +647,8 @@ function EditorialLandingExport() {
       <window.TweaksPanel>
         <window.TweakSection label="Paleta" />
         <window.TweakColor label="Colores de marca" value={pal}
-          options={[["#E0680E","#112532","#112532","#FDF1DE"],
-                    ["#E0680E","#112532","#141c33","#fde7e0"],
+          options={[["#E0680E","#11354C","#11354C","#FDF1DE"],
+                    ["#E0680E","#11354C","#141c33","#fde7e0"],
                     ["#d2542f","#23407f","#211a16","#f4e4d6"],
                     ["#E0680E","#12306b","#0e1a33","#e8eef9"],
                     ["#f04e28","#0b2a6b","#101014","#ffede6"]]}

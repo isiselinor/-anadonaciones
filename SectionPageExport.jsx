@@ -37,7 +37,7 @@ function SectionPageExport({ id, onClose, onOpen, onDonate, lang }) {
       {v.foto ? (
         <div style={{ position:'relative', height:'clamp(240px,38vh,380px)' }}>
           <img src={v.foto} alt="" style={{ position:'absolute', inset:0, width:'100%', height:'100%', objectFit:'cover' }} />
-          <div style={{ position:'absolute', inset:0, background:'linear-gradient(180deg, rgba(17,37,50,.28), rgba(17,37,50,.82))' }}></div>
+          <div style={{ position:'absolute', inset:0, background:'linear-gradient(180deg, rgba(17,53,76,.28), rgba(17,53,76,.82))' }}></div>
           <div style={{ position:'absolute', left:0, right:0, bottom:0, padding:'0 0 28px' }}>
             <div style={col}>
               <div style={{ fontSize:11, fontWeight:800, letterSpacing:1.6, textTransform:'uppercase', color:'#F4B044' }}>{v.eyebrow}</div>

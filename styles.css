@@ -6,18 +6,18 @@
 :root{
 /* ---- Brand core (sampled from the official NEXOS logo) ---- */
 --nexos-coral:#E0680E;
---nexos-blue:#112532;
+--nexos-blue:#11354C;
 --nexos-white:#ffffff;
 
 /* ---- Product palette (exact values shipped in the donations site) ---- */
 --accent:#E0680E;
---blue:#112532;
---blue-lt:#88A5B7;
+--blue:#11354C;
+--blue-lt:#87A5B7;
 --peach:#FDF1DE;
 --amber:#F4B044;
 --accent-text:#B8530A; /* naranja oscuro para textos chicos: contraste AA sobre blanco */
 --line:#E4E9ED;
---ink:#112532;
+--ink:#11354C;
 --muted:#4E606D;
 --steel-1:#E3EAEF; /* fondo tenue azul grisáceo: secciones alternas y cifras */
 --steel-2:#C9D6DF;
@@ -28,10 +28,10 @@
 --soft:#F7F9FA;
 
 /* ---- Alphas ---- */
---overlay-scrim:rgba(17,37,50,.5);
+--overlay-scrim:rgba(17,53,76,.5);
 --row-hover:rgba(224,104,14,.06);
 --accent-glow-10:rgba(224,104,14,.10);
---blue-glow-08:rgba(17,37,50,.08);
+--blue-glow-08:rgba(17,53,76,.08);
 --ig-hover:#EEF2F5;
 
 /* ---- Semantic aliases ---- */
@@ -144,10 +144,10 @@
 }
 
 :root{
---shadow-card:0 10px 30px rgba(17,37,50,.07);
+--shadow-card:0 10px 30px rgba(17,53,76,.07);
 --shadow-cta:0 14px 30px rgba(224,104,14,.32);
 --shadow-float:0 12px 28px rgba(224,104,14,.42);
---shadow-modal:0 24px 60px rgba(17,37,50,.22);
+--shadow-modal:0 24px 60px rgba(17,53,76,.22);
 --border-card:1px solid var(--line);
 --border-stat-top:3px;
 --border-outline-strong:1.5px;
@@ -164,7 +164,7 @@
 }
 
 :root{
---bg-page:radial-gradient(1200px 700px at 100% 0%, rgba(224,104,14,.16), transparent 62%),radial-gradient(1300px 800px at 0% 10%, rgba(17,37,50,.20), transparent 60%),radial-gradient(1000px 600px at 50% 90%, rgba(17,37,50,.10), transparent 65%),var(--white);
+--bg-page:radial-gradient(1200px 700px at 100% 0%, rgba(224,104,14,.16), transparent 62%),radial-gradient(1300px 800px at 0% 10%, rgba(17,53,76,.20), transparent 60%),radial-gradient(1000px 600px at 50% 90%, rgba(17,53,76,.10), transparent 65%),var(--white);
 --bg-page-attachment:fixed;
 }
 
