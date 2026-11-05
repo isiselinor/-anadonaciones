@@ -23,8 +23,8 @@ function SectionWindowExport({ id, onClose, onOpen, onDonate, variant, lang }) {
 
   return (
     <div className="sw-scrim" onClick={function(e){ if (e.target === e.currentTarget) onClose(); }}
-      style={{ position:'fixed', inset:0, zIndex:50, background:'rgba(28,35,64,.55)', backdropFilter:'blur(10px) saturate(140%)', WebkitBackdropFilter:'blur(10px) saturate(140%)', display:'flex', alignItems:'flex-start', justifyContent:'center', padding:'clamp(10px,2.5vh,30px) 16px', overflow:'auto' }}>
-      <div className="sw-panel" style={{ width:'min(1240px,100%)', minHeight:'min(880px, 92vh)', display:'flex', flexDirection:'column', background:'#fff', borderRadius:24, overflow:'hidden', boxShadow:'0 40px 100px rgba(28,35,64,.42)' }}>
+      style={{ position:'fixed', inset:0, zIndex:50, background:'rgba(17,37,50,.55)', backdropFilter:'blur(10px) saturate(140%)', WebkitBackdropFilter:'blur(10px) saturate(140%)', display:'flex', alignItems:'flex-start', justifyContent:'center', padding:'clamp(10px,2.5vh,30px) 16px', overflow:'auto' }}>
+      <div className="sw-panel" style={{ width:'min(1240px,100%)', minHeight:'min(880px, 92vh)', display:'flex', flexDirection:'column', background:'#fff', borderRadius:24, overflow:'hidden', boxShadow:'0 40px 100px rgba(17,37,50,.42)' }}>
         <div style={{ background:headBg, color:'#fff', padding:'30px 40px', display:'flex', justifyContent:'space-between', alignItems:'flex-start', gap:16 }}>
           <div>
             <div style={{ fontSize:11, fontWeight:800, letterSpacing:1.6, textTransform:'uppercase', color: dark ? 'rgba(255,255,255,.8)' : 'var(--blue-lt)' }}>{v.eyebrow}</div>
@@ -93,7 +93,7 @@ function SectionWindowExport({ id, onClose, onOpen, onDonate, variant, lang }) {
             </div>
 
             <div style={{ marginTop:'auto', display:'grid', gap:10 }}>
-              <div style={{ background:'var(--peach)', border:'1px solid var(--accent)', borderRadius:10, padding:'9px 11px', fontSize:11.5, lineHeight:1.5 }}>⚠️ En el asunto <b style={{ color:'var(--accent)' }}>no menciones Venezuela</b> ni la causa.</div>
+              <div style={{ background:'var(--peach)', border:'1px solid var(--accent)', borderRadius:10, padding:'9px 11px', fontSize:11.5, lineHeight:1.5 }}>En el asunto: <b style={{ color:'var(--accent-text)' }}>tu nombre o un “gracias”</b> 💙</div>
               <button onClick={function(){ onClose(); if (onDonate) onDonate(); }} style={{ background:'var(--accent)', color:'#fff', border:'none', borderRadius:999, padding:'14px', fontSize:15, fontWeight:800, cursor:'pointer', boxShadow:'var(--shadow-cta)' }}>💙 Donar ahora</button>
             </div>
 
