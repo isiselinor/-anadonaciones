@@ -1,0 +1,13 @@
+# NEXOS: que el navegador siempre pregunte si hay una versión nueva del sitio
+# (así los cambios se ven al recargar, sin borrar la caché).
+<IfModule mod_headers.c>
+  <FilesMatch "\.(html|js|jsx|css|json)$">
+    Header set Cache-Control "no-cache, must-revalidate"
+  </FilesMatch>
+</IfModule>
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType text/html "access plus 0 seconds"
+  ExpiresByType application/javascript "access plus 0 seconds"
+  ExpiresByType text/css "access plus 0 seconds"
+</IfModule>
