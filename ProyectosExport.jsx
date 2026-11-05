@@ -213,10 +213,10 @@ function ProyectosPagina({ lang, onOpen, onDonate }) {
 
       <section style={{ ...PR.wrap, padding: '32px 24px clamp(56px,8vw,72px)', display: 'flex', flexDirection: 'column', gap: 26 }}>
         <h2 style={{ ...PR.h2, fontSize: 28 }}>{u.recorridoTit}</h2>
-        <ol style={{ listStyle: 'none', margin: 0, padding: 0, display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(220px,1fr))', borderTop: '3px solid var(--line-strong)' }}>
+        <ol style={{ listStyle: 'none', margin: 0, padding: 0, display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(220px,1fr))', rowGap: 28 }}>
           {hitos.concat([null]).map(function (p, i) {
             const color = !p ? null : p.tipo === 'cerrado' ? 'var(--ink)' : p.tipo === 'curso' ? 'var(--accent)' : 'var(--amber)';
-            return (<li key={p ? p.id : 'next'} style={{ padding: '20px 16px 0 0', display: 'flex', flexDirection: 'column', gap: 6, position: 'relative' }}>
+            return (<li key={p ? p.id : 'next'} style={{ padding: '20px 16px 0 0', display: 'flex', flexDirection: 'column', gap: 6, position: 'relative', borderTop: '3px solid var(--line-strong)' }}>
               <span style={{ position: 'absolute', top: -10, left: 0, width: 16, height: 16, borderRadius: '50%', boxSizing: 'border-box', background: color || '#fff', border: color ? 0 : '3px dashed var(--blue-lt)' }}></span>
               <span style={{ fontSize: 13, fontWeight: 700, color: 'var(--muted)' }}>{p ? (p.fecha || p.estado) : u.loQueViene}</span>
               <b style={{ fontSize: 17 }}>{p ? p.nombre : u.proximoProy}</b>
