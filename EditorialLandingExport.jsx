@@ -151,6 +151,15 @@ function HeroMinimal({ onDonate, onOpen, lang }) {
   );
 }
 
+// Aliados de la página Nosotros. Para sumar un logo: guardar el archivo en el sitio y poner su ruta en logo.
+const NX_ALIADOS = [
+  { nombre:'Uno a Uno', logo:'' },
+  { nombre:'La Vida Boheme', logo:'proyectos/volver-a-sonar/logo-la-vida-boheme.png' },
+  { nombre:'Eposak', logo:'' },
+  { nombre:'Sinfónica Gran Mariscal de Ayacucho', logo:'proyectos/volver-a-sonar/logo-orquesta.png' },
+  { nombre:'Reverse Lab', logo:'' }
+];
+
 function PhotoStrip({ onZoom, lang }) {
   const d = window.nexosContent(lang); const u = d.ui;
   const ref = React.useRef(null);
@@ -337,11 +346,13 @@ function EditorialLandingExport() {
     transpTit:'Every dollar, <span style="color:var(--amber)">in plain sight</span>', transpLead2:'',
     porProyEy:'By project', porProyTit:'Where it was invested', pruebasEy:'The proof', pruebasTxt:'Every invoice and every photo, sorted by date in open folders. Check them whenever you want.',
     verFacturas:'See invoices ↗', verFotos:'See photos ↗', buscarTit:'Donated? Find your name', buscarSub:'Thank you for helping, donations are the engine of our work.',
-    misionHtml:'We are <span style="color:var(--amber)">the bridge</span> between those who want to give and the communities that need to rebuild.',
-    misionTxt:'When hands come together transparently, help reaches further, faster and in a more human way.',
-    historiaEy:'Our story', historiaTit:'From the emergency to projects',
-    historia:[['June 2026 · Apoyo Zona Cero','We were born to respond','The earthquake hit and we organized, from Venezuela and from abroad. Tools, medicine and food reached La Guaira and Caracas.'],['September 2026 · Volver a Sonar','Rebuilding is also playing again','After the emergency, we understood that rebuilding is not only a roof and food. We started working in projects.'],['Today','Projects with their own name','Each one has a goal, partners on the ground and open books for anyone who wants to check them.']],
-    conQuienEy:'Who we work with', puenteTit:'Be part of the bridge', puenteTxt:'Donate, share or write to us at @somos.nexosve.',
+    misionHtml:'We are <span style="color:var(--amber)">the bridge</span> between those who want to help and the real needs of our country.', nosotrosEy:'About us',
+    misionTxt:'Direct, human and transparent aid.',
+    quienesEy:'Who we are', quienesTit:'From the emergency to projects',
+    quienesTxt:'We are a group of organized civilians who, after the earthquake, decided to form a group dedicated to humanitarian aid. At first we focused on the emergency in the zona cero, but the will stayed over time and we have been transforming to keep supporting those who need it, creating impact and growing together.',
+    pilares:[['Our purpose','To build a better country through social and environmental impact projects.'],['How we do it','Absolute transparency, collaborative networks and direct contact with communities.']],
+    aliadosTit:'Partners',
+    conQuienEy:'Who we work with', puenteTit:'Be part of it. Every bit of help counts.', puenteTxt:'Donate, share or write to us on IG @somos.nexosve',
     faqNuevas:[{ q:'Which project does my donation go to?', a:'To the common NEXOS fund. From there we invest it in the projects in progress, starting with the most urgent.' },{ q:'What is the available fund?', a:'What we received and haven’t invested yet. It goes to the projects in progress and the ones coming next.' }]
   } : {
     heroTitulo:'Crear Nexos. Transformar realidades. <span style="color:var(--amber)">Construir comunidad.</span>',
@@ -354,11 +365,13 @@ function EditorialLandingExport() {
     transpTit:'Cada dólar, <span style="color:var(--amber)">a la vista</span>',
     porProyEy:'Por proyecto', porProyTit:'En qué se invirtió', pruebasEy:'Las pruebas', pruebasTxt:'Cada factura y cada foto, ordenadas por fecha en carpetas abiertas. Revísalas cuando quieras.',
     verFacturas:'Ver facturas ↗', verFotos:'Ver fotos ↗', buscarTit:'¿Donaste? Busca tu nombre', buscarSub:'Gracias por ayudar, las donaciones son el motor de nuestra acción.',
-    misionHtml:'Somos <span style="color:var(--amber)">el puente</span> entre los que quieren aportar y las comunidades que hoy necesitan reconstruirse.',
-    misionTxt:'Cuando las manos se juntan de forma transparente, la ayuda llega más lejos, más rápido y de forma más humana.',
-    historiaEy:'Nuestra historia', historiaTit:'De la emergencia a los proyectos',
-    historia:[['Junio 2026 · Apoyo Zona Cero','Nacimos para responder','Llegó el terremoto y nos organizamos, desde Venezuela y desde afuera. Herramientas, medicinas y comida llegaron a La Guaira y Caracas.'],['Septiembre 2026 · Volver a Sonar','Reconstruir también es volver a sonar','Pasada la emergencia, entendimos que reconstruir no es solo techo y comida. Empezamos a trabajar por proyectos.'],['Hoy','Proyectos con nombre propio','Cada uno tiene una meta, aliados en terreno y sus cuentas abiertas para quien quiera revisarlas.']],
-    conQuienEy:'Con quién trabajamos', puenteTit:'Sé parte del puente', puenteTxt:'Dona, comparte o escríbenos en @somos.nexosve.',
+    misionHtml:'Somos <span style="color:var(--amber)">el puente</span> entre los que quieren ayudar y las necesidades reales de nuestro país.', nosotrosEy:'Nosotros',
+    misionTxt:'Ayuda directa, humana y transparente.',
+    quienesEy:'Quiénes somos', quienesTit:'De la emergencia a los proyectos',
+    quienesTxt:'Somos un grupo de civiles organizados que, a raíz del terremoto, decidimos formar una agrupación dedicada a la ayuda humanitaria. En principio nos enfocamos en atender la emergencia en la zona cero, pero la voluntad se mantuvo en el tiempo y nos hemos ido transformando para seguir apoyando a quienes lo necesitan, generando impacto y creciendo juntos.',
+    pilares:[['Nuestro propósito','Construir un mejor país a través de proyectos de impacto social y ambiental.'],['Cómo lo hacemos','Transparencia absoluta, redes colaborativas y contacto directo con las comunidades.']],
+    aliadosTit:'Aliados',
+    conQuienEy:'Con quién trabajamos', puenteTit:'Sé parte. Toda ayuda suma.', puenteTxt:'Dona, comparte o escríbenos en IG @somos.nexosve',
     faqNuevas:[{ q:'¿A qué proyecto va mi donación?', a:'Al fondo común de NEXOS. Desde ahí la invertimos en los proyectos en curso, empezando por lo más urgente.' },{ q:'¿Qué es el fondo disponible?', a:'Lo que recibimos y todavía no se invirtió. Se usa en los proyectos en curso y en los que vienen.' }]
   });
   P.transpLead = lang === 'EN' ? 'You can search every donation received and the expenses categorized by project.' : 'Puedes buscar todas las donaciones recibidas y los gastos categorizados por proyecto.';
@@ -555,7 +568,7 @@ function EditorialLandingExport() {
       <section style={{ background:'var(--ink)', color:'#fff' }}>
         <div style={{ ...A.wrap, paddingTop:'clamp(48px,8vw,64px)', paddingBottom:'clamp(48px,8vw,64px)', display:'flex', flexWrap:'wrap', gap:44, alignItems:'center' }}>
           <div style={{ flex:'1 1 460px', minWidth:0, display:'flex', flexDirection:'column', gap:18 }}>
-            <div style={{ ...A.eyebrow, color:'var(--amber)' }}>{d.ventanas.quienes.titulo}</div>
+            <div style={{ ...A.eyebrow, color:'var(--amber)' }}>{P.nosotrosEy}</div>
             <p style={{ fontFamily:'var(--font-display)', fontSize:'clamp(24px,3.4vw,34px)', lineHeight:1.3, fontWeight:700, letterSpacing:'-.4px', margin:0 }} dangerouslySetInnerHTML={{ __html:P.misionHtml }} />
             <p style={{ fontSize:18, lineHeight:1.7, color:'var(--on-ink-soft)', margin:0 }}>{P.misionTxt}</p>
           </div>
@@ -564,15 +577,15 @@ function EditorialLandingExport() {
       </section>
       <section style={{ padding:'clamp(56px,8vw,72px) 0' }}>
         <div style={A.wrap}>
-          <div style={A.eyebrow}>{P.historiaEy}</div>
-          <h2 style={A.h2}>{P.historiaTit}</h2>
+          <div style={A.eyebrow}>{P.quienesEy}</div>
+          <h2 style={A.h2}>{P.quienesTit}</h2>
+          <p style={{ fontSize:18, lineHeight:1.75, color:'var(--ink)', margin:'18px 0 0', maxWidth:820 }}>{P.quienesTxt}</p>
           <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(280px,1fr))', gap:20, marginTop:28 }}>
-            {P.historia.map(function(h, i){
+            {P.pilares.map(function(h, i){
               const dark = i === 0;
               return (<div key={i} style={{ background: dark ? 'var(--ink)' : 'var(--steel-1)', color: dark ? '#fff' : 'var(--ink)', borderRadius:20, padding:28, display:'flex', flexDirection:'column', gap:10 }}>
-                <span style={{ fontSize:13, fontWeight:700, color: dark ? 'var(--amber)' : 'var(--accent-text)' }}>{h[0]}</span>
-                <b style={{ fontFamily:'var(--font-display)', fontSize:21 }}>{h[1]}</b>
-                <span style={{ fontSize:16, lineHeight:1.6, color: dark ? 'var(--on-ink-soft)' : 'var(--muted)' }}>{h[2]}</span>
+                <span style={{ fontSize:13, fontWeight:800, letterSpacing:1.2, textTransform:'uppercase', color: dark ? 'var(--amber)' : 'var(--accent-text)' }}>{h[0]}</span>
+                <b style={{ fontFamily:'var(--font-display)', fontSize:21, lineHeight:1.35 }}>{h[1]}</b>
               </div>);
             })}
           </div>
@@ -581,19 +594,15 @@ function EditorialLandingExport() {
       </section>
       <section id="aliados" style={{ background:'var(--steel-1)', padding:'clamp(48px,7vw,60px) 0' }}>
         <div style={A.wrap}>
-          <div style={A.eyebrow}>{P.conQuienEy}</div>
-          <h2 style={A.h2}>{d.ventanas.aliados.titulo}</h2>
-          <div style={{ maxWidth:720, marginTop:16 }}>
-            {(d.ventanas.aliados.cuerpo || []).map(function(p, i){ return <p key={i} style={{ fontSize:16.5, lineHeight:1.75, color:'var(--ink)', margin: i ? '16px 0 0' : 0 }} dangerouslySetInnerHTML={{ __html:p }} />; })}
-          </div>
-          {d.ventanas.aliados.formas ? <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(240px,1fr))', gap:14, marginTop:26 }}>
-            {d.ventanas.aliados.formas.map(function(r){
-              return (<div key={r.titulo} style={{ background:'#fff', borderRadius:16, padding:22 }}>
-                <div style={{ fontWeight:800, fontSize:16 }}>{r.titulo}</div>
-                <div style={{ fontSize:14.5, color:'var(--muted)', marginTop:6, lineHeight:1.6 }}>{r.detalle}</div></div>);
+          <h2 style={A.h2}>{P.aliadosTit}</h2>
+          <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill,minmax(200px,1fr))', gap:14, marginTop:24 }}>
+            {NX_ALIADOS.map(function(a){
+              return (<div key={a.nombre} style={{ background:'#fff', borderRadius:16, padding:20, minHeight:96, display:'flex', alignItems:'center', gap:14 }}>
+                {a.logo ? <img src={a.logo} alt="" style={{ width:52, height:52, objectFit:'contain', borderRadius:10, flexShrink:0 }} /> : null}
+                <b style={{ fontSize:16, lineHeight:1.35 }}>{a.nombre}</b>
+              </div>);
             })}
-          </div> : null}
-          <a href="https://instagram.com/somos.nexosve" target="_blank" rel="noopener" style={{ display:'inline-block', marginTop:24, fontWeight:800, fontSize:15, color:'var(--ink)' }}>{P.escribenos}</a>
+          </div>
         </div>
       </section>
       <Section id="faq" titulo={d.ventanas.faq.titulo}>
