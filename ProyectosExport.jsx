@@ -106,7 +106,9 @@ const PR_TAG = {
   cerrado: { background: 'var(--blue-lt)', color: 'var(--ink)' }
 };
 function prPresupuesto(p) { return p.gastos.reduce(function (a, g) { return a + g.monto; }, 0) || p.meta || 0; }
-function prTag(p) { return [p.estado, p.tipo !== 'cerrado' ? p.ubicacion : ''].filter(Boolean).join(' · '); }
+function prTag(p) { // Próximamente con ubicación: solo la ubicación (pedido de Isis)
+  if (p.tipo === 'pronto' && p.ubicacion) return p.ubicacion;
+  return [p.estado, p.tipo !== 'cerrado' ? p.ubicacion : ''].filter(Boolean).join(' · '); }
 
 function ProyectoCard({ p, lang, onOpen }) {
   const u = PR_UI[lang === 'EN' ? 'EN' : 'ES'];
